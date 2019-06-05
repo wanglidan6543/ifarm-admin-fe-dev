@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import fetch from 'dva/fetch';
+window.username = window.localStorage.getItem('username')
+export const dva = {
+  config: {
+    onError(err) {
+      err.preventDefault();
+    },
+  },
+};
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+let authRoutes = {};
+
+function ergodicRoutes(routes, authKey, authority) {
+  routes.forEach(element => {
+    if (element.path === authKey) {
+      if (!element.authority) element.authority = []; // eslint-disable-line
+      Object.assign(element.authority, authority || []);
+    } else if (element.routes) {
+      ergodicRoutes(element.routes, authKey, authority);
+    }
+    return element;
+  });
 }
 
-export default App;
+export function patchRoutes(routes) {
+  Object.keys(authRoutes).map(authKey =>
+    ergodicRoutes(routes, authKey, authRoutes[authKey].authority)
+  );
+  window.g_routes = routes;
+}
+
+// export function render(oldRender) {
+//   fetch('/api/auth_routes')
+//     .then(res => res.json())
+//     .then(
+//       ret => {
+//         authRoutes = ret;
+//         oldRender();
+//       },
+//       () => {
+//         oldRender();
+//       }
+//     );
+// }

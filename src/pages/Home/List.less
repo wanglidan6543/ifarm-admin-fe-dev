@@ -1,0 +1,138 @@
+
+@import '~antd/lib/style/themes/default.less';
+@import '~@/utils/utils.less';
+
+.tableList {
+  .tableListOperator {
+    margin-bottom: 16px;
+    button {
+      margin-right: 8px;
+    }
+  }
+}
+
+.tableListForm {
+  :global {
+    .ant-form-item {
+      display: flex;
+      margin-right: 0;
+      margin-bottom: 24px;
+      > .ant-form-item-label {
+        width: auto;
+        padding-right: 8px;
+        line-height: 32px;
+      }
+      .ant-form-item-control {
+        line-height: 32px;
+      }
+    }
+    .ant-form-item-control-wrapper {
+      flex: 1;
+    }
+  }
+  .submitButtons {
+    display: block;
+    margin-bottom: 24px;
+    white-space: nowrap;
+  }
+}
+
+@media screen and (max-width: @screen-lg) {
+  .tableListForm :global(.ant-form-item) {
+    margin-right: 24px;
+  }
+}
+
+@media screen and (max-width: @screen-md) {
+  .tableListForm :global(.ant-form-item) {
+    margin-right: 8px;
+  }
+}
+.avatar-uploader > .ant-upload {
+  width: 128px;
+  height: 128px;
+}
+
+a.forbidden {
+  color: #001529;
+}
+.searchinp {
+  display: flex;
+  > div {
+    width: 100%;
+    > div {
+      > ul {
+        > li {
+          > div {
+            > input {
+              padding: 25px 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.datapick{
+  width: 100%;
+  margin: 20px;
+  >div{
+    &:nth-child(2){
+      width: 60%;
+      >div{
+        span{
+          span{
+            div{
+              input{
+                padding: 20px 0
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.formselet{
+  width: 100%;
+  margin: 10px;
+  margin-bottom: 15px !important;
+  >div{
+    &:nth-child(2){
+      width: 60%;
+      >div{
+        span{
+          >span{
+            >span{
+              height: 45px;
+            }
+          }
+          div{
+            width: 280px;
+            div{
+              padding: 20px 0;
+              div{
+                position: absolute;
+                left: 0;
+                bottom: -8px
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.inpform{
+  div{
+    div{
+      width: 240px;
+      // margin-right: 10px
+    }
+  }
+}
+.msg{
+    >div{
+        height: 120px;
+    }
+}
