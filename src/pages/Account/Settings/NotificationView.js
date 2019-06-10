@@ -1,30 +1,30 @@
 import React, { Component, Fragment } from 'react';
- 
+import { tr } from '../../../base/i18n';
 import { Switch, List } from 'antd';
 
 class NotificationView extends Component {
   getData = () => {
     const Action = (
       <Switch
-        checkedChildren={formatMessage({ id: 'app.settings.open' })}
-        unCheckedChildren={formatMessage({ id: 'app.settings.close' })}
+        checkedChildren={tr('System', 'app.settings.open' )}
+        unCheckedChildren={tr('System', 'app.settings.close' )}
         defaultChecked
       />
     );
     return [
       {
-        title: formatMessage({ id: 'app.settings.notification.password' }, {}),
-        description: formatMessage({ id: 'app.settings.notification.password-description' }, {}),
+        title: tr('System', 'app.settings.notification.password', {}),
+        description: tr('System', 'app.settings.notification.password-description' , {}),
         actions: [Action],
       },
       {
-        title: formatMessage({ id: 'app.settings.notification.messages' }, {}),
-        description: formatMessage({ id: 'app.settings.notification.messages-description' }, {}),
+        title: tr('System', 'app.settings.notification.messages', {}),
+        description: tr('System', 'app.settings.notification.messages-description', {}),
         actions: [Action],
       },
       {
-        title: formatMessage({ id: 'app.settings.notification.todo' }, {}),
-        description: formatMessage({ id: 'app.settings.notification.todo-description' }, {}),
+        title: tr('System', 'app.settings.notification.todo', {}),
+        description: tr('System', 'app.settings.notification.todo-description', {}),
         actions: [Action],
       },
     ];

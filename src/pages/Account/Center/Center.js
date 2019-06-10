@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
- 
+import { Link } from 'react-router-dom';
 import router from 'react-router';
 import { Card, Row, Col, Icon, Avatar, Tag, Divider, Spin, Input } from 'antd';
-import GridContent from '@/components/PageHeaderWrapper/GridContent';
+import GridContent from '../components/PageHeaderWrapper/GridContent';
 import styles from './Center.less';
 
 @connect(({ loading, user, project }) => ({

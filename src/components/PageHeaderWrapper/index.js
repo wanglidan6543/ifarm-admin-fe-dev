@@ -1,7 +1,5 @@
 import React from 'react';
-  
- 
-import PageHeader from '@/components/PageHeader';
+import PageHeader from '../components/PageHeader';
 import { connect } from 'dva';
 import GridContent from './GridContent';
 import styles from './index.less';

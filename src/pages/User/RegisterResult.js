@@ -1,20 +1,20 @@
 import React from 'react';
-import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Button } from 'antd';
- 
-import Result from '@/components/Result';
+import { Link } from 'react-router-dom';
+import Result from '../components/Result';
 import styles from './RegisterResult.less';
+import {tr} from '../../base/i18n';
 
 const actions = (
   <div className={styles.actions}>
     <a href="">
       <Button size="large" type="primary">
-        <FormattedMessage id="app.register-result.view-mailbox" />
+        <span id="app.register-result.view-mailbox" />
       </Button>
     </a>
     <Link to="/">
       <Button size="large">
-        <FormattedMessage id="app.register-result.back-home" />
+        <span id="app.register-result.back-home" />
       </Button>
     </Link>
   </div>
@@ -26,13 +26,13 @@ const RegisterResult = ({ location }) => (
     type="success"
     title={
       <div className={styles.title}>
-        <FormattedMessage
+        <span
           id="app.register-result.msg"
           values={{ email: location.state ? location.state.account : 'AntDesign@example.com' }}
         />
       </div>
     }
-    description={formatMessage({ id: 'app.register-result.activation-email' })}
+    description={tr('System', 'app.register-result.activation-email')}
     actions={actions}
     style={{ marginTop: 56 }}
   />

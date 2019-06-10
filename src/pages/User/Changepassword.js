@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import axios from 'axios';
 import E from 'wangeditor';
-import { formatMessage, FormattedMessage } from 'umi/locale';
 import router from 'react-router';
 import {
   Form,
@@ -18,7 +17,7 @@ import {
   message,
   Modal,
 } from 'antd';
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import styles from './Changepassword.less';
 import { ROOT_PATH } from '../pathrouter';
 const FormItem = Form.Item;

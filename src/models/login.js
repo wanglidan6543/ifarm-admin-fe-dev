@@ -17,7 +17,7 @@ export default {
       const response = yield call(accountLogin, payload);
 
       window.localStorage.setItem('jwt_token', response.data.jwt_token);
-      jwt_token = window.localStorage.getItem('jwt_token');
+      const jwt_token = window.localStorage.getItem('jwt_token');
       yield put({
         type: 'changeLoginStatus',
         payload: response,

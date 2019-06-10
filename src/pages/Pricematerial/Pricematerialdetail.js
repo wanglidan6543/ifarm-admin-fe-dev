@@ -1,7 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import { Table, Button, Input, message, Popconfirm, Divider, Row, Col, List } from 'antd';
-import StandardTable from '@/components/StandardTable'; // 分页显示
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import StandardTable from '../components/StandardTable'; // 分页显示
+import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import isEqual from 'lodash/isEqual';
 import styles from './List.less';
 import { ROOT_PATH } from '../pathrouter';

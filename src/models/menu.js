@@ -1,10 +1,11 @@
 import memoizeOne from 'memoize-one';
 import isEqual from 'lodash/isEqual';
- 
-import Authorized from '@/utils/Authorized';
+import Authorized from '../utils/Authorized';
 import { menu } from '../defaultSettings';
+import { requestMenuData } from '../services/api';
+import { tr } from '../base/i18n';
+
 const { check } = Authorized;
-import { requestMenuData } from '@/services/api';
 
 // Conversion router to menu.
 function formatter(data, parentAuthority, parentName) {
@@ -27,7 +28,7 @@ function formatter(data, parentAuthority, parentName) {
       // close menu international
       const name = menu.disableLocal
         ? item.name
-        : formatMessage({ id: locale, defaultMessage: item.name });
+        : tr('System', locale);
       const result = {
         ...item,
         name,

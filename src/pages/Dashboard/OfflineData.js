@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
 import { Card, Tabs, Row, Col } from 'antd';
-import { formatMessage, FormattedMessage } from 'umi/locale';
 import styles from './Analysis.less';
-import { TimelineChart, Pie } from '@/components/Charts';
-import NumberInfo from '@/components/NumberInfo';
+import { TimelineChart, Pie } from '../components/Charts';
+import NumberInfo from '../components/NumberInfo';
+import { tr } from '../../base/i18n';
 
 const CustomTab = ({ data, currentTabKey: currentKey }) => (
   <Row gutter={8} style={{ width: 138, margin: '8px 0' }}>
@@ -11,7 +11,7 @@ const CustomTab = ({ data, currentTabKey: currentKey }) => (
       <NumberInfo
         title={data.name}
         subTitle={
-          <FormattedMessage id="app.analysis.conversion-rate" defaultMessage="Conversion Rate" />
+          <span id="app.analysis.conversion-rate" defaultMessage="Conversion Rate" />
         }
         gap={2}
         total={`${data.cvr * 100}%`}
@@ -50,8 +50,8 @@ const OfflineData = memo(
                 height={400}
                 data={offlineChartData}
                 titleMap={{
-                  y1: formatMessage({ id: 'app.analysis.traffic' }),
-                  y2: formatMessage({ id: 'app.analysis.payments' }),
+                  y1: tr('System', 'app.analysis.traffic' ),
+                  y2: tr('System', 'app.analysis.payments'),
                 }}
               />
             </div>

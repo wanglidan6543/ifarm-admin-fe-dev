@@ -22,8 +22,8 @@ import {
   Steps,
   Radio,
 } from 'antd';
-import StandardTable from '@/components/StandardTable';
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import StandardTable from '../components/StandardTable';
+import PageHeaderWrapper from '../components/PageHeaderWrapper';
 
 import styles from './TableList.less';
 

@@ -14,7 +14,7 @@ import {
   Upload,
   Modal,
 } from 'antd';
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import axios from 'axios';
 import styles from './List.less';
 import { ROOT_PATH } from '../pathrouter';

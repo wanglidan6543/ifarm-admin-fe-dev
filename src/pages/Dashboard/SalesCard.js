@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
 import { Row, Col, Card, Tabs, DatePicker } from 'antd';
-  
 import numeral from 'numeral';
 import styles from './Analysis.less';
-import { Bar } from '@/components/Charts';
+import { Bar } from '../components/Charts';
+import { tr } from '../../base/i18n';
 
 const { RangePicker } = DatePicker;
 const { TabPane } = Tabs;
@@ -11,7 +11,7 @@ const { TabPane } = Tabs;
 const rankingListData = [];
 for (let i = 0; i < 7; i += 1) {
   rankingListData.push({
-    title: formatMessage({ id: 'app.analysis.test' }, { no: i }),
+    title: tr('System', 'app.analysis.test', { no: i }),
     total: 323234,
   });
 }
@@ -25,16 +25,16 @@ const SalesCard = memo(
             <div className={styles.salesExtraWrap}>
               <div className={styles.salesExtra}>
                 <a className={isActive('today')} onClick={() => selectDate('today')}>
-                  <FormattedMessage id="app.analysis.all-day" defaultMessage="All Day" />
+                  <span id="app.analysis.all-day" defaultMessage="All Day" />
                 </a>
                 <a className={isActive('week')} onClick={() => selectDate('week')}>
-                  <FormattedMessage id="app.analysis.all-week" defaultMessage="All Week" />
+                  <span id="app.analysis.all-week" defaultMessage="All Week" />
                 </a>
                 <a className={isActive('month')} onClick={() => selectDate('month')}>
-                  <FormattedMessage id="app.analysis.all-month" defaultMessage="All Month" />
+                  <span id="app.analysis.all-month" defaultMessage="All Month" />
                 </a>
                 <a className={isActive('year')} onClick={() => selectDate('year')}>
-                  <FormattedMessage id="app.analysis.all-year" defaultMessage="All Year" />
+                  <span id="app.analysis.all-year" defaultMessage="All Year" />
                 </a>
               </div>
               <RangePicker
@@ -48,7 +48,7 @@ const SalesCard = memo(
           tabBarStyle={{ marginBottom: 24 }}
         >
           <TabPane
-            tab={<FormattedMessage id="app.analysis.sales" defaultMessage="Sales" />}
+            tab={<span id="app.analysis.sales" defaultMessage="Sales" />}
             key="sales"
           >
             <Row>
@@ -57,7 +57,7 @@ const SalesCard = memo(
                   <Bar
                     height={295}
                     title={
-                      <FormattedMessage
+                      <span
                         id="app.analysis.sales-trend"
                         defaultMessage="Sales Trend"
                       />
@@ -69,7 +69,7 @@ const SalesCard = memo(
               <Col xl={8} lg={12} md={12} sm={24} xs={24}>
                 <div className={styles.salesRank}>
                   <h4 className={styles.rankingTitle}>
-                    <FormattedMessage
+                    <span
                       id="app.analysis.sales-ranking"
                       defaultMessage="Sales Ranking"
                     />
@@ -96,7 +96,7 @@ const SalesCard = memo(
             </Row>
           </TabPane>
           <TabPane
-            tab={<FormattedMessage id="app.analysis.visits" defaultMessage="Visits" />}
+            tab={<span id="app.analysis.visits" defaultMessage="Visits" />}
             key="views"
           >
             <Row>
@@ -105,7 +105,7 @@ const SalesCard = memo(
                   <Bar
                     height={292}
                     title={
-                      <FormattedMessage
+                      <span
                         id="app.analysis.visits-trend"
                         defaultMessage="Visits Trend"
                       />
@@ -117,7 +117,7 @@ const SalesCard = memo(
               <Col xl={8} lg={12} md={12} sm={24} xs={24}>
                 <div className={styles.salesRank}>
                   <h4 className={styles.rankingTitle}>
-                    <FormattedMessage
+                    <span
                       id="app.analysis.visits-ranking"
                       defaultMessage="Visits Ranking"
                     />

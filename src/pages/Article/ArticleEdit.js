@@ -3,7 +3,6 @@ import { connect } from 'dva';
 import axios from 'axios';
 import E from 'wangeditor';
 // import CateSelect from './components/select.js';
-import { formatMessage, FormattedMessage } from 'umi/locale';
 import {
   Form,
   Input,
@@ -19,7 +18,7 @@ import {
   message,
   Modal,
 } from 'antd';
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import styles from './ArticleEdit.less';
 import { ROOT_PATH } from '../pathrouter';
 import Editor from './components/editor';

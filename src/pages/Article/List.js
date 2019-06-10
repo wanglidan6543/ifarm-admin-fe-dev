@@ -24,8 +24,8 @@ import {
   Icon,
   message,
 } from 'antd';
-import StandardTable from '@/components/StandardTable'; // 分页显示
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import StandardTable from '../components/StandardTable'; // 分页显示
+import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import E from 'wangeditor';
 import Editor from './components/editor';
 import 'antd/dist/antd.css';

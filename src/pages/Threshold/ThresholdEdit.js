@@ -2,7 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import { Table, Input, Button, Popconfirm, Form, Row, Col, message, Radio } from 'antd';
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import styles from './List.less';
 
 var jwt_token = window.localStorage.getItem('jwt_token');

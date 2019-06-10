@@ -3,7 +3,7 @@ import { Table, Button, Input, message, Popconfirm, Divider, Row, Col } from 'an
 
 import isEqual from 'lodash/isEqual';
 import styles from './List.less';
-import StandardTable from '@/components/StandardTable'; // 分页显示
+import StandardTable from '../components/StandardTable'; // 分页显示
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
 import { isNull } from 'util';

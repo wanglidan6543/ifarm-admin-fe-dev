@@ -1,5 +1,5 @@
 import React from 'react';
-import Redirect from 'umi/redirect';
+import Redirect from 'react-router-dom';
 import pathToRegexp from 'path-to-regexp';
 import { connect } from 'dva';
 import Authorized from '@/utils/Authorized';

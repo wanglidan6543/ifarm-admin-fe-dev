@@ -1,6 +1,6 @@
 import React, { PureComponent, Fragment } from 'react';
 import { Form, Table, Button, Input, message, Divider, Row, Col, Select, Card, Icon } from 'antd';
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import axios from 'axios';
 import styles from './List.less';
 import { ROOT_PATH } from '../pathrouter';

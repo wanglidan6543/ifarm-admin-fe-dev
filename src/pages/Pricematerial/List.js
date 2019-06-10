@@ -12,14 +12,14 @@ import {
   DatePicker,
   Select,
 } from 'antd';
-
+import { Link } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import styles from './List.less';
-import StandardTable from '@/components/StandardTable'; // 分页显示
+import StandardTable from '../components/StandardTable'; // 分页显示
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
 import { timingSafeEqual } from 'crypto';
-import { Link } from 'dva/router';
+import { Link } from 'react-router-dom';
 import { isNull } from 'util';
 const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
 

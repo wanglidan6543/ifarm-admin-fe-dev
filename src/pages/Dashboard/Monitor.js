@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Row, Col, Card, Tooltip } from 'antd';
-import { Pie, WaterWave, Gauge, TagCloud } from '@/components/Charts';
-import NumberInfo from '@/components/NumberInfo';
-import CountDown from '@/components/CountDown';
-import ActiveChart from '@/components/ActiveChart';
+import { Pie, WaterWave, Gauge, TagCloud } from '../components/Charts';
+import NumberInfo from '../components/NumberInfo';
+import CountDown from '../components/CountDown';
+import ActiveChart from '../components/ActiveChart';
 import numeral from 'numeral';
-import GridContent from '@/components/PageHeaderWrapper/GridContent';
+import GridContent from '../components/PageHeaderWrapper/GridContent';
 import Authorized from '@/utils/Authorized';
 import styles from './Monitor.less';
+import { tr } from '../../base/i18n';
 
 const { Secured } = Authorized;
 
@@ -130,13 +130,13 @@ class Monitor extends Component {
               <ActiveChart />
             </Card>
             <Card
-              title={<FormattedMessage id="app.monitor.efficiency" defaultMessage="Efficiency" />}
+              title={<span id="app.monitor.efficiency" defaultMessage="Efficiency" />}
               style={{ marginBottom: 24 }}
               bodyStyle={{ textAlign: 'center' }}
               bordered={false}
             >
               <Gauge
-                title={formatMessage({ id: 'app.monitor.ratio', defaultMessage: 'Ratio' })}
+                title={tr('System', 'app.monitor.ratio')}
                 height={180}
                 percent={87}
               />
@@ -147,7 +147,7 @@ class Monitor extends Component {
           <Col xl={12} lg={24} sm={24} xs={24} style={{ marginBottom: 24 }}>
             <Card
               title={
-                <FormattedMessage
+                <span
                   id="app.monitor.proportion-per-category"
                   defaultMessage="Proportion Per Category"
                 />
@@ -161,7 +161,7 @@ class Monitor extends Component {
                     animate={false}
                     percent={28}
                     subTitle={
-                      <FormattedMessage id="app.monitor.fast-food" defaultMessage="Fast food" />
+                      <span id="app.monitor.fast-food" defaultMessage="Fast food" />
                     }
                     total="28%"
                     height={128}
@@ -174,7 +174,7 @@ class Monitor extends Component {
                     color="#5DDECF"
                     percent={22}
                     subTitle={
-                      <FormattedMessage
+                      <span
                         id="app.monitor.western-food"
                         defaultMessage="Western food"
                       />
@@ -190,7 +190,7 @@ class Monitor extends Component {
                     color="#2FC25B"
                     percent={32}
                     subTitle={
-                      <FormattedMessage id="app.monitor.hot-pot" defaultMessage="Hot pot" />
+                      <span id="app.monitor.hot-pot" defaultMessage="Hot pot" />
                     }
                     total="32%"
                     height={128}
@@ -203,7 +203,7 @@ class Monitor extends Component {
           <Col xl={6} lg={12} sm={24} xs={24} style={{ marginBottom: 24 }}>
             <Card
               title={
-                <FormattedMessage
+                <span
                   id="app.monitor.popular-searches"
                   defaultMessage="Popular Searches"
                 />
@@ -218,7 +218,7 @@ class Monitor extends Component {
           <Col xl={6} lg={12} sm={24} xs={24} style={{ marginBottom: 24 }}>
             <Card
               title={
-                <FormattedMessage
+                <span
                   id="app.monitor.resource-surplus"
                   defaultMessage="Resource Surplus"
                 />
@@ -229,7 +229,7 @@ class Monitor extends Component {
               <WaterWave
                 height={161}
                 title={
-                  <FormattedMessage id="app.monitor.fund-surplus" defaultMessage="Fund Surplus" />
+                  <span id="app.monitor.fund-surplus" defaultMessage="Fund Surplus" />
                 }
                 percent={34}
               />

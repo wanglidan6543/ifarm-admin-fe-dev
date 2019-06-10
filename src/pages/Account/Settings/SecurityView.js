@@ -1,22 +1,22 @@
 import React, { Component, Fragment } from 'react';
-import { formatMessage, FormattedMessage } from 'umi/locale';
 import { List } from 'antd';
 // import { getTimeDistance } from '@/utils/utils';
+import { tr } from '../../../base/i18n';
 
 const passwordStrength = {
   strong: (
     <font className="strong">
-      <FormattedMessage id="app.settings.security.strong" defaultMessage="Strong" />
+      <span id="app.settings.security.strong" defaultMessage="Strong" />
     </font>
   ),
   medium: (
     <font className="medium">
-      <FormattedMessage id="app.settings.security.medium" defaultMessage="Medium" />
+      <span id="app.settings.security.medium" defaultMessage="Medium" />
     </font>
   ),
   weak: (
     <font className="weak">
-      <FormattedMessage id="app.settings.security.weak" defaultMessage="Weak" />
+      <span id="app.settings.security.weak" defaultMessage="Weak" />
       Weak
     </font>
   ),
@@ -25,58 +25,58 @@ const passwordStrength = {
 class SecurityView extends Component {
   getData = () => [
     {
-      title: formatMessage({ id: 'app.settings.security.password' }, {}),
+      title: tr('System', 'app.settings.security.password', {}),
       description: (
         <Fragment>
-          {formatMessage({ id: 'app.settings.security.password-description' })}：
+          {tr('System', 'app.settings.security.password-description')}：
           {passwordStrength.strong}
         </Fragment>
       ),
       actions: [
         <a>
-          <FormattedMessage id="app.settings.security.modify" defaultMessage="Modify" />
+          <span id="app.settings.security.modify" defaultMessage="Modify" />
         </a>,
       ],
     },
     {
-      title: formatMessage({ id: 'app.settings.security.phone' }, {}),
-      description: `${formatMessage(
-        { id: 'app.settings.security.phone-description' },
+      title: tr('System', 'app.settings.security.phone', {}),
+      description: `${tr(
+        'System', 'app.settings.security.phone-description',
         {}
       )}：138****8293`,
       actions: [
         <a>
-          <FormattedMessage id="app.settings.security.modify" defaultMessage="Modify" />
+          <span id="app.settings.security.modify" defaultMessage="Modify" />
         </a>,
       ],
     },
     {
-      title: formatMessage({ id: 'app.settings.security.question' }, {}),
-      description: formatMessage({ id: 'app.settings.security.question-description' }, {}),
+      title: tr('System', 'app.settings.security.question', {}),
+      description: tr('System', 'app.settings.security.question-description', {}),
       actions: [
         <a>
-          <FormattedMessage id="app.settings.security.set" defaultMessage="Set" />
+          <span id="app.settings.security.set" defaultMessage="Set" />
         </a>,
       ],
     },
     {
-      title: formatMessage({ id: 'app.settings.security.email' }, {}),
-      description: `${formatMessage(
-        { id: 'app.settings.security.email-description' },
+      title: tr('System', 'app.settings.security.email', {}),
+      description: `${tr(
+        'System', 'app.settings.security.email-description',
         {}
       )}：ant***sign.com`,
       actions: [
         <a>
-          <FormattedMessage id="app.settings.security.modify" defaultMessage="Modify" />
+          <span id="app.settings.security.modify" defaultMessage="Modify" />
         </a>,
       ],
     },
     {
-      title: formatMessage({ id: 'app.settings.security.mfa' }, {}),
-      description: formatMessage({ id: 'app.settings.security.mfa-description' }, {}),
+      title: tr('System', 'app.settings.security.mfa', {}),
+      description: tr('System', 'app.settings.security.mfa-description', {}),
       actions: [
         <a>
-          <FormattedMessage id="app.settings.security.bind" defaultMessage="Bind" />
+          <span id="app.settings.security.bind" defaultMessage="Bind" />
         </a>,
       ],
     },

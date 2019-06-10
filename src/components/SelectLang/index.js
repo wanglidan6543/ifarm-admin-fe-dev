@@ -1,18 +1,19 @@
 import React, { PureComponent } from 'react';
-import { formatMessage, setLocale, getLocale } from 'umi/locale';
 import { Menu, Icon } from 'antd';
 import classNames from 'classnames';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
+import { tr } from '../../base/i18n';
 
 export default class SelectLang extends PureComponent {
   changeLang = ({ key }) => {
-    setLocale(key);
+    // setLocale(key);
   };
 
   render() {
     const { className } = this.props;
-    const selectedLang = getLocale();
+    // const selectedLang = getLocale();
+    const selectedLang = 'zh-CN';
     const locales = ['zh-CN'];
     // const locales = ['zh-CN', 'zh-TW', 'en-US', 'pt-BR'];
     const languageLabels = {
@@ -42,7 +43,7 @@ export default class SelectLang extends PureComponent {
     return (
       <HeaderDropdown overlay={langMenu} placement="bottomRight">
         <span className={classNames(styles.dropDown, className)}>
-          <Icon type="global" title={formatMessage({ id: 'navBar.lang' })} />
+          <Icon type="global" title={tr('System','navBar.lang')} />
         </span>
       </HeaderDropdown>
     );

@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import router from 'react-router';
   
 import { Menu } from 'antd';
-import GridContent from '@/components/PageHeaderWrapper/GridContent';
+import GridContent from '../components/PageHeaderWrapper/GridContent';
 import styles from './Info.less';
 
 const { Item } = Menu;

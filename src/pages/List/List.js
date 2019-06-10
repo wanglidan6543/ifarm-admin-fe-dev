@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import router from 'react-router';
 import { connect } from 'dva';
 import { Input } from 'antd';
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import PageHeaderWrapper from '../components/PageHeaderWrapper';
 
 @connect()
 class SearchList extends Component {

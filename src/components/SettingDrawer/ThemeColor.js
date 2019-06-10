@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tooltip, Icon } from 'antd';
- 
+import { tr } from '../../base/i18n';
 import styles from './ThemeColor.less';
 
 const Tag = ({ color, check, ...rest }) => (
@@ -57,7 +57,7 @@ const ThemeColor = ({ colors, title, value, onChange }) => {
       <h3 className={styles.title}>{title}</h3>
       <div className={styles.content}>
         {colorList.map(({ key, color }) => (
-          <Tooltip key={color} title={formatMessage({ id: `app.setting.themecolor.${key}` })}>
+          <Tooltip key={color} title={tr('System', `app.setting.themecolor.{0}`, key)}>
             <Tag
               className={styles.colorBlock}
               color={color}

@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { formatMessage, FormattedMessage } from 'umi/locale';
 import {
   Form,
   Input,
@@ -13,8 +12,9 @@ import {
   Icon,
   Tooltip,
 } from 'antd';
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import styles from './style.less';
+import {tr} from '../../base/i18n';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -66,67 +66,67 @@ class BasicForms extends PureComponent {
 
     return (
       <PageHeaderWrapper
-        title={<FormattedMessage id="app.forms.basic.title" />}
-        content={<FormattedMessage id="app.forms.basic.description" />}
+        title={<span id="app.forms.basic.title" />}
+        content={<span id="app.forms.basic.description" />}
       >
         <Card bordered={false}>
           <Form onSubmit={this.handleSubmit} hideRequiredMark style={{ marginTop: 8 }}>
-            <FormItem {...formItemLayout} label={<FormattedMessage id="form.title.label" />}>
+            <FormItem {...formItemLayout} label={<span id="form.title.label" />}>
               {getFieldDecorator('title', {
                 rules: [
                   {
                     required: true,
-                    message: formatMessage({ id: 'validation.title.required' }),
+                    message: tr('System', 'validation.title.required' }),
                   },
                 ],
-              })(<Input placeholder={formatMessage({ id: 'form.title.placeholder' })} />)}
+              })(<Input placeholder={tr('System', 'form.title.placeholder' })} />)}
             </FormItem>
-            <FormItem {...formItemLayout} label={<FormattedMessage id="form.date.label" />}>
+            <FormItem {...formItemLayout} label={<span id="form.date.label" />}>
               {getFieldDecorator('date', {
                 rules: [
                   {
                     required: true,
-                    message: formatMessage({ id: 'validation.date.required' }),
+                    message: tr('System', 'validation.date.required' }),
                   },
                 ],
               })(
                 <RangePicker
                   style={{ width: '100%' }}
                   placeholder={[
-                    formatMessage({ id: 'form.date.placeholder.start' }),
-                    formatMessage({ id: 'form.date.placeholder.end' }),
+                    tr('System', 'form.date.placeholder.start' ),
+                    tr('System', 'form.date.placeholder.end' ),
                   ]}
                 />
               )}
             </FormItem>
-            <FormItem {...formItemLayout} label={<FormattedMessage id="form.goal.label" />}>
+            <FormItem {...formItemLayout} label={<span id="form.goal.label" />}>
               {getFieldDecorator('goal', {
                 rules: [
                   {
                     required: true,
-                    message: formatMessage({ id: 'validation.goal.required' }),
+                    message: tr('System', 'validation.goal.required' ),
                   },
                 ],
               })(
                 <TextArea
                   style={{ minHeight: 32 }}
-                  placeholder={formatMessage({ id: 'form.goal.placeholder' })}
+                  placeholder={tr('System', 'form.goal.placeholder' )}
                   rows={4}
                 />
               )}
             </FormItem>
-            <FormItem {...formItemLayout} label={<FormattedMessage id="form.standard.label" />}>
+            <FormItem {...formItemLayout} label={<span id="form.standard.label" />}>
               {getFieldDecorator('standard', {
                 rules: [
                   {
                     required: true,
-                    message: formatMessage({ id: 'validation.standard.required' }),
+                    message: tr('System', 'validation.standard.required' ),
                   },
                 ],
               })(
                 <TextArea
                   style={{ minHeight: 32 }}
-                  placeholder={formatMessage({ id: 'form.standard.placeholder' })}
+                  placeholder={tr('System', 'form.standard.placeholder' )}
                   rows={4}
                 />
               )}
@@ -135,10 +135,10 @@ class BasicForms extends PureComponent {
               {...formItemLayout}
               label={
                 <span>
-                  <FormattedMessage id="form.client.label" />
+                  <span id="form.client.label" />
                   <em className={styles.optional}>
-                    <FormattedMessage id="form.optional" />
-                    <Tooltip title={<FormattedMessage id="form.client.label.tooltip" />}>
+                    <span id="form.optional" />
+                    <Tooltip title={<span id="form.client.label.tooltip" />}>
                       <Icon type="info-circle-o" style={{ marginRight: 4 }} />
                     </Tooltip>
                   </em>
@@ -146,38 +146,38 @@ class BasicForms extends PureComponent {
               }
             >
               {getFieldDecorator('client')(
-                <Input placeholder={formatMessage({ id: 'form.client.placeholder' })} />
+                <Input placeholder={tr('System', 'form.client.placeholder' )} />
               )}
             </FormItem>
             <FormItem
               {...formItemLayout}
               label={
                 <span>
-                  <FormattedMessage id="form.invites.label" />
+                  <span id="form.invites.label" />
                   <em className={styles.optional}>
-                    <FormattedMessage id="form.optional" />
+                    <span id="form.optional" />
                   </em>
                 </span>
               }
             >
               {getFieldDecorator('invites')(
-                <Input placeholder={formatMessage({ id: 'form.invites.placeholder' })} />
+                <Input placeholder={tr('System', 'form.invites.placeholder' )} />
               )}
             </FormItem>
             <FormItem
               {...formItemLayout}
               label={
                 <span>
-                  <FormattedMessage id="form.weight.label" />
+                  <span id="form.weight.label" />
                   <em className={styles.optional}>
-                    <FormattedMessage id="form.optional" />
+                    <span id="form.optional" />
                   </em>
                 </span>
               }
             >
               {getFieldDecorator('weight')(
                 <InputNumber
-                  placeholder={formatMessage({ id: 'form.weight.placeholder' })}
+                  placeholder={tr('System', 'form.weight.placeholder' )}
                   min={0}
                   max={100}
                 />
@@ -186,8 +186,8 @@ class BasicForms extends PureComponent {
             </FormItem>
             <FormItem
               {...formItemLayout}
-              label={<FormattedMessage id="form.public.label" />}
-              help={<FormattedMessage id="form.public.label.help" />}
+              label={<span id="form.public.label" />}
+              help={<span id="form.public.label.help" />}
             >
               <div>
                 {getFieldDecorator('public', {
@@ -195,13 +195,13 @@ class BasicForms extends PureComponent {
                 })(
                   <Radio.Group>
                     <Radio value="1">
-                      <FormattedMessage id="form.public.radio.public" />
+                      <span id="form.public.radio.public" />
                     </Radio>
                     <Radio value="2">
-                      <FormattedMessage id="form.public.radio.partially-public" />
+                      <span id="form.public.radio.partially-public" />
                     </Radio>
                     <Radio value="3">
-                      <FormattedMessage id="form.public.radio.private" />
+                      <span id="form.public.radio.private" />
                     </Radio>
                   </Radio.Group>
                 )}
@@ -209,20 +209,20 @@ class BasicForms extends PureComponent {
                   {getFieldDecorator('publicUsers')(
                     <Select
                       mode="multiple"
-                      placeholder={formatMessage({ id: 'form.publicUsers.placeholder' })}
+                      placeholder={tr('System', 'form.publicUsers.placeholder' )}
                       style={{
                         margin: '8px 0',
                         display: getFieldValue('public') === '2' ? 'block' : 'none',
                       }}
                     >
                       <Option value="1">
-                        <FormattedMessage id="form.publicUsers.option.A" />
+                        <span id="form.publicUsers.option.A" />
                       </Option>
                       <Option value="2">
-                        <FormattedMessage id="form.publicUsers.option.B" />
+                        <span id="form.publicUsers.option.B" />
                       </Option>
                       <Option value="3">
-                        <FormattedMessage id="form.publicUsers.option.C" />
+                        <span id="form.publicUsers.option.C" />
                       </Option>
                     </Select>
                   )}
@@ -231,10 +231,10 @@ class BasicForms extends PureComponent {
             </FormItem>
             <FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
               <Button type="primary" htmlType="submit" loading={submitting}>
-                <FormattedMessage id="form.submit" />
+                <span id="form.submit" />
               </Button>
               <Button style={{ marginLeft: 8 }}>
-                <FormattedMessage id="form.save" />
+                <span id="form.save" />
               </Button>
             </FormItem>
           </Form>

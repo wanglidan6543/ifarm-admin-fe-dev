@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { formatMessage, FormattedMessage } from 'umi/locale';
- 
+import { Link } from 'react-router-dom';
 import router from 'react-router';
 import { Form, Input, Button, Select, Row, Col, Popover, Progress } from 'antd';
 import styles from './Register.less';
+import { tr } from '../../base/i18n';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -13,17 +13,17 @@ const InputGroup = Input.Group;
 const passwordStatusMap = {
   ok: (
     <div className={styles.success}>
-      <FormattedMessage id="validation.password.strength.strong" />
+      <span id="validation.password.strength.strong" />
     </div>
   ),
   pass: (
     <div className={styles.warning}>
-      <FormattedMessage id="validation.password.strength.medium" />
+      <span id="validation.password.strength.medium" />
     </div>
   ),
   poor: (
     <div className={styles.error}>
-      <FormattedMessage id="validation.password.strength.short" />
+      <span id="validation.password.strength.short" />
     </div>
   ),
 };
@@ -115,7 +115,7 @@ class Register extends Component {
   checkConfirm = (rule, value, callback) => {
     const { form } = this.props;
     if (value && value !== form.getFieldValue('password')) {
-      callback(formatMessage({ id: 'validation.password.twice' }));
+      callback(tr('System', 'validation.password.twice' ));
     } else {
       callback();
     }
@@ -125,7 +125,7 @@ class Register extends Component {
     const { visible, confirmDirty } = this.state;
     if (!value) {
       this.setState({
-        help: formatMessage({ id: 'validation.password.required' }),
+        help: tr('System', 'validation.password.required' ),
         visible: !!value,
       });
       callback('error');
@@ -180,7 +180,7 @@ class Register extends Component {
     return (
       <div className={styles.main}>
         <h3>
-          <FormattedMessage id="app.register.register" />
+          <span id="app.register.register" />
         </h3>
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
@@ -188,15 +188,15 @@ class Register extends Component {
               rules: [
                 {
                   required: true,
-                  message: formatMessage({ id: 'validation.email.required' }),
+                  message: tr('System', 'validation.email.required' ),
                 },
                 {
                   type: 'email',
-                  message: formatMessage({ id: 'validation.email.wrong-format' }),
+                  message: tr('System', 'validation.email.wrong-format' ),
                 },
               ],
             })(
-              <Input size="large" placeholder={formatMessage({ id: 'form.email.placeholder' })} />
+              <Input size="large" placeholder={tr('System', 'form.email.placeholder' )} />
             )}
           </FormItem>
           <FormItem help={help}>
@@ -207,7 +207,7 @@ class Register extends Component {
                   {passwordStatusMap[this.getPasswordStatus()]}
                   {this.renderPasswordProgress()}
                   <div style={{ marginTop: 10 }}>
-                    <FormattedMessage id="validation.password.strength.msg" />
+                    <span id="validation.password.strength.msg" />
                   </div>
                 </div>
               }
@@ -225,7 +225,7 @@ class Register extends Component {
                 <Input
                   size="large"
                   type="password"
-                  placeholder={formatMessage({ id: 'form.password.placeholder' })}
+                  placeholder={tr('System', 'form.password.placeholder' )}
                 />
               )}
             </Popover>
@@ -235,7 +235,7 @@ class Register extends Component {
               rules: [
                 {
                   required: true,
-                  message: formatMessage({ id: 'validation.confirm-password.required' }),
+                  message: tr('System', 'validation.confirm-password.required' ),
                 },
                 {
                   validator: this.checkConfirm,
@@ -245,7 +245,7 @@ class Register extends Component {
               <Input
                 size="large"
                 type="password"
-                placeholder={formatMessage({ id: 'form.confirm-password.placeholder' })}
+                placeholder={tr('System', 'form.confirm-password.placeholder' )}
               />
             )}
           </FormItem>
@@ -264,18 +264,18 @@ class Register extends Component {
                 rules: [
                   {
                     required: true,
-                    message: formatMessage({ id: 'validation.phone-number.required' }),
+                    message: tr('System', 'validation.phone-number.required' ),
                   },
                   {
                     pattern: /^\d{11}$/,
-                    message: formatMessage({ id: 'validation.phone-number.wrong-format' }),
+                    message: tr('System', 'validation.phone-number.wrong-format' ),
                   },
                 ],
               })(
                 <Input
                   size="large"
                   style={{ width: '80%' }}
-                  placeholder={formatMessage({ id: 'form.phone-number.placeholder' })}
+                  placeholder={tr('System', 'form.phone-number.placeholder' )}
                 />
               )}
             </InputGroup>
@@ -287,13 +287,13 @@ class Register extends Component {
                   rules: [
                     {
                       required: true,
-                      message: formatMessage({ id: 'validation.verification-code.required' }),
+                      message: tr('System', 'validation.verification-code.required' ),
                     },
                   ],
                 })(
                   <Input
                     size="large"
-                    placeholder={formatMessage({ id: 'form.verification-code.placeholder' })}
+                    placeholder={tr('System', 'form.verification-code.placeholder' )}
                   />
                 )}
               </Col>
@@ -306,7 +306,7 @@ class Register extends Component {
                 >
                   {count
                     ? `${count} s`
-                    : formatMessage({ id: 'app.register.get-verification-code' })}
+                    : tr('System', 'app.register.get-verification-code' )}
                 </Button>
               </Col>
             </Row>
@@ -319,10 +319,10 @@ class Register extends Component {
               type="primary"
               htmlType="submit"
             >
-              <FormattedMessage id="app.register.register" />
+              <span id="app.register.register" />
             </Button>
             <Link className={styles.login} to="/User/Login">
-              <FormattedMessage id="app.register.sign-in" />
+              <span id="app.register.sign-in" />
             </Link>
           </FormItem>
         </Form>

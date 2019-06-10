@@ -1,14 +1,14 @@
 import React from 'react';
- 
- 
-import Exception from '@/components/Exception';
+import { Link } from 'react-router-dom';
+import Exception from '../components/Exception';
+import { tr } from '../../base/i18n';
 
 const Exception403 = () => (
   <Exception
     type="403"
-    desc={formatMessage({ id: 'app.exception.description.403' })}
+    desc={tr('System', 'app.exception.description.403' )}
     linkElement={Link}
-    backText={formatMessage({ id: 'app.exception.back' })}
+    backText={tr('System', 'app.exception.back')}
   />
 );
 

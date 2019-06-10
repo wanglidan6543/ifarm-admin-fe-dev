@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'dva';
-import { formatMessage, FormattedMessage } from 'umi/locale';
- 
+import { connect } from 'dva'; 
 import { Checkbox, Alert, Icon, message } from 'antd';
-import Login from '@/components/Login';
+import Login from '../components/Login';
 import styles from './Login.less';
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
@@ -86,28 +84,28 @@ class LoginPage extends Component {
             this.loginForm = form;
           }}
         >
-          <Tab key="account" tab={formatMessage({ id: 'app.login.tab-login-credentials' })}>
+          <Tab key="account" tab={tr('System','app.login.tab-login-credentials' )}>
             {login.status === 'error' &&
               login.type === 'account' &&
               !submitting &&
-              this.renderMessage(formatMessage({ id: 'app.login.message-invalid-credentials' }))}
+              this.renderMessage(tr('System','app.login.message-invalid-credentials' ))}
             <UserName
               name="username"
-              placeholder={`${formatMessage({ id: 'app.login.userName' })}`}
+              placeholder={`${tr('System','app.login.userName' )}`}
               rules={[
                 {
                   required: true,
-                  message: formatMessage({ id: 'validation.userName.required' }),
+                  message: tr('System','validation.userName.required' ),
                 },
               ]}
             />
             <Password
               name="password"
-              placeholder={`${formatMessage({ id: 'app.login.password' })}`}
+              placeholder={`${tr('System','app.login.password' )}`}
               rules={[
                 {
                   required: true,
-                  message: formatMessage({ id: 'validation.password.required' }),
+                  message: tr('System','validation.password.required' ),
                 },
               ]}
               onPressEnter={e => {
@@ -116,38 +114,38 @@ class LoginPage extends Component {
               }}
             />
           </Tab>
-          {/* <Tab key="mobile" tab={formatMessage({ id: 'app.login.tab-login-mobile' })}>
+          {/* <Tab key="mobile" tab={tr('System','app.login.tab-login-mobile' })}>
             {login.status === 'error' &&
               login.type === 'mobile' &&
               !submitting &&
               this.renderMessage(
-                formatMessage({ id: 'app.login.message-invalid-verification-code' })
+                tr('System','app.login.message-invalid-verification-code' })
               )}
             <Mobile
               name="mobile"
-              placeholder={formatMessage({ id: 'form.phone-number.placeholder' })}
+              placeholder={tr('System','form.phone-number.placeholder' })}
               rules={[
                 {
                   required: true,
-                  message: formatMessage({ id: 'validation.phone-number.required' }),
+                  message: tr('System','validation.phone-number.required' }),
                 },
                 {
                   pattern: /^1\d{10}$/,
-                  message: formatMessage({ id: 'validation.phone-number.wrong-format' }),
+                  message: tr('System','validation.phone-number.wrong-format' }),
                 },
               ]}
             />
             <Captcha
               name="captcha"
-              placeholder={formatMessage({ id: 'form.verification-code.placeholder' })}
+              placeholder={tr('System','form.verification-code.placeholder' })}
               countDown={120}
               onGetCaptcha={this.onGetCaptcha}
-              getCaptchaButtonText={formatMessage({ id: 'form.get-captcha' })}
-              getCaptchaSecondText={formatMessage({ id: 'form.captcha.second' })}
+              getCaptchaButtonText={tr('System','form.get-captcha' })}
+              getCaptchaSecondText={tr('System','form.captcha.second' })}
               rules={[
                 {
                   required: true,
-                  message: formatMessage({ id: 'validation.verification-code.required' }),
+                  message: tr('System','validation.verification-code.required' }),
                 },
               ]}
             />
@@ -161,7 +159,7 @@ class LoginPage extends Component {
             </a> */}
           </div>
           <Submit loading={submitting}>
-            <FormattedMessage id="app.login.login" />
+            <span id="app.login.login" />
           </Submit>
         </Login>
       </div>

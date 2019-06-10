@@ -7,10 +7,11 @@ import omit from 'omit.js';
 import styles from './index.less';
 import ThemeColor from './ThemeColor';
 import BlockCheckbox from './BlockCheckbox';
+import { tr } from '../../base/i18n';
 
 const { Option } = Select;
 
-const Body = ({ children, title, style }) => (
+const Body = ({ children, title, style ) => (
   <div
     style={{
       ...style,
@@ -22,7 +23,7 @@ const Body = ({ children, title, style }) => (
   </div>
 );
 
-@connect(({ setting }) => ({ setting }))
+@connect(({ setting ) => ({ setting ))
 class SettingDrawer extends PureComponent {
   state = {
     collapse: false,
@@ -34,7 +35,7 @@ class SettingDrawer extends PureComponent {
     } = this.props;
     return [
       {
-        title: formatMessage({ id: 'app.setting.content-width' }),
+        title: tr('System', 'app.setting.content-width'),
         action: (
           <Select
             value={contentWidth}
@@ -44,17 +45,17 @@ class SettingDrawer extends PureComponent {
           >
             {layout === 'sidemenu' ? null : (
               <Option value="Fixed">
-                {formatMessage({ id: 'app.setting.content-width.fixed' })}
+                {tr('System', 'app.setting.content-width.fixed')}
               </Option>
             )}
             <Option value="Fluid">
-              {formatMessage({ id: 'app.setting.content-width.fluid' })}
+              {tr('System', 'app.setting.content-width.fluid')}
             </Option>
           </Select>
         ),
       },
       {
-        title: formatMessage({ id: 'app.setting.fixedheader' }),
+        title: tr('System', 'app.setting.fixedheader'),
         action: (
           <Switch
             size="small"
@@ -64,9 +65,9 @@ class SettingDrawer extends PureComponent {
         ),
       },
       {
-        title: formatMessage({ id: 'app.setting.hideheader' }),
+        title: tr('System', 'app.setting.hideheader'),
         disabled: !fixedHeader,
-        disabledReason: formatMessage({ id: 'app.setting.hideheader.hint' }),
+        disabledReason: tr('System', 'app.setting.hideheader.hint'),
         action: (
           <Switch
             size="small"
@@ -76,9 +77,9 @@ class SettingDrawer extends PureComponent {
         ),
       },
       {
-        title: formatMessage({ id: 'app.setting.fixedsidebar' }),
+        title: tr('System', 'app.setting.fixedsidebar'),
         disabled: layout === 'topmenu',
-        disabledReason: formatMessage({ id: 'app.setting.fixedsidebar.hint' }),
+        disabledReason: tr('System', 'app.setting.fixedsidebar.hint'),
         action: (
           <Switch
             size="small"
@@ -104,19 +105,19 @@ class SettingDrawer extends PureComponent {
       dispatch({
         type: 'setting/changeSetting',
         payload: this.state,
-      });
-    });
+      );
+    );
   };
 
   togglerContent = () => {
     const { collapse } = this.state;
-    this.setState({ collapse: !collapse });
+    this.setState({ collapse: !collapse );
   };
 
   renderLayoutSettingItem = item => {
     const action = React.cloneElement(item.action, {
       disabled: item.disabled,
-    });
+    );
     return (
       <Tooltip title={item.disabled ? item.disabledReason : ''} placement="left">
         <List.Item actions={[action]}>
@@ -152,18 +153,18 @@ class SettingDrawer extends PureComponent {
         }}
       >
         <div className={styles.content}>
-          <Body title={formatMessage({ id: 'app.setting.pagestyle' })}>
+          <Body title={tr('System', 'app.setting.pagestyle' )}>
             <BlockCheckbox
               list={[
                 {
                   key: 'dark',
                   url: 'https://gw.alipayobjects.com/zos/rmsportal/LCkqqYNmvBEbokSDscrm.svg',
-                  title: formatMessage({ id: 'app.setting.pagestyle.dark' }),
+                  title: tr('System', 'app.setting.pagestyle.dark' ),
                 },
                 {
                   key: 'light',
                   url: 'https://gw.alipayobjects.com/zos/rmsportal/jpRkZQMyYRryryPNtyIC.svg',
-                  title: formatMessage({ id: 'app.setting.pagestyle.light' }),
+                  title: tr('System', 'app.setting.pagestyle.light' ),
                 },
               ]}
               value={navTheme}
@@ -172,25 +173,25 @@ class SettingDrawer extends PureComponent {
           </Body>
 
           <ThemeColor
-            title={formatMessage({ id: 'app.setting.themecolor' })}
+            title={tr('System', 'app.setting.themecolor' )}
             value={primaryColor}
             onChange={color => this.changeSetting('primaryColor', color)}
           />
 
           <Divider />
 
-          <Body title={formatMessage({ id: 'app.setting.navigationmode' })}>
+          <Body title={tr('System', 'app.setting.navigationmode' )}>
             <BlockCheckbox
               list={[
                 {
                   key: 'sidemenu',
                   url: 'https://gw.alipayobjects.com/zos/rmsportal/JopDzEhOqwOjeNTXkoje.svg',
-                  title: formatMessage({ id: 'app.setting.sidemenu' }),
+                  title: tr('System', 'app.setting.sidemenu' ),
                 },
                 {
                   key: 'topmenu',
                   url: 'https://gw.alipayobjects.com/zos/rmsportal/KDNDBbriJhLwuqMoxcAr.svg',
-                  title: formatMessage({ id: 'app.setting.topmenu' }),
+                  title: tr('System', 'app.setting.topmenu' ),
                 },
               ]}
               value={layout}
@@ -206,7 +207,7 @@ class SettingDrawer extends PureComponent {
 
           <Divider />
 
-          <Body title={formatMessage({ id: 'app.setting.othersettings' })}>
+          <Body title={tr('System', 'app.setting.othersettings' )}>
             <List.Item
               actions={[
                 <Switch
@@ -216,16 +217,16 @@ class SettingDrawer extends PureComponent {
                 />,
               ]}
             >
-              {formatMessage({ id: 'app.setting.weakmode' })}
+              {tr('System', 'app.setting.weakmode' )}
             </List.Item>
           </Body>
           <Divider />
           <CopyToClipboard
             text={JSON.stringify(omit(setting, ['colorWeak']), null, 2)}
-            onCopy={() => message.success(formatMessage({ id: 'app.setting.copyinfo' }))}
+            onCopy={() => message.success(tr('System', 'app.setting.copyinfo' ))}
           >
             <Button block icon="copy">
-              {formatMessage({ id: 'app.setting.copy' })}
+              {tr('System', 'app.setting.copy' )}
             </Button>
           </CopyToClipboard>
           <Alert
@@ -233,7 +234,7 @@ class SettingDrawer extends PureComponent {
             className={styles.productionHint}
             message={
               <div>
-                {formatMessage({ id: 'app.setting.production.hint' })}{' '}
+                {tr('System', 'app.setting.production.hint' )}{' '}
                 <a
                   href="https://u.ant.design/pro-v2-default-settings"
                   target="_blank"

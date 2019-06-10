@@ -24,8 +24,8 @@ import {
   Icon,
   message,
 } from 'antd';
-import StandardTable from '@/components/StandardTable';
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import StandardTable from '../components/StandardTable';
+import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import E from 'wangeditor';
 import styles from './List.less';
 import { ROOT_PATH } from '../pathrouter';

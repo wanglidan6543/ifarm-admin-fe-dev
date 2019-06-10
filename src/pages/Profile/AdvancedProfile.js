@@ -18,8 +18,8 @@ import {
   Divider,
 } from 'antd';
 import classNames from 'classnames';
-import DescriptionList from '@/components/DescriptionList';
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import DescriptionList from '../components/DescriptionList';
+import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import styles from './AdvancedProfile.less';
 
 const { Step } = Steps;
