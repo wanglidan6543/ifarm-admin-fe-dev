@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Layout, message } from 'antd';
 import Animate from 'rc-animate';
 import { connect } from 'dva';
-import router from 'react-router';
+import { HashRouter as router } from 'react-router-dom';
 import GlobalHeader from '../components/GlobalHeader';
 import TopNavHeader from '../components/TopNavHeader';
 import styles from './Header.less';

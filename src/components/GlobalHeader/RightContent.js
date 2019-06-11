@@ -101,11 +101,11 @@ export default class GlobalHeaderRight extends PureComponent {
         <Menu.Divider /> */}
         <Menu.Item key="logout">
           <Icon type="logout" />
-          <FormattedMessage id="menu.account.logout" defaultMessage="logout" />
+          <span id="menu.account.logout" defaultMessage="logout" />
         </Menu.Item>
         <Menu.Item key="pasd">
           <Icon type="key" />
-          <FormattedMessage id="menu.account.password" defaultMessage="logout" onClick={()=>this.pasd()} />
+          <span id="menu.account.password" defaultMessage="logout" onClick={()=>this.pasd()} />
         </Menu.Item>
       </Menu>
     );

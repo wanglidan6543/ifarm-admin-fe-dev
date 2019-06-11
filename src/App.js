@@ -1,32 +1,12 @@
 import fetch from 'dva/fetch';
-import React from 'react';
-import { HashRouter } from 'react-router-dom';
-import UserLayout from './layouts/UserLayout';
-import dva from 'dva';
-
-class App extends React.Component {
-
-  render() {
-    return (
-      <HashRouter>
-        <UserLayout />
-      </HashRouter>
-    );
-  }
-}
-
-const app = dva();
-app.router(()=><App />)
-export default app;
-
 window.username = window.localStorage.getItem('username')
-// export const dva = {
-//   config: {
-//     onError(err) {
-//       err.preventDefault();
-//     },
-//   },
-// };
+export const dva = {
+  config: {
+    onError(err) {
+      err.preventDefault();
+    },
+  },
+};
 
 let authRoutes = {};
 
@@ -62,5 +42,3 @@ export function patchRoutes(routes) {
 //       }
 //     );
 // }
-
-
