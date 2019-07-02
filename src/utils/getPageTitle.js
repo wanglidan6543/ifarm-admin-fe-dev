@@ -3,7 +3,7 @@ import pathToRegexp from 'path-to-regexp';
 import isEqual from 'lodash/isEqual';
 import memoizeOne from 'memoize-one';
 import { menu, title } from '../defaultSettings';
-import { tr } from '../base/i18n';
+import { tr } from '../common/i18n';
 
 export const matchParamsPath = (pathname, breadcrumbNameMap) => {
   const pathKey = Object.keys(breadcrumbNameMap).find(key => pathToRegexp(key).test(pathname));

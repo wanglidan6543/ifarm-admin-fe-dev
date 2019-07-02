@@ -3,7 +3,7 @@ import { Button } from 'antd';
 import { Link } from 'react-router-dom';
 import Result from '../components/Result';
 import styles from './RegisterResult.less';
-import {tr} from '../../base/i18n';
+import {tr} from '../../common/i18n';
 
 const actions = (
   <div className={styles.actions}>

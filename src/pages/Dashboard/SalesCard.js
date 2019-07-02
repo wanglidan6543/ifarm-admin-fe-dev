@@ -3,7 +3,7 @@ import { Row, Col, Card, Tabs, DatePicker } from 'antd';
 import numeral from 'numeral';
 import styles from './Analysis.less';
 import { Bar } from '../components/Charts';
-import { tr } from '../../base/i18n';
+import { tr } from '../../common/i18n';
 
 const { RangePicker } = DatePicker;
 const { TabPane } = Tabs;

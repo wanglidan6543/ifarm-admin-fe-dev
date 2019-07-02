@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import router from 'react-router';
 import { Form, Input, Button, Select, Row, Col, Popover, Progress } from 'antd';
 import styles from './Register.less';
-import { tr } from '../../base/i18n';
+import { tr } from '../../common/i18n';
 
 const FormItem = Form.Item;
 const { Option } = Select;

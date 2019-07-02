@@ -3,7 +3,7 @@ import isEqual from 'lodash/isEqual';
 import Authorized from '../utils/Authorized';
 import { menu } from '../defaultSettings';
 import { requestMenuData } from '../services/api';
-import { tr } from '../base/i18n';
+import { tr } from '../common/i18n';
 
 const { check } = Authorized;
 

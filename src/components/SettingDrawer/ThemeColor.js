@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tooltip, Icon } from 'antd';
-import { tr } from '../../base/i18n';
+import { tr } from '../../common/i18n';
 import styles from './ThemeColor.less';
 
 const Tag = ({ color, check, ...rest }) => (

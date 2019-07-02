@@ -5,7 +5,7 @@ import E from 'wangeditor';
 import styles from './BaseView.less';
 import GeographicView from './GeographicView';
 import PhoneView from './PhoneView';
-import { tr } from '../../../base/i18n';
+import { tr } from '../../../common/i18n';
 // import { getTimeDistance } from '@/utils/utils';
 
 const FormItem = Form.Item;

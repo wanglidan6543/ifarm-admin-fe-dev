@@ -9,7 +9,7 @@ import numeral from 'numeral';
 import GridContent from '../components/PageHeaderWrapper/GridContent';
 import Authorized from '@/utils/Authorized';
 import styles from './Monitor.less';
-import { tr } from '../../base/i18n';
+import { tr } from '../../common/i18n';
 
 const { Secured } = Authorized;
 

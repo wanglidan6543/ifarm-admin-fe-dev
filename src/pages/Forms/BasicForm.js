@@ -14,7 +14,7 @@ import {
 } from 'antd';
 import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import styles from './style.less';
-import {tr} from '../../base/i18n';
+import {tr} from '../../common/i18n';
 
 const FormItem = Form.Item;
 const { Option } = Select;

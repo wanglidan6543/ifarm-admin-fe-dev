@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Button, Icon, Card } from 'antd';
 import Result from '../components/Result';
 import PageHeaderWrapper from '../components/PageHeaderWrapper';
-import { tr } from '../../base/i18n';
+import { tr } from '../../common/i18n';
 
 const extra = (
   <Fragment>

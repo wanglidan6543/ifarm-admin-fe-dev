@@ -7,7 +7,7 @@ import omit from 'omit.js';
 import styles from './index.less';
 import ThemeColor from './ThemeColor';
 import BlockCheckbox from './BlockCheckbox';
-import { tr } from '../../base/i18n';
+import { tr } from '../../common/i18n';
 
 const { Option } = Select;
 

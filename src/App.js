@@ -1,44 +1,17 @@
-import fetch from 'dva/fetch';
-window.username = window.localStorage.getItem('username')
-export const dva = {
-  config: {
-    onError(err) {
-      err.preventDefault();
-    },
-  },
-};
+import React, { Component } from 'react'
+import RootRouter from './router';
+import { Provider } from 'react-redux';
+import store from './store/index';
 
-let authRoutes = {};
-
-function ergodicRoutes(routes, authKey, authority) {
-  routes.forEach(element => {
-    if (element.path === authKey) {
-      if (!element.authority) element.authority = []; // eslint-disable-line
-      Object.assign(element.authority, authority || []);
-    } else if (element.routes) {
-      ergodicRoutes(element.routes, authKey, authority);
-    }
-    return element;
-  });
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
+        <Provider store={store}>
+          <RootRouter />
+        </Provider>
+      </div>
+    )
+  }
 }
-
-export function patchRoutes(routes) {
-  Object.keys(authRoutes).map(authKey =>
-    ergodicRoutes(routes, authKey, authRoutes[authKey].authority)
-  );
-  window.g_routes = routes;
-}
-
-// export function render(oldRender) {
-//   fetch('/api/auth_routes')
-//     .then(res => res.json())
-//     .then(
-//       ret => {
-//         authRoutes = ret;
-//         oldRender();
-//       },
-//       () => {
-//         oldRender();
-//       }
-//     );
-// }
+export default App;

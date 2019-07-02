@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Exception from '../components/Exception';
-import { tr } from '../../base/i18n';
+import { tr } from '../../common/i18n';
 
 const Exception404 = () => (
   <Exception

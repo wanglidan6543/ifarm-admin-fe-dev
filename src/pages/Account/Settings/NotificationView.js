@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { tr } from '../../../base/i18n';
+import { tr } from '../../../common/i18n';
 import { Switch, List } from 'antd';
 
 class NotificationView extends Component {

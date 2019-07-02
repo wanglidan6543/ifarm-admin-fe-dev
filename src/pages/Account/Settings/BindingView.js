@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Icon, List } from 'antd';
-import { tr } from '../../../base/i18n';
+import { tr } from '../../../common/i18n';
 
 class BindingView extends Component {
   getData = () => [

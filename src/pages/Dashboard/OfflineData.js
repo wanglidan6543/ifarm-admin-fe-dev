@@ -3,7 +3,7 @@ import { Card, Tabs, Row, Col } from 'antd';
 import styles from './Analysis.less';
 import { TimelineChart, Pie } from '../components/Charts';
 import NumberInfo from '../components/NumberInfo';
-import { tr } from '../../base/i18n';
+import { tr } from '../../common/i18n';
 
 const CustomTab = ({ data, currentTabKey: currentKey }) => (
   <Row gutter={8} style={{ width: 138, margin: '8px 0' }}>

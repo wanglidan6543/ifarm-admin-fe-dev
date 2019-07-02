@@ -1,13 +1,17 @@
 import React, { Component, Fragment } from 'react';
-import { connect } from 'dva';
+// import { connect } from 'dva';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Icon } from 'antd';
 import GlobalFooter from '../components/GlobalFooter';
 import DocumentTitle from 'react-document-title';
 import SelectLang from '../components/SelectLang';
-import styles from './UserLayout.less';
+// import styles from './UserLayout.less';
+// import './UserLayout.css';
+import './UserLayout.less';
 import logo from '../assets/logo.png';
-import getPageTitle from '../utils/getPageTitle';
+// import getPageTitle from '../utils/getPageTitle';
+import Login from '../pages/User/Login';
 
 const links = [];
 
@@ -18,16 +22,16 @@ const copyright = (
 );
 
 class UserLayout extends Component {
-  componentDidMount() {
-    const {
-      dispatch,
-      route: { routes, authority },
-    } = this.props;
-    dispatch({
-      type: 'menu/getMenuData',
-      payload: { routes, authority },
-    });
-  }
+  // componentDidMount() {
+  //   const {
+  //     dispatch,
+  //     route: { routes, authority },
+  //   } = this.props;
+  //   dispatch({
+  //     type: 'menu/getMenuData',
+  //     payload: { routes, authority },
+  //   });
+  // }
 
   render() {
     const {
@@ -36,22 +40,24 @@ class UserLayout extends Component {
       breadcrumbNameMap,
     } = this.props;
     return (
-      <DocumentTitle title={getPageTitle(pathname, breadcrumbNameMap)}>
-        <div className={styles.container}>
-          <div className={styles.lang}>
+      // <DocumentTitle title={getPageTitle(pathname, breadcrumbNameMap)}>
+      <DocumentTitle title="用户登录">
+        <div className="container">
+          <div className="lang">
             <SelectLang />
           </div>
-          <div className={styles.content}>
-            <div className={styles.top}>
-              <div className={styles.header}>
+          <div className="content">
+            <div className="top">
+              <div className="header">
                 <Link to="/">
-                  <img alt="logo" className={styles.logo} src={logo} />
-                  <span className={styles.title}>管理系统</span>
+                  <img alt="logo" className="logo" src={logo} />
+                  <span className="title">管理系统</span>
                 </Link>
               </div>
-              <div className={styles.desc}>管理系统</div>
+              <div className='desc'>管理系统</div>
             </div>
-            {children}
+            {/* {children} */}
+            {/* 正大集团用户登录页面 */}
           </div>
           <GlobalFooter links={links} copyright={copyright} />
         </div>
@@ -60,7 +66,8 @@ class UserLayout extends Component {
   }
 }
 
-export default connect(({ menu: menuModel }) => ({
-  menuData: menuModel.menuData,
-  breadcrumbNameMap: menuModel.breadcrumbNameMap,
-}))(UserLayout);
+export default UserLayout;
+// export default connect(({ menu: menuModel }) => ({
+//   menuData: menuModel.menuData,
+//   breadcrumbNameMap: menuModel.breadcrumbNameMap,
+// }))(UserLayout);

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { List } from 'antd';
 // import { getTimeDistance } from '@/utils/utils';
-import { tr } from '../../../base/i18n';
+import { tr } from '../../../common/i18n';
 
 const passwordStrength = {
   strong: (

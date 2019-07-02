@@ -6,11 +6,11 @@ import styles from './List.less';
 
 const myImg = src => <img src={src} className="user" alt="" />;
 
-var jwt_token = window.localStorage.getItem('jwt_token');
-axios.defaults.headers.common['Authorization'] = jwt_token;
-if (!jwt_token || jwt_token.length < 32) {
-  location.hash = '/user/login';
-}
+// var jwt_token = window.localStorage.getItem('jwt_token');
+// axios.defaults.headers.common['Authorization'] = jwt_token;
+// if (!jwt_token || jwt_token.length < 32) {
+//   location.hash = '/user/login';
+// }
 
 class TableForm extends Component {
   constructor(props) {

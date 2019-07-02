@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
-import { connect } from 'dva'; 
+// import { connect } from 'dva'; 
 import { Checkbox, Alert, Icon, message } from 'antd';
-import Login from '../components/Login';
+import Login from '../../components/Login';
 import styles from './Login.less';
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
+import { tr } from '../../common/i18n';
 
 const { Tab, UserName, Password, Mobile, Captcha, Submit } = Login;
 
-@connect(({ login, loading }) => ({
-  login,
-  submitting: loading.effects['login/login'],
-}))
+// @connect(({ login, loading }) => ({
+//   login,
+//   submitting: loading.effects['login/login'],
+// }))
+
 class LoginPage extends Component {
-  state = {
-    type: 'account',
-    autoLogin: true,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      type: 'account',
+      autoLogin: true,
+    };
+  }
 
   onTabChange = type => {
     this.setState({ type });
@@ -53,7 +58,7 @@ class LoginPage extends Component {
       if (result.data.error == 0 && result.data.data.jwt_token) {
         window.localStorage.setItem('jwt_token', result.data.data.jwt_token);
         window.localStorage.setItem('loginInfo', JSON.stringify(result.data.data));
-        location.hash = '/home';
+        window.location.hash = '/home';
       } else {
         message.error(result.data.msg);
       }
