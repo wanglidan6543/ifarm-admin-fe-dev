@@ -13,24 +13,24 @@ import {
   Icon,
   AutoComplete,
 } from 'antd';
-import PageHeaderWrapper from '../components/PageHeaderWrapper';
+// import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import axios from 'axios';
-import styles from './List.less';
+// import styles from './List.less';
+import './List.css';
 import { ROOT_PATH } from '../pathrouter';
 import { stat } from 'fs';
 
 var jwt_token = window.localStorage.getItem('jwt_token');
-axios.defaults.headers.common['Authorization'] = jwt_token;
-if (!jwt_token || jwt_token.length < 32) {
-  location.hash = '/user/login';
-}
+// axios.defaults.headers.common['Authorization'] = jwt_token;
+// if (!jwt_token || jwt_token.length < 32) {
+//   location.hash = '/user/login';
+// }
 const Option = Select.Option;
 const OptGroup = AutoComplete.OptGroup;
 const FormItem = Form.Item;
 const pattern = new RegExp(/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im);
 
-@Form.create()
-class TableForm extends PureComponent {
+class RelatedFarmsEdit extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -62,33 +62,35 @@ class TableForm extends PureComponent {
     };
   }
   componentDidMount() {
+    //TODO:
     // 用户身份列表
-    axios({
-      url: ROOT_PATH + '/api/backend/v1/user/roles',
-      method: 'GET',
-    }).then(result => {
-      this.setState({
-        userList: result.data.data,
-      });
-    });
-    // 详情
-    axios({
-      url: ROOT_PATH + '/api/backend/v1/user_farm',
-      method: 'GET',
-      params: {
-        uid: this.props.match.params.id,
-      },
-    }).then(result => {
-      if (result.data.data.role_id === null) {
-        result.data.data.role_id = 1;
-      }
-      this.setState({
-        data: result.data.data,
-      });
-    });
+    // axios({
+    //   url: ROOT_PATH + '/api/backend/v1/user/roles',
+    //   method: 'GET',
+    // }).then(result => {
+    //   this.setState({
+    //     userList: result.data.data,
+    //   });
+    // });
+    // // 详情
+    // axios({
+    //   url: ROOT_PATH + '/api/backend/v1/user_farm',
+    //   method: 'GET',
+    //   params: {
+    //     uid: this.props.match.params.id,
+    //   },
+    // }).then(result => {
+    //   if (result.data.data.role_id === null) {
+    //     result.data.data.role_id = 1;
+    //   }
+    //   this.setState({
+    //     data: result.data.data,
+    //   });
+    // });
   }
+
   black = () => {
-    location.hash = '/relatedfarms';
+    window.location.hash = '/relatedfarms';
   };
   onSave = () => {
     let { data, farmList } = this.state;
@@ -113,7 +115,7 @@ class TableForm extends PureComponent {
         message.error(result.data.msg);
       } else {
         message.success(result.data.msg);
-        location.hash = '/relatedfarms';
+        window.location.hash = '/relatedfarms';
       }
     });
   };
@@ -161,21 +163,21 @@ class TableForm extends PureComponent {
       </Option>
     ));
     data.role_id === 1 ? (identity = '技术员') : (identity = '客户');
-    data.status === 0 ? '启用' : '禁用';
+    // data.status === 0 ? '启用' : '禁用';
     return (
-      <PageHeaderWrapper>
+      <Fragment>
         <Form hideRequiredMark style={{ marginTop: 8, background: '#fff', padding: '30px 0' }}>
           <FormItem
             name="number"
             label="用户ID"
-            className={styles.form_input}
+            className='form_input'
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('用户ID', {})(<span>{data.uid}</span>)}
           </FormItem>
           <FormItem
             label="用户名称"
-            className={styles.form_input}
+            className='form_input'
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('用户名称', {
@@ -198,13 +200,13 @@ class TableForm extends PureComponent {
           </FormItem>
           <FormItem
             label="关联农场"
-            className={styles.form_input}
+            className='form_input'
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             <AutoComplete
               type="text"
               style={{ width: '100%' }}
-              className={styles.searchinp}
+              className='searchinp'
               onSelect={(value, option) => {
                 let abject = {
                   name: option.props.children,
@@ -244,7 +246,7 @@ class TableForm extends PureComponent {
           </FormItem>
           <FormItem
             label="用户身份"
-            className={styles.form_input}
+            className='form_input'
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('用户身份', {
@@ -308,7 +310,7 @@ class TableForm extends PureComponent {
           </div>
           <FormItem
             label="状态"
-            className={styles.form_input}
+            className='form_input'
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('Gender', {
@@ -342,9 +344,11 @@ class TableForm extends PureComponent {
             </Button>
           </div>
         </Form>
-      </PageHeaderWrapper>
+      </Fragment>
     );
   }
 }
 
-export default TableForm;
+RelatedFarmsEdit = Form.create()(RelatedFarmsEdit);
+
+export default RelatedFarmsEdit;

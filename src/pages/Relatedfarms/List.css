@@ -1,0 +1,82 @@
+.tableList .tableListOperator {
+  margin-bottom: 16px;
+}
+button {
+  margin-right: 8px;
+}
+
+.tableListForm .ant-form-item {
+  display: flex;
+  margin-right: 0;
+  margin-bottom: 24px; 
+}
+.ant-form-item-label {
+  width: auto;
+  padding-right: 8px;
+  line-height: 32px;
+}
+
+.ant-form-item-control {
+  line-height: 32px;
+}
+
+.ant-form-item-control-wrapper {
+  flex: 1;
+}
+
+.submitButtons {
+  display: block;
+  margin-bottom: 24px;
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 992px) {
+  .tableListForm :global(.ant-form-item) {
+    margin-right: 24px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .tableListForm :global(.ant-form-item) {
+    margin-right: 8px;
+  }
+}
+.avatar-uploader > .ant-upload {
+  width: 128px;
+  height: 128px;
+}
+
+a.forbidden {
+  color: #001529;
+}
+
+.searchinp {
+  display: flex;
+}
+
+.searchinp > div {
+  width: 100%;
+}
+
+.searchinp li input {
+  padding: 25px 10px;
+}
+
+.form_input > div > :nth-child(1) {
+  padding: 0 30px;
+  width: 30%;
+}
+
+.form_input :nth-child(2) {
+  width: 100%;
+}
+
+.form_input :nth-child(2) > div > span > div > div{
+  height: 47px;
+  display: flex;
+  align-items: center;
+}
+
+.form_input .selecthei {
+  background: red;
+}

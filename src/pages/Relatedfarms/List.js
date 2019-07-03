@@ -3,7 +3,7 @@ import { Table, Button, Input, message, Popconfirm, Divider, Row, Col, Select } 
 
 import isEqual from 'lodash/isEqual';
 import styles from './List.less';
-import StandardTable from '../components/StandardTable'; // 分页显示
+import StandardTable from '../../components/StandardTable'; // 分页显示
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
 import { timingSafeEqual } from 'crypto';
@@ -11,10 +11,10 @@ import { timingSafeEqual } from 'crypto';
 const Search = Input.Search;
 
 var jwt_token = window.localStorage.getItem('jwt_token');
-axios.defaults.headers.common['Authorization'] = jwt_token;
-if (!jwt_token || jwt_token.length < 32) {
-  location.hash = '/user/login';
-}
+// axios.defaults.headers.common['Authorization'] = jwt_token;
+// if (!jwt_token || jwt_token.length < 32) {
+//   window.location.hash = '/user/login';
+// }
 
 const getValue = obj =>
   Object.keys(obj)
@@ -30,7 +30,7 @@ const rowSelection = {
 
 const Option = Select.Option;
 
-class TableForm extends Component {
+class RelatedFarms extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -143,7 +143,7 @@ class TableForm extends Component {
     },
   ];
   editID = id => {
-    location.hash = '/relatedfarms/edit/' + id.uid;
+    window.location.hash = '/relatedfarms/edit/' + id.uid;
   };
   // 列表
   ListShow = (value, id) => {
@@ -203,9 +203,10 @@ class TableForm extends Component {
       url: ROOT_PATH + '/api/backend/v1/user/roles',
       method: 'GET',
     }).then(result => {
-      this.setState({
-        userList: result.data.data,
-      });
+      // TODO:
+      // this.setState({
+      //   userList: result.data.data,
+      // });
     });
   }
   // input搜索
@@ -354,4 +355,4 @@ class TableForm extends Component {
   }
 }
 
-export default TableForm;
+export default RelatedFarms;
