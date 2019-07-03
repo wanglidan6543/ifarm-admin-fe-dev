@@ -1,20 +1,20 @@
 import React, { PureComponent, Fragment } from 'react';
 import { Form, Table, Button, Input, message, Divider, Row, Col, Select, Card, Icon } from 'antd';
-import PageHeaderWrapper from '../components/PageHeaderWrapper';
+// import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import axios from 'axios';
 import styles from './List.less';
+import './List.css';
 import { ROOT_PATH } from '../pathrouter';
 
 var jwt_token = window.localStorage.getItem('jwt_token');
-axios.defaults.headers.common['Authorization'] = jwt_token;
-if (!jwt_token || jwt_token.length < 32) {
-  location.hash = '/user/login';
-}
+// axios.defaults.headers.common['Authorization'] = jwt_token;
+// if (!jwt_token || jwt_token.length < 32) {
+//   location.hash = '/user/login';
+// }
 const Option = Select.Option;
 const FormItem = Form.Item;
 
-@Form.create()
-class TableForm extends PureComponent {
+class AdminEdit extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -81,7 +81,7 @@ class TableForm extends PureComponent {
             message.error(result.data.msg);
           } else {
             message.success(result.data.msg);
-            location.hash = '/administration';
+            window.location.hash = '/administration';
           }
         });
       } else if (this.props.match.url === '/administration/add') {
@@ -96,7 +96,7 @@ class TableForm extends PureComponent {
             message.error(result.data.msg);
           } else {
             message.success(result.data.msg);
-            location.hash = '/administration';
+            window.location.hash = '/administration';
           }
         });
       }
@@ -121,20 +121,21 @@ class TableForm extends PureComponent {
         desable: false,
       });
     } else if (this.props.match.url === '/administration/add') {
-      userShow.status === 0 ? '启用' : '禁用',
+      // userShow.status === 0 ? '启用' : '禁用',
         this.setState({
           desable: true,
         });
     }
+
     return (
-      <PageHeaderWrapper>
+      <Fragment>
         <Form hideRequiredMark style={{ marginTop: 8, background: '#fff', padding: '30px 0' }}>
           <input type="password" style={{ position: 'fixed', left: '-9999px' }} />
           {this.props.match.url === '/administration/edit/' + this.props.match.params.id ? (
             <FormItem
               name="number"
               label="ID"
-              className={styles.form_input}
+              className='form_input'
               style={{ width: '40%', display: 'flex', alignItems: 'center' }}
             >
               {getFieldDecorator('ID', {
@@ -143,18 +144,18 @@ class TableForm extends PureComponent {
                     required: true,
                   },
                 ],
-              })(<span>{userShow.uid}</span>)}
+              })(<span>{userShow ? userShow.uid : ''}</span>)}
             </FormItem>
           ) : (
             ''
           )}
           <FormItem
             label="用户名"
-            className={styles.form_input}
+            className='form_input'
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('userShow.realname', {
-              initialValue: userShow.realname,
+              initialValue: userShow ? userShow.realname : '',
               rules: [
                 {
                   required: true,
@@ -172,11 +173,11 @@ class TableForm extends PureComponent {
           </FormItem>
           <FormItem
             label="邮箱号"
-            className={styles.form_input}
+            className='form_input'
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('邮箱号', {
-              initialValue: userShow.email,
+              initialValue: userShow ? userShow.email : '',
               rules: [
                 {
                   required: true,
@@ -198,12 +199,12 @@ class TableForm extends PureComponent {
           </FormItem>
           <FormItem
             label="手机号"
-            className={styles.form_input}
+            className='form_input'
             autoComplete="off"
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('input-number', {
-              initialValue: userShow.tel_mobile,
+              initialValue: userShow ? userShow.tel_mobile: '',
               rules: [
                 {
                   required: true,
@@ -221,7 +222,7 @@ class TableForm extends PureComponent {
           </FormItem>
           <FormItem
             label="默认密码"
-            className={styles.form_input}
+            className='form_input'
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('passward', {
@@ -262,11 +263,11 @@ class TableForm extends PureComponent {
           )}
           <FormItem
             label="状态"
-            className={styles.form_input}
+            className='form_input'
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('userShow.status', {
-              initialValue: userShow.status === 0 ? '启用' : '禁用',
+              initialValue: (userShow && userShow.status === 0) ? '启用' : '禁用',
               rules: [
                 {
                   rules: [{ required: true, message: 'Please select your gender!' }],
@@ -296,9 +297,11 @@ class TableForm extends PureComponent {
             </Button>
           </div>
         </Form>
-      </PageHeaderWrapper>
+      </Fragment>
     );
   }
 }
 
-export default TableForm;
+AdminEdit = Form.create()(AdminEdit);
+
+export default AdminEdit;

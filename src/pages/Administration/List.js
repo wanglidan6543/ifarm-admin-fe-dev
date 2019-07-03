@@ -1,20 +1,20 @@
 import React, { Component, Fragment } from 'react';
 import { Table, Button, Input, message, Popconfirm, Divider, Row, Col } from 'antd';
 
-import isEqual from 'lodash/isEqual';
-import styles from './List.less';
-import StandardTable from '../components/StandardTable'; // 分页显示
+// import isEqual from 'lodash/isEqual';
+// import styles from './List.less';
+import StandardTable from '../../components/StandardTable'; // 分页显示
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
-import { timingSafeEqual } from 'crypto';
+// import { timingSafeEqual } from 'crypto';
 
 const Search = Input.Search;
 
 var jwt_token = window.localStorage.getItem('jwt_token');
 axios.defaults.headers.common['Authorization'] = jwt_token;
-if (!jwt_token || jwt_token.length < 32) {
-  location.hash = '/user/login';
-}
+// if (!jwt_token || jwt_token.length < 32) {
+//   window.location.hash = '/user/login';
+// }
 
 const getValue = obj =>
   Object.keys(obj)
@@ -27,7 +27,7 @@ const rowSelection = {
     name: record.name,
   }),
 };
-class TableForm extends Component {
+class Admin extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -93,7 +93,7 @@ class TableForm extends Component {
     },
     {
       title: '状态',
-      dataIndex: status,
+      dataIndex: 'status',
       align: 'center',
       render: (text, record) => (
         <Fragment>
@@ -117,7 +117,7 @@ class TableForm extends Component {
     // location.hash = '/administration/authority/' + id.uid;
   }
   editID = id => {
-    location.hash = '/administration/edit/' + id.uid;
+    window.location.hash = '/administration/edit/' + id.uid;
   };
   // 需改动
   ListShow = value => {
@@ -155,7 +155,8 @@ class TableForm extends Component {
     });
   };
   componentDidMount() {
-    this.ListShow();
+    // TODO:
+    // this.ListShow();
   }
   onsearchVal = value => {
     this.ListShow(value);
@@ -165,7 +166,7 @@ class TableForm extends Component {
   };
   // 新建管理员
   adminAdd = () => {
-    location.hash = '/administration/add';
+    window.location.hash = '/administration/add';
   };
   // 分页
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
@@ -255,4 +256,4 @@ class TableForm extends Component {
   }
 }
 
-export default TableForm;
+export default Admin;

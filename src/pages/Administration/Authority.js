@@ -1,20 +1,20 @@
 import React, { PureComponent, Fragment } from 'react';
 import { Form, Table, Button, Input, message, Divider, Row, Col, Select, Card, Icon,Transfer } from 'antd';
-import PageHeaderWrapper from '../components/PageHeaderWrapper';
+// import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import axios from 'axios';
-import styles from './List.less';
-import { ROOT_PATH } from '../pathrouter';
+// import styles from './List.less';
+import './List.css';
+// import { ROOT_PATH } from '../pathrouter';
 
 var jwt_token = window.localStorage.getItem('jwt_token');
 axios.defaults.headers.common['Authorization'] = jwt_token;
-if (!jwt_token || jwt_token.length < 32) {
-  location.hash = '/user/login';
-}
+// if (!jwt_token || jwt_token.length < 32) {
+//   location.hash = '/user/login';
+// }
 const Option = Select.Option;
 const FormItem = Form.Item;
 
-@Form.create()
-class TableForm extends PureComponent {
+class Authority extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -54,14 +54,14 @@ class TableForm extends PureComponent {
       form: { getFieldDecorator, getFieldValue, isFieldTouched, getFieldError, isShow, password },
     } = this.props;
     return (
-      <PageHeaderWrapper>
+      <Fragment>
         <Form onSubmit={this.handleSearch} style={{ marginTop: 8, background: '#fff', padding: '30px 0' }}>
           <input type="password" style={{ position: 'fixed', left: '-9999px' }} />
           {this.props.match.url === '/administration/authority/' + this.props.match.params.id ? (
             <FormItem
               name="number"
               label="ID"
-              className={styles.form_input}
+              className='form_input'
               style={{ width: '60%', display: 'flex', alignItems: 'center' }}
             >
               {getFieldDecorator('ID', {
@@ -73,7 +73,7 @@ class TableForm extends PureComponent {
           <FormItem
               name="number"
               label="管理员用户ID"
-              className={styles.form_input}
+              className='form_input'
               style={{ width: '60%', display: 'flex', alignItems: 'center' }}
             >
               {getFieldDecorator('UserID', {
@@ -82,7 +82,7 @@ class TableForm extends PureComponent {
           <FormItem
             name="number"
             label="管理员名称"
-            className={styles.form_input}
+            className='form_input'
             style={{ width: '60%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('User', {
@@ -106,7 +106,7 @@ class TableForm extends PureComponent {
           />
           <FormItem
             label="可见业务"
-            className={styles.form_input}
+            className='form_input'
             style={{ width: '40%', display: 'flex', alignItems: 'center',margin:'20px 0' ,display:'flex'}}
           >
             {getFieldDecorator('look', {
@@ -134,39 +134,11 @@ class TableForm extends PureComponent {
           >
             <span style={{ width: '10%', textAlign: 'center' }}>已添加</span>
             <div style={{ width: '50%' }}>
-              {/* {data.farms.map((item, index) => {
-                return (
-                  <div
-                    key={index}
-                    style={{
-                      marginRight: '20px',
-                      background: '#eee',
-                      padding: '8px 10px',
-                      textAlign: 'center',
-                      display: 'inline-block',
-                      marginBottom: '10px',
-                    }}
-                  >
-                    {item.farm_name}
-                    <b
-                      style={{
-                        color: 'red',
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => {
-                        this.deled(item, index);
-                      }}
-                    >
-                      x
-                    </b>
-                  </div>
-                );
-              })} */}
             </div>
           </div>
           <FormItem
             label="可见区域"
-            className={styles.form_input}
+            className='form_input'
             style={{ width: '40%', display: 'flex', alignItems: 'center',margin:'20px 0' ,display:'flex'}}
           >
             {getFieldDecorator('look', {
@@ -208,43 +180,14 @@ class TableForm extends PureComponent {
           >
             <span style={{ width: '10%', textAlign: 'center' }}>已添加</span>
             <div style={{ width: '50%' }}>
-              {/* {data.farms.map((item, index) => {
-                return (
-                  <div
-                    key={index}
-                    style={{
-                      marginRight: '20px',
-                      background: '#eee',
-                      padding: '8px 10px',
-                      textAlign: 'center',
-                      display: 'inline-block',
-                      marginBottom: '10px',
-                    }}
-                  >
-                    {item.farm_name}
-                    <b
-                      style={{
-                        color: 'red',
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => {
-                        this.deled(item, index);
-                      }}
-                    >
-                      x
-                    </b>
-                  </div>
-                );
-              })} */}
             </div>
           </div>
           <FormItem
             label="状态"
-            className={styles.form_input}
+            className='form_input'
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('Gender', {
-              // initialValue: data.status === 0 ? '启用' : '禁用',
               rules: [
                 {
                   rules: [{ required: true, message: 'Please select your gender!' }],
@@ -253,9 +196,10 @@ class TableForm extends PureComponent {
             })(
               <Select
                 style={{ width: '100%' }}
-                onChange={value => {
-                  data.status = Number(value);
-                }}
+                //TODO:
+                // onChange={value => {
+                //   data.status = Number(value);
+                // }}
               >
                 <Option value="0">启用</Option>
                 <Option value="1">禁用</Option>
@@ -275,9 +219,11 @@ class TableForm extends PureComponent {
             </Button>
           </div>
         </Form>
-      </PageHeaderWrapper>
+      </Fragment>
     );
   }
 }
 
-export default TableForm;
+Authority = Form.create()(Authority);
+
+export default Authority;

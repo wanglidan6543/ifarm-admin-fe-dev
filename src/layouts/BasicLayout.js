@@ -25,9 +25,9 @@ import RelatedFarms from '../pages/Relatedfarms/List';
 import RelatedFarmsEdit from '../pages/Relatedfarms/RelatedfarmsEdit';
 import Threshold from '../pages/Threshold/List';
 import ThresholdEdit from '../pages/Threshold/ThresholdEdit';
-// import Admin from './pages/Administration/List';
-// import AdminEdit from './pages/Administration/AdminEdit';
-// import AdminAuthority from './pages/Administration/Authority';
+import Admin from '../pages/Administration/List';
+import AdminEdit from '../pages/Administration/AdminEdit';
+import AdminAuthority from '../pages/Administration/Authority';
 // import User from './pages/Usered/List';
 // import UserEdit from './pages/Usered/UseredAdd';
 // import ChangePwd from './pages/User/Changepassword';
@@ -163,11 +163,11 @@ class BasicLayout extends React.Component {
                 <Route path='/relatedfarms/edit/:id' component={RelatedFarmsEdit} />
                 <Route exact path='/threshold' component={Threshold} />
                 <Route path='/threshold/edit/:id' component={ThresholdEdit} />
-                {/*<Route exact path='/administration' component={Admin} />
+                <Route exact path='/administration' component={Admin} />
                 <Route path='/administration/edit/:id' component={AdminEdit} />
                 <Route path='/administration/add' component={AdminEdit} />
                 <Route path='/administration/authority/:id' component={AdminAuthority} />
-                <Route exact path='/usered' component={User} />
+                {/*<Route exact path='/usered' component={User} />
                 <Route path='/usered/add' component={UserEdit} />
                 <Route path='/usered/edit/:id' component={UserEdit} />
                 <Route path='/login/password' component={ChangePwd} /> */}

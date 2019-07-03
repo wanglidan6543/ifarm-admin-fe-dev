@@ -1,19 +1,19 @@
 import React, { PureComponent, Fragment } from 'react';
 import { Table, Button, Input, message, Popconfirm, Divider, Row, Col, Select, form } from 'antd';
 import axios from 'axios';
-import isEqual from 'lodash/isEqual';
-import styles from './List.less';
+// import isEqual from 'lodash/isEqual';
+// import styles from './List.less';
 import {ROOT_PATH} from '../pathrouter'
 
 var jwt_token = window.localStorage.getItem('jwt_token');
 axios.defaults.headers.common['Authorization'] = jwt_token;
-if (!jwt_token || jwt_token.length < 32) {
-  location.hash = '/user/login';
-}
+// if (!jwt_token || jwt_token.length < 32) {
+//   location.hash = '/user/login';
+// }
 
 const Option = Select.Option;
 
-class TableForm extends PureComponent {
+class AdminAdd extends PureComponent {
   index = 0;
 
   cacheOriginData = {};
@@ -33,7 +33,7 @@ class TableForm extends PureComponent {
     };
   }
   black = () => {
-    location.hash = '/administration';
+    window.location.hash = '/administration';
   };
   onSave = () => {
     axios({
@@ -46,7 +46,7 @@ class TableForm extends PureComponent {
         message.error(result.data.msg);
       } else {
         message.success(result.data.msg);
-        location.hash = '/administration';
+        window.location.hash = '/administration';
       }
       console.log(result);
     });
@@ -177,4 +177,4 @@ class TableForm extends PureComponent {
   }
 }
 
-export default TableForm;
+export default AdminAdd;
