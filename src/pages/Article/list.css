@@ -1,0 +1,52 @@
+.tableList .tableListOperator {
+  margin-bottom: 16px;
+}
+
+.tableList .tableListOperator button {
+  margin-right: 8px;
+}
+
+.tableListForm .ant-form-item {
+  display: flex;
+  margin-right: 0;
+  margin-bottom: 24px;
+}
+
+.tableListForm .ant-form-item .ant-form-item-label {
+  width: auto;
+  padding-right: 8px;
+  line-height: 32px;
+}
+
+.tableListForm .submitButtons {
+  display: block;
+  margin-bottom: 24px;
+  white-space: nowrap;
+}
+
+.ant-form-item-control {
+  line-height: 32px;
+}
+
+@media screen and (max-width:992px) {
+  .tableListForm :global(.ant-form-item) {
+    margin-right: 24px;
+  }
+}
+
+@media screen and (max-width:768px) {
+  .tableListForm :global(.ant-form-item) {
+    margin-right: 8px;
+  }
+}
+.avatar-uploader > .ant-upload {
+  width: 128px;
+  height: 128px;
+}
+
+a.forbidden{
+  color: #001529;
+}
+.element.style {
+  background: #000;
+}

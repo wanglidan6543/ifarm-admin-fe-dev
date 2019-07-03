@@ -24,10 +24,12 @@ import {
   Icon,
   message,
 } from 'antd';
-import StandardTable from '../components/StandardTable';
-import PageHeaderWrapper from '../components/PageHeaderWrapper';
+import StandardTable from '../../components/StandardTable';
+// import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import E from 'wangeditor';
-import styles from './List.less';
+// import styles from './List.less';
+import './List.css';
+
 import { ROOT_PATH } from '../pathrouter';
 
 const { RangePicker } = DatePicker;
@@ -42,9 +44,9 @@ window.msged = '';
 
 var jwt_token = window.localStorage.getItem('jwt_token');
 axios.defaults.headers.common['Authorization'] = jwt_token;
-if (!jwt_token || jwt_token.length < 32) {
-  location.hash = '/user/login';
-}
+// if (!jwt_token || jwt_token.length < 32) {
+//   location.hash = '/user/login';
+// }
 
 const handleFileChanged = {
   name: 'file',
@@ -113,7 +115,7 @@ const CreateForm = Form.create()(props => {
       visible={modalVisible}
       onOk={okHandle}
       okText="导入"
-      className={styles.daoru}
+      className='daoru'
       onCancel={() => handleModalVisible()}
     >
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="">
@@ -122,28 +124,17 @@ const CreateForm = Form.create()(props => {
             <Icon type="upload" /> 选择文件上传
           </Button>
         </Upload>
-        {/* <Upload
-            name="file"
-            className="cover-uploader"
-            showUploadList={false}
-            headers={headers}
-            action= ROOT_PATH + "/api/backend/v1/price/import_data"
-            // beforeUpload={beforeUpload}
-            onChange={handleFileChange}
-          >
-          {uploadButton}            
-          </Upload> */}
       </FormItem>
     </Modal>
   );
 });
 
 /* eslint react/no-multi-comp:0 */
-@connect(({ rule, loading }) => ({
-  rule,
-  loading: loading.models.rule,
-}))
-@Form.create()
+// @connect(({ rule, loading }) => ({
+//   rule,
+//   loading: loading.models.rule,
+// }))
+
 class PriceList extends PureComponent {
   state = {
     modalVisible: false,
@@ -211,21 +202,23 @@ class PriceList extends PureComponent {
       }
     });
 
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'rule/fetch',
-    });
+    // const { dispatch } = this.props;
+    // dispatch({
+    //   type: 'rule/fetch',
+    // });
   }
 
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
     const { loading, data, adminList, selectedRows, datalisted, station, desabled } = this.state;
     const { formValues, currentPage, pageSize } = this.state;
     const { dispatch, form } = this.props;
-    const filters = Object.keys(filtersArg).reduce((obj, key) => {
-      const newObj = { ...obj };
-      newObj[key] = getValue(filtersArg[key]);
-      return newObj;
-    }, {});
+    // const filters = Object.keys(filtersArg).reduce((obj, key) => {
+    //   const newObj = { ...obj };
+    //   newObj[key] = getValue(filtersArg[key]);
+    //   return newObj;
+    // }, {});
+
+    let params = {};
 
     if (sorter.field) {
       params.sorter = `${sorter.field}_${sorter.order}`;
@@ -263,7 +256,7 @@ class PriceList extends PureComponent {
   };
 
   previewItem = id => {
-    router.push(`/article/edit/${id}`);
+    window.location.push(`/article/edit/${id}`);
   };
 
   handleFormReset = () => {
@@ -368,8 +361,10 @@ class PriceList extends PureComponent {
       if (e.file.response.error == 0) {
         message.success('操作成功');
       } else {
-        message.error(result.data.msg);
-        console.log(result.data.msg);
+        // message.error(result.data.msg);
+        // console.log(result.data.msg);
+        message.error(e.file.response.data.msg);
+        console.log(e.file.response.data.msg);
       }
     }
   };
@@ -423,94 +418,39 @@ class PriceList extends PureComponent {
     console.log(e);
     // return;
 
-    location.href = '/article/edit/' + e.post_id;
+    window.location.href = '/article/edit/' + e.post_id;
   };
 
   postPublish = e => {
     // return;
 
-    confirm({
-      title: '确认发布？',
-      content: '',
-      onOk() {
-        axios(
-          {
-            url: ROOT_PATH + '/api/backend/v1/post/release',
-            method: 'post',
-            params: {},
-            data: { post_id: e.post_id },
-          },
-          {}
-        ).then(result => {
-          console.log(result);
+    // confirm({
+    //   title: '确认发布？',
+    //   content: '',
+    //   onOk() {
+    //     axios(
+    //       {
+    //         url: ROOT_PATH + '/api/backend/v1/post/release',
+    //         method: 'post',
+    //         params: {},
+    //         data: { post_id: e.post_id },
+    //       },
+    //       {}
+    //     ).then(result => {
+    //       console.log(result);
 
-          if (result.data.error == 0) {
-            message.success('操作成功');
-          } else {
-            message.error(result.data.msg);
-          }
-        });
-      },
-      onCancel() {
-        console.log('Cancel');
-      },
-    });
+    //       if (result.data.error == 0) {
+    //         message.success('操作成功');
+    //       } else {
+    //         message.error(result.data.msg);
+    //       }
+    //     });
+    //   },
+    //   onCancel() {
+    //     console.log('Cancel');
+    //   },
+    // });
   };
-
-  // ReactDOM.render(
-  //   <div>
-  //     <Button onClick={showConfirm}>
-  //       Confirm
-  //     </Button>
-  //     <Button onClick={showDeleteConfirm} type="dashed">
-  //       Delete
-  //     </Button>
-  //     <Button onClick={showPropsConfirm} type="dashed">
-  //       With extra props
-  //     </Button>
-  //   </div>,
-  //   mountNode
-  // );
-
-  // renderSimpleForm() {
-  //   const {
-  //     form: { getFieldDecorator },
-  //   } = this.props;
-  //   return (
-  //     <Form onSubmit={this.handleSearch} layout="inline">
-  //       <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-  //         <Col md={8} sm={24}>
-  //           <FormItem label="规则名称">
-  //             {getFieldDecorator('name')(<Input placeholder="请输入" />)}
-  //           </FormItem>
-  //         </Col>
-  //         <Col md={8} sm={24}>
-  //           <FormItem label="使用状态">
-  //             {getFieldDecorator('status')(
-  //               <Select placeholder="请选择" style={{ width: '100%' }}>
-  //                 <Option value="0">关闭</Option>
-  //                 <Option value="1">运行中</Option>
-  //               </Select>
-  //             )}
-  //           </FormItem>
-  //         </Col>
-  //         <Col md={8} sm={24}>
-  //           <span className={styles.submitButtons}>
-  //             <Button type="primary" htmlType="submit">
-  //               查询
-  //             </Button>
-  //             <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
-  //               重置
-  //             </Button>
-  //             <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
-  //               展开 <Icon type="down" />
-  //             </a>
-  //           </span>
-  //         </Col>
-  //       </Row>
-  //     </Form>
-  //   );
-  // }
 
   renderAdvancedForm() {
     const {
@@ -617,12 +557,6 @@ class PriceList extends PureComponent {
     const { loading } = this.props;
     let { data } = this.state;
     const { selectedRows, modalVisible, updateModalVisible, stepFormValues } = this.state;
-    const menu = (
-      <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
-        <Menu.Item key="remove">删除</Menu.Item>
-        <Menu.Item key="approval">批量审批</Menu.Item>
-      </Menu>
-    );
 
     const parentMethods = {
       handleAdd: this.handleAdd,
@@ -633,11 +567,11 @@ class PriceList extends PureComponent {
       handleUpdate: this.handleUpdate,
     };
     return (
-      <PageHeaderWrapper>
+      <Fragment>
         <Card bordered={false}>
-          <div className={styles.tableList}>
-            <div className={styles.tableListForm}>{this.renderForm()}</div>
-            <div className={styles.tableListOperator}>
+          <div className='tableList'>
+            <div className='tableListForm'>{this.renderForm()}</div>
+            <div className='tableListOperator'>
               <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
                 生猪价格导入
               </Button>
@@ -648,16 +582,6 @@ class PriceList extends PureComponent {
               >
                 模板
               </Button>
-              {/* {selectedRows.length > 0 && (
-                <span>
-                  <Button>批量操作</Button>
-                  <Dropdown overlay={menu}>
-                    <Button>
-                      更多操作 <Icon type="down" />
-                    </Button>
-                  </Dropdown>
-                </span>
-              )} */}
             </div>
             <StandardTable
               selectedRows={selectedRows}
@@ -670,16 +594,11 @@ class PriceList extends PureComponent {
           </div>
         </Card>
         <CreateForm {...parentMethods} modalVisible={modalVisible} />
-        {stepFormValues && Object.keys(stepFormValues).length ? (
-          <UpdateForm
-            {...updateMethods}
-            updateModalVisible={updateModalVisible}
-            values={stepFormValues}
-          />
-        ) : null}
-      </PageHeaderWrapper>
+      </Fragment>
     );
   }
 }
+
+PriceList = Form.create()(PriceList);
 
 export default PriceList;

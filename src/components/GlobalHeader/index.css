@@ -1,0 +1,132 @@
+.header {
+  position: relative;
+  height: 64px;
+  padding: 0;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+}
+
+.logo {
+  display: inline-block;
+  height: 64px;
+  padding: 0 0 0 24px;
+  font-size: 20px;
+  line-height: 64px;
+  vertical-align: top;
+  cursor: pointer;
+}
+
+.logo img {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.menu {
+  /* :global(.anticon) { */
+    margin-right: 8px;
+  /* } */
+  /* :global(.ant-dropdown-menu-item) { */
+    min-width: 160px;
+  /* } */
+}
+
+.trigger {
+  height: 64px;
+  padding: 'calc((@{layout-header-height} - 20px) / 2)' 24px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s, padding 0s;
+}
+ 
+.trigger :hover {
+  background: rgba(0,0,0,0.025);
+}
+
+.right {
+  float: right;
+  height: 100%;
+  overflow: hidden;
+  /* .action {
+    
+    > i {
+      color: @text-color;
+      vertical-align: middle;
+    }
+    &:hover {
+      background: rgba(0,0,0,0.025);
+    }
+    &:global(.opened) {
+      background: rgba(0,0,0,0.025);
+    } */
+}
+
+.right .action{
+  display: inline-block;
+  height: 100%;
+  padding: 0 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.right .action :hover {
+  background: rgba(0,0,0,0.025);
+}
+
+.search {
+  padding: 0 12px;
+}
+
+.search :hover {
+  background: transparent;
+}
+
+.account .avatar {
+  margin: 'calc((@{layout-header-height} - 24px) / 2)' 0;
+  margin-right: 8px;
+  color: blue;
+  vertical-align: top;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.dark {
+  height: 64px;
+  /* .action {
+    color: rgba(255, 255, 255, 0.85);
+    > i {
+      color: rgba(255, 255, 255, 0.85);
+    }
+    &:hover,
+    &:global(.opened) {
+      background: @primary-color;
+    }
+    :global(.ant-badge) {
+      color: rgba(255, 255, 255, 0.85);
+    }
+  } */
+}
+
+@media only screen and (max-width: 768px) {
+  .header .ant-divider-vertical {
+    vertical-align: unset;
+  }
+  .header .name {
+    display: none;
+  }
+  .header i.trigger {
+    padding: 22px 12px;
+  }
+  .header .logo {
+    position: relative;
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+  .header .right {
+    position: absolute;
+    top: 0;
+    right: 12px;
+    background: #fff;
+  }
+  .header .right .account .avatar {
+    margin-right: 0;
+  }
+}

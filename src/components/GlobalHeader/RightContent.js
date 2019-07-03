@@ -1,13 +1,14 @@
 import React, { PureComponent } from 'react';
   
-import { Spin, Tag, Menu, Icon, Avatar, Tooltip, message } from 'antd';
+import { Spin, Tag, Menu, Icon, Avatar, Tooltip, message, Dropdown } from 'antd';
 import moment from 'moment';
 import groupBy from 'lodash/groupBy';
-import NoticeIcon from '../NoticeIcon';
-import HeaderSearch from '../HeaderSearch';
-import HeaderDropdown from '../HeaderDropdown';
+// import NoticeIcon from '../NoticeIcon';
+// import HeaderSearch from '../HeaderSearch';
+// import HeaderDropdown from '../HeaderDropdown';
 import SelectLang from '../SelectLang';
-import styles from './index.less';
+// import styles from './index.less';
+import './index.css';
 
 export default class GlobalHeaderRight extends PureComponent {
   getNoticeData() {
@@ -85,7 +86,7 @@ export default class GlobalHeaderRight extends PureComponent {
 
 
     const menu = (
-      <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
+      <Menu className='menu' selectedKeys={[]} onClick={onMenuClick}>
         {/* <Menu.Item key="userCenter">
           <Icon type="user" />
           <FormattedMessage id="menu.account.center" defaultMessage="account center" />
@@ -111,9 +112,9 @@ export default class GlobalHeaderRight extends PureComponent {
     );
     const noticeData = this.getNoticeData();
     const unreadMsg = this.getUnreadData(noticeData);
-    let className = styles.right;
+    let className = 'right';
     if (theme === 'dark') {
-      className = `${styles.right}  ${styles.dark}`;
+      className = `${'right'}  ${'dark'}`;
     }
     return (
       <div className={className}>
@@ -189,21 +190,21 @@ export default class GlobalHeaderRight extends PureComponent {
           /> 
         </NoticeIcon>*/}
         {currentUser.realname ? (
-          <HeaderDropdown overlay={menu}>
-            <span className={`${styles.action} ${styles.account}`}>
+          <Dropdown overlay={menu}>
+            <span className='action account'>
               <Avatar
                 size="small"
-                className={styles.avatar}
+                className='avatar'
                 src={currentUser.avatar}
                 alt="avatar"
               />
-              <span className={styles.name}>{currentUser.realname}</span>
+              <span className='name'>{currentUser.realname}</span>
             </span>
-          </HeaderDropdown>
+          </Dropdown>
         ) : (
           <Spin size="small" style={{ marginLeft: 8, marginRight: 8 }} />
         )}
-        <SelectLang className={styles.action} />
+        <SelectLang className='action' />
       </div>
     );
   }

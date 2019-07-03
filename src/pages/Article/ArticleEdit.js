@@ -1,5 +1,5 @@
-import React, { PureComponent } from 'react';
-import { connect } from 'dva';
+import React, { Component, Fragment } from 'react';
+// import { connect } from 'dva';
 import axios from 'axios';
 import E from 'wangeditor';
 // import CateSelect from './components/select.js';
@@ -18,14 +18,14 @@ import {
   message,
   Modal,
 } from 'antd';
-import PageHeaderWrapper from '../components/PageHeaderWrapper';
-import styles from './ArticleEdit.less';
+// import PageHeaderWrapper from '../components/PageHeaderWrapper';
+// import styles from './ArticleEdit.less';
 import { ROOT_PATH } from '../pathrouter';
-import Editor from './components/editor';
+// import Editor from './components/editor';
 const FormItem = Form.Item;
-const { Option } = Select;
-const { RangePicker } = DatePicker;
-const { TextArea } = Input;
+// const { Option } = Select;
+// const { RangePicker } = DatePicker;
+// const { TextArea } = Input;
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -34,11 +34,12 @@ const getBase64 = (img, callback) => {
 };
 
 var editorObj;
-var jwt_token = window.localStorage.getItem('jwt_token');
-axios.defaults.headers.common['Authorization'] = jwt_token;
-if (!jwt_token || jwt_token.length < 32) {
-  location.hash = '/user/login';
-}
+// var jwt_token = window.localStorage.getItem('jwt_token');
+// axios.defaults.headers.common['Authorization'] = jwt_token;
+// if (!jwt_token || jwt_token.length < 32) {
+//   location.hash = '/user/login';
+// }
+
 // var loginInfo = window.localStorage.getItem('loginInfo');
 // if (!loginInfo){
 //   var loginInfo = JSON.parse(loginInfo);
@@ -47,11 +48,11 @@ if (!jwt_token || jwt_token.length < 32) {
 //   loginInfo.realname = '';
 // }
 
-@connect(({ loading }) => ({
-  submitting: loading.effects['form/submitRegularForm'],
-}))
-@Form.create()
-class BasicForms extends PureComponent {
+// @connect(({ loading }) => ({
+//   submitting: loading.effects['form/submitRegularForm'],
+// }))
+// @Form.create()
+class ArtcicleEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -74,6 +75,7 @@ class BasicForms extends PureComponent {
       ],
     };
   }
+
   componentDidMount() {
     const { dispatch, match } = this.props;
     const { params } = match;
@@ -178,7 +180,7 @@ class BasicForms extends PureComponent {
   handleChange = ({ fileList }) => this.setState({ fileList });
 
   handleBack = e => {
-    history.go(-1);
+    window.location.history.go(-1);
   };
 
   handlePublish = e => {
@@ -211,7 +213,7 @@ class BasicForms extends PureComponent {
             data: d,
           }).then(result => {
             if (result.data.error == 0) {
-              location.hash = '/';
+              window.location.hash = '/';
             } else {
               alert(result.data.msg);
             }
@@ -243,7 +245,7 @@ class BasicForms extends PureComponent {
           data: d,
         }).then(result => {
           if (result.data.error == 0) {
-            location.hash = '/';
+            window.location.hash = '/';
           } else {
             message.error(result.data.msg);
           }
@@ -251,6 +253,7 @@ class BasicForms extends PureComponent {
       }
     });
   };
+
   handlePreview = file => {
     this.setState({
       previewImage: file.url || file.thumbUrl,
@@ -270,6 +273,7 @@ class BasicForms extends PureComponent {
       return false;
     }
   }
+
   handleFileChange = info => {
     if (info.file.status === 'uploading') {
       this.setState({ loading: true });
@@ -287,6 +291,7 @@ class BasicForms extends PureComponent {
   };
 
   handleCancel = () => this.setState({ previewVisible: false });
+
   render() {
     const { submitting } = this.props;
     const { previewVisible, previewImage, fileList } = this.state;
@@ -320,7 +325,7 @@ class BasicForms extends PureComponent {
     );
 
     return (
-      <PageHeaderWrapper content="">
+      <Fragment>
         <Card bordered={false}>
           <Form hideRequiredMark style={{ marginTop: 8 }}>
             <FormItem layout="vertical" name="title" label="标题">
@@ -331,13 +336,6 @@ class BasicForms extends PureComponent {
             </FormItem>
             {/* name="content"   */}
             <FormItem name="content" layout="vertical" label="正文" placeholder="请输入正文">
-              {/* {getFieldDecorator('content', {
-                rules: [{ required: true }],
-                initialValue:this.state.content,
-              })(
-              <Editor></Editor>
-              )} */}
-
               <div ref="editorElem" style={{ textAlign: 'left' }} />
             </FormItem>
             <FormItem layout="vertical" label="封面">
@@ -384,43 +382,12 @@ class BasicForms extends PureComponent {
                 </Select>
               )}
             </FormItem>
-            {/* <FormItem layout="vertical" name="category_id" key="category_id" label="展区">
-              {getFieldDecorator('展区', {
-                rules: [{ required: true }],
-                initialValue: this.state.category_id,
-              })(
-                <Select
-                  placeholder="请选择"
-                  showSearch
-                  // style={{ width: 200 }}
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                  }
-                >
-                  {this.state.categoryOptionList.map((item, i) => {
-                    return (
-                      <option key={item.category_id} value='文章列表'>
-                        {item.name}
-                      </option>
-                    );
-                  })}
-                </Select>
-              )}
-            </FormItem> */}
             <FormItem layout="vertical" label="初始阅读量">
               {getFieldDecorator('read_count', {
                 rules: [{ required: true }],
                 initialValue: this.state.read_count,
               })(<Input placeholder="请输入" onChange={this.handleChange} />)}
             </FormItem>
-            {/* <FormItem layout="vertical" label="展示顺序">
-              {getFieldDecorator('展示顺序', {
-                rules: [{ required: true }],
-                initialValue: this.state.read_count,
-              })(<Input type='number' placeholder="请输入" onChange={this.handleChange} />)}
-            </FormItem> */}
-
             <FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
               <Button
                 type="danger"
@@ -445,9 +412,11 @@ class BasicForms extends PureComponent {
             </FormItem>
           </Form>
         </Card>
-      </PageHeaderWrapper>
+      </Fragment>
     );
   }
 }
 
-export default BasicForms;
+ArtcicleEdit = Form.create()(ArtcicleEdit);
+
+export default ArtcicleEdit;

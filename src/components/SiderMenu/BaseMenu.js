@@ -3,9 +3,10 @@ import classNames from 'classnames';
 import { Menu, Icon } from 'antd';
 import { urlToList } from '../_utils/pathTools';
 import { getMenuMatches } from './SiderMenuUtils';
-import { isUrl } from '@/utils/utils';
-import styles from './index.less';
-import IconFont from '../components/IconFont';
+import { isUrl } from '../../utils/utils';
+// import styles from './index.less';
+import './index.css';
+import IconFont from '../IconFont';
 import { Link } from 'react-router-dom';
 
 const { SubMenu } = Menu;
@@ -18,7 +19,7 @@ const { SubMenu } = Menu;
 const getIcon = icon => {
   if (typeof icon === 'string') {
     if (isUrl(icon)) {
-      return <Icon component={() => <img src={icon} alt="icon" className={styles.icon} />} />;
+      return <Icon component={() => <img src={icon} alt="icon" className="icon" />} />;
     }
     if (icon.startsWith('icon-')) {
       return <IconFont type={icon} />;
@@ -128,15 +129,17 @@ export default class BaseMenu extends PureComponent {
       openKeys,
       theme,
       mode,
-      location: { pathname },
+      location,
       className,
       collapsed,
     } = this.props;
     // if pathname can't match, use the nearest parent's key
-    let selectedKeys = this.getSelectedMenuKeys(pathname);
-    if (!selectedKeys.length && openKeys) {
-      selectedKeys = [openKeys[openKeys.length - 1]];
-    }
+
+    // let selectedKeys = this.getSelectedMenuKeys(pathname);
+    // if (!selectedKeys.length && openKeys) {
+    //   selectedKeys = [openKeys[openKeys.length - 1]];
+    // }
+    let selectedKeys = [];
     let props = {};
     if (openKeys && !collapsed) {
       props = {

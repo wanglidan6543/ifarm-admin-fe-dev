@@ -1,16 +1,18 @@
 import React, { PureComponent } from 'react';
 import { Icon } from 'antd';
 import { Link } from 'react-router-dom';
-import Debounce from 'lodash-decorators/debounce';
-import styles from './index.less';
+// import Debounce from 'lodash-decorators/debounce';
+// import styles from './index.less';
 import RightContent from './RightContent';
+
+import './index.css';
 
 export default class GlobalHeader extends PureComponent {
   componentWillUnmount() {
     this.triggerResizeEvent.cancel();
   }
   /* eslint-disable*/
-  @Debounce(600)
+  // @Debounce(600)
   triggerResizeEvent() {
     // eslint-disable-line
     const event = document.createEvent('HTMLEvents');

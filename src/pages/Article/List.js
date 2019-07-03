@@ -1,7 +1,7 @@
-import React, { PureComponent, Fragment } from 'react';
-import { connect } from 'dva';
+import React, { Component, Fragment } from 'react';
+// import { connect } from 'dva';
+import { connect } from 'react-redux';
 import moment from 'moment';
-import router from 'react-router';
 import axios from 'axios';
 import {
   Row,
@@ -23,16 +23,16 @@ import {
   Upload,
   Icon,
   message,
+  Table,
 } from 'antd';
-import StandardTable from '../components/StandardTable'; // 分页显示
-import PageHeaderWrapper from '../components/PageHeaderWrapper';
-import E from 'wangeditor';
-import Editor from './components/editor';
-import 'antd/dist/antd.css';
+import StandardTable from '../../components/StandardTable'; // 分页显示
+// import PageHeaderWrapper from '../components/PageHeaderWrapper';
+// import E from 'wangeditor';
+// import Editor from './components/editor';
 
-import './style.less';
+// import styles from './List.less';
+import './list.css';
 
-import styles from './List.less';
 import { ROOT_PATH } from '../pathrouter';
 
 const { RangePicker } = DatePicker;
@@ -42,11 +42,11 @@ const { TextArea } = Input;
 const { Option } = Select;
 const RadioGroup = Radio.Group;
 
-var jwt_token = window.localStorage.getItem('jwt_token');
-axios.defaults.headers.common['Authorization'] = jwt_token;
-if (!jwt_token || jwt_token.length < 32) {
-  location.hash = '/user/login';
-}
+// var jwt_token = window.localStorage.getItem('jwt_token');
+// axios.defaults.headers.common['Authorization'] = jwt_token;
+// if (!jwt_token || jwt_token.length < 32) {
+//   window.location.hash = '/user/login';
+// }
 
 const getValue = obj =>
   Object.keys(obj)
@@ -57,86 +57,113 @@ const status = ['关闭', '运行中', '已上线', '异常'];
 
 const confirm = Modal.confirm;
 // 组件建
-const CreateForm = Form.create()(props => {
-  const { modalVisible, form, handleAdd, handleModalVisible } = props;
-  const okHandle = () => {
-    form.validateFields((err, fieldsValue) => {
-      if (err) return;
-      form.resetFields();
-      handleAdd(fieldsValue);
-    });
-  };
+// const CreateForm = Form.create()(props => {
+//   const { modalVisible, form, handleAdd, handleModalVisible } = props;
+//   const okHandle = () => {
+//     form.validateFields((err, fieldsValue) => {
+//       if (err) return;
+//       form.resetFields();
+//       handleAdd(fieldsValue);
+//     });
+//   };
 
-  return (
-    <Modal
-      destroyOnClose
-      title="新建文章"
-      visible={modalVisible}
-      onOk={okHandle}
-      onCancel={() => handleModalVisible()}
-    >
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="标题">
-        {form.getFieldDecorator('title', {
-          rules: [{ required: true, message: '请输入至少五个字符的标题！', min: 5, max: 30 }],
-        })(<Input placeholder="请输入" />)}
-      </FormItem>
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="内容">
-        <Editor />
-      </FormItem>
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="封面">
-        <Upload
-          name="avatar"
-          listType="picture-card"
-          className="avatar-uploader"
-          showUploadList={false}
-          onRemove={true}
-          action="//jsonplaceholder.typicode.com/posts/"
-          // beforeUpload={beforeUpload}
-          // onChange={this.handleChange}
-        >
-          {/* {imageUrl ? <img src={imageUrl} alt="avatar" /> : uploadButton} */}
-        </Upload>
-      </FormItem>
+//   return (
+//     <Modal
+//       destroyOnClose
+//       title="新建文章"
+//       visible={modalVisible}
+//       onOk={okHandle}
+//       onCancel={() => handleModalVisible()}
+//     >
+//       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="标题">
+//         {form.getFieldDecorator('title', {
+//           rules: [{ required: true, message: '请输入至少五个字符的标题！', min: 5, max: 30 }],
+//         })(<Input placeholder="请输入" />)}
+//       </FormItem>
+//       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="内容">
+//         <Editor />
+//       </FormItem>
+//       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="封面">
+//         <Upload
+//           name="avatar"
+//           listType="picture-card"
+//           className="avatar-uploader"
+//           showUploadList={false}
+//           onRemove={true}
+//           action="//jsonplaceholder.typicode.com/posts/"
+//           // beforeUpload={beforeUpload}
+//           // onChange={this.handleChange}
+//         >
+//           {/* {imageUrl ? <img src={imageUrl} alt="avatar" /> : uploadButton} */}
+//         </Upload>
+//       </FormItem>
 
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} key="target" label="分类">
-        {form.getFieldDecorator('cate', {
-          rules: [{ required: true }],
-        })(
-          <Select style={{ width: '100%' }} placeholder="请选择">
-            <Option value="0">价格走势</Option>
-            <Option value="1">地方政策</Option>
-          </Select>
-        )}
-      </FormItem>
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="初始阅读量">
-        {form.getFieldDecorator('readPv', {
-          rules: [{ required: true }],
-        })(<Input placeholder="请输入" />)}
-      </FormItem>
-    </Modal>
-  );
-});
+//       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} key="target" label="分类">
+//         {form.getFieldDecorator('cate', {
+//           rules: [{ required: true }],
+//         })(
+//           <Select style={{ width: '100%' }} placeholder="请选择">
+//             <Option value="0">价格走势</Option>
+//             <Option value="1">地方政策</Option>
+//           </Select>
+//         )}
+//       </FormItem>
+//       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="初始阅读量">
+//         {form.getFieldDecorator('readPv', {
+//           rules: [{ required: true }],
+//         })(<Input placeholder="请输入" />)}
+//       </FormItem>
+//     </Modal>
+//   );
+// });
 var forbidden = 'forbidden';
 
 /* eslint react/no-multi-comp:0 */
-@connect(({ article, loading }) => ({
-  article,
-  loading: loading.models.article,
-}))
-@Form.create()
-class ArticleList extends PureComponent {
-  state = {
-    modalVisible: false,
-    updateModalVisible: false,
-    expandForm: true,
-    LookVisible: false,
-    selectedRows: [],
-    formValues: {},
-    stepFormValues: {},
-    isShow: false,
-    titleConent: '',
-  };
+// @connect(({ article, loading }) => ({
+//   article,
+//   loading: loading.models.article,
+// }))
+// @Form.create()
 
+class ArticleList extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      modalVisible: false,
+      updateModalVisible: false,
+      expandForm: true,
+      LookVisible: false,
+      selectedRows: [],
+      formValues: {},
+      stepFormValues: {},
+      isShow: false,
+      titleConent: '',
+      dataSource: [
+        {
+          key: '1',
+          article_id: "1",
+          article_title: '测试',
+          category_name: "dddd",
+          read_count: "100",
+          status_name: '对不',
+          update_time: '2018-09-10',
+          operation_user: 'Mark'
+        },
+        {
+          key: '2',
+          article_id: "2",
+          article_title: '测试',
+          category_name: "dsdsfdsf",
+          read_count: "100",
+          status_name: '发布',
+          update_time: '2018-03-10',
+          operation_user: 'Jack'
+        },
+      ]
+    };
+  }
+  
   columns = [
     {
       title: 'ID',
@@ -146,6 +173,7 @@ class ArticleList extends PureComponent {
     },
     {
       title: '标题',
+      dataIndex: 'article_title',
       align: 'center',
       render: (text, record) => (
         <Fragment>
@@ -164,11 +192,6 @@ class ArticleList extends PureComponent {
         </Fragment>
       ),
     },
-    // {
-    //   title: '展区',
-    //   dataIndex: 'category_name',
-    //   align: 'center',
-    // },
     {
       title: '分类',
       dataIndex: 'category_name',
@@ -181,11 +204,6 @@ class ArticleList extends PureComponent {
       needTotal: true,
       align: 'center',
     },
-    // {
-    //   title: '展示顺序',
-    //   dataIndex: 'category_name',
-    //   align: 'center',
-    // },
     {
       title: '状态',
       dataIndex: 'status_name',
@@ -247,10 +265,10 @@ class ArticleList extends PureComponent {
   ];
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'article/fetch',
-    });
+    // const { dispatch } = this.props;
+    // dispatch({
+    //   type: 'article/fetch',
+    // });
   }
 
   // 分页
@@ -281,7 +299,7 @@ class ArticleList extends PureComponent {
   };
   // 通过id进行跳转
   previewItem = id => {
-    router.push(`/article/edit/${id}`);
+    window.location.hash = '/article/edit/' + id;
   };
   // 标题
   ModuleLook = id => {
@@ -395,7 +413,7 @@ class ArticleList extends PureComponent {
   };
   // 新建
   handleEdit = e => {
-    location.hash = '/article/add';
+    window.location.hash = '/article/add';
   };
   // 编辑
   handleUpdateModalVisible = (flag, record) => {
@@ -437,7 +455,8 @@ class ArticleList extends PureComponent {
   };
 
   postEdit = e => {
-    location.hash = '/article/edit/' + e.article_id;
+    let id = e.article_id;
+    window.location.hash = '/article/edit/' + id;
   };
 
   postReback = e => {
@@ -459,7 +478,7 @@ class ArticleList extends PureComponent {
 
           if (result.data.error == 0) {
             message.success('操作成功');
-            location.hash = '/';
+            window.location.hash = '/';
           } else {
             message.error(result.data.msg);
           }
@@ -492,7 +511,7 @@ class ArticleList extends PureComponent {
 
           if (result.data.error == 0) {
             message.success('操作成功');
-            location.hash = '/';
+            window.location.hash = '/';
           } else {
             message.error(result.data.msg);
           }
@@ -524,7 +543,7 @@ class ArticleList extends PureComponent {
 
           if (result.data.error == 0) {
             message.success('操作成功');
-            location.hash = '/';
+            window.location.hash = '/';
           } else {
             message.error(result.data.msg);
           }
@@ -536,61 +555,6 @@ class ArticleList extends PureComponent {
       },
     });
   };
-
-  // ReactDOM.render(
-  //   <div>
-  //     <Button onClick={showConfirm}>
-  //       Confirm
-  //     </Button>
-  //     <Button onClick={showDeleteConfirm} type="dashed">
-  //       Delete
-  //     </Button>
-  //     <Button onClick={showPropsConfirm} type="dashed">
-  //       With extra props
-  //     </Button>
-  //   </div>,
-  //   mountNode
-  // );
-
-  // renderSimpleForm() {
-  //   const {
-  //     form: { getFieldDecorator },
-  //   } = this.props;
-  //   return (
-  //     <Form onSubmit={this.handleSearch} layout="inline">
-  //       <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-  //         <Col md={8} sm={24}>
-  //           <FormItem label="规则名称">
-  //             {getFieldDecorator('name')(<Input placeholder="请输入" />)}
-  //           </FormItem>
-  //         </Col>
-  //         <Col md={8} sm={24}>
-  //           <FormItem label="使用状态">
-  //             {getFieldDecorator('status')(
-  //               <Select placeholder="请选择" style={{ width: '100%' }}>
-  //                 <Option value="0">关闭</Option>
-  //                 <Option value="1">运行中</Option>
-  //               </Select>
-  //             )}
-  //           </FormItem>
-  //         </Col>
-  //         <Col md={8} sm={24}>
-  //           <span className={styles.submitButtons}>
-  //             <Button type="primary" htmlType="submit">
-  //               查询
-  //             </Button>
-  //             <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
-  //               重置
-  //             </Button>
-  //             <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
-  //               展开 <Icon type="down" />
-  //             </a>
-  //           </span>
-  //         </Col>
-  //       </Row>
-  //     </Form>
-  //   );
-  // }
 
   renderAdvancedForm() {
     const {
@@ -660,17 +624,11 @@ class ArticleList extends PureComponent {
   }
 
   render() {
-    const {
-      article: { data },
-      loading,
-    } = this.props;
+    // const {
+    //   article: { data },
+    //   loading,
+    // } = this.props;
     const { selectedRows, modalVisible, updateModalVisible, stepFormValues } = this.state;
-    const menu = (
-      <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
-        <Menu.Item key="remove">删除</Menu.Item>
-        <Menu.Item key="approval">批量审批</Menu.Item>
-      </Menu>
-    );
 
     const parentMethods = {
       handleAdd: this.handleAdd,
@@ -681,31 +639,20 @@ class ArticleList extends PureComponent {
       handleUpdate: this.handleUpdate,
     };
     return (
-      <PageHeaderWrapper>
+      <Fragment>
         <Card bordered={false}>
-          <div className={styles.tableList}>
-            <div className={styles.tableListForm}>{this.renderForm()}</div>
-            <div className={styles.tableListOperator}>
-              {/* <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}> */}
+          <div className="tableList">
+            {/* <div className="tableListForm">{this.renderForm()}</div> */}
+            <div className="tableListOperator">
               <Button icon="plus" type="primary" onClick={() => this.handleEdit()}>
                 文章发布
               </Button>
-              {/* {selectedRows.length > 0 && (
-                <span>
-                  <Button>批量操作</Button>
-                  <Dropdown overlay={menu}>
-                    <Button>
-                      更多操作 <Icon type="down" />
-                    </Button>
-                  </Dropdown>
-                </span>
-              )} */}
             </div>
             {/* 阅读量，分页 */}
             <StandardTable
               selectedRows={selectedRows}
-              loading={loading}
-              data={data}
+              loading={this.props.loading}
+              dataSource={this.state.dataSource}
               columns={this.columns}
               onSelectRow={this.handleSelectRows}
               onChange={this.handleStandardTableChange}
@@ -713,7 +660,7 @@ class ArticleList extends PureComponent {
           </div>
         </Card>
         {/* 新建页面 */}
-        <CreateForm {...parentMethods} modalVisible={modalVisible} />
+        {/* <CreateForm {...parentMethods} modalVisible={modalVisible} />
         {stepFormValues && Object.keys(stepFormValues).length ? (
           <UpdateForm
             {...updateMethods}
@@ -737,8 +684,8 @@ class ArticleList extends PureComponent {
             style={{ width: '100%', height: '100%', overflow: 'hidden' }}
             dangerouslySetInnerHTML={{ __html: `${this.state.titleConent}` }}
           />
-        </Modal>
-      </PageHeaderWrapper>
+        </Modal> */}
+      </Fragment>
     );
   }
 }

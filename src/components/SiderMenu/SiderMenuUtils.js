@@ -8,6 +8,7 @@ import { urlToList } from '../_utils/pathTools';
  */
 export const getFlatMenuKeys = menuData => {
   let keys = [];
+  if (!menuData || menuData.length === 0) { return keys; }
   menuData.forEach(item => {
     keys.push(item.path);
     if (item.children) {
@@ -29,12 +30,13 @@ export const getMenuMatches = (flatMenuKeys, path) =>
  * @memberof SiderMenu
  */
 export const getDefaultCollapsedSubMenus = props => {
-  const {
-    location: { pathname },
-    flatMenuKeys,
-  } = props;
-  return urlToList(pathname)
-    .map(item => getMenuMatches(flatMenuKeys, item)[0])
-    .filter(item => item)
-    .reduce((acc, curr) => [...acc, curr], ['/']);
+  return [];
+  // const {
+  //   location: {pathname},
+  //   flatMenuKeys,
+  // } = props;
+  // return urlToList(pathname)
+  //   .map(item => getMenuMatches(flatMenuKeys, item)[0])
+  //   .filter(item => item)
+  //   .reduce((acc, curr) => [...acc, curr], ['/']);
 };

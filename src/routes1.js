@@ -29,7 +29,7 @@ module.exports = (
     </Route>
     <Route path='/' exact component={BasicLayout}>
         <Route path='/home' component={Home} />
-        <Route path='/article' component={ArticleList} >
+        <Route path='/article' component={ArticleList} />
         <Route path='/article/add' component={ArticleEdit} />
         <Route path='/article/edit/:id' component={ArticleEdit} />
         <Route path='/price' component={Price} />

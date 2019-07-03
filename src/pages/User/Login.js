@@ -24,24 +24,26 @@ class Login extends Component {
       if (err) { return; }
       console.log('Received values of form: ', values);
 
-      window.localStorage.setItem('username', values.username);
-      axios(
-        {
-          url: ROOT_PATH + '/api/backend/v1/user/login',
-          method: 'post',
-          params: {},
-          data: { ...values },
-        },
-        {}
-      ).then(result => {
-        if (result.data.error == 0 && result.data.data.jwt_token) {
-          window.localStorage.setItem('jwt_token', result.data.data.jwt_token);
-          window.localStorage.setItem('loginInfo', JSON.stringify(result.data.data));
-          window.location.hash = '/home';
-        } else {
-          message.error(result.data.msg);
-        }
-      });
+      window.location.hash = '/home';
+      // Todo: 
+      // window.localStorage.setItem('username', values.username);
+      // axios(
+      //   {
+      //     url: ROOT_PATH + '/api/backend/v1/user/login',
+      //     method: 'post',
+      //     params: {},
+      //     data: { ...values },
+      //   },
+      //   {}
+      // ).then(result => {
+      //   if (result.data.error == 0 && result.data.data.jwt_token) {
+      //     window.localStorage.setItem('jwt_token', result.data.data.jwt_token);
+      //     window.localStorage.setItem('loginInfo', JSON.stringify(result.data.data));
+      //     window.location.hash = '/home';
+      //   } else {
+      //     message.error(result.data.msg);
+      //   }
+      // });
     });
   };
 

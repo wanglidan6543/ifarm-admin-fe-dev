@@ -1,21 +1,44 @@
-import React, { Suspense } from 'react';
-import { Layout } from 'antd';
+import React, { Suspense, Fragment } from 'react';
+import { Layout, Icon } from 'antd';
 import DocumentTitle from 'react-document-title';
-import { connect } from 'dva';
+// import { connect } from 'dva';
+import { connect } from 'react-redux';
 import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
 import Media from 'react-media';
 import logo from '../assets/logo.png';
-import Footer from './Footer';
+// import Footer from './Footer';
 import Header from './Header';
 import Context from './MenuContext';
 import PageLoading from '../components/PageLoading';
 import SiderMenu from '../components/SiderMenu';
 import getPageTitle from '../utils/getPageTitle';
-import styles from './BasicLayout.less';
+// import styles from './BasicLayout.less';
+import './BasicLayout.css';
+import Home from '../pages/Home/List';
+import ArticleList from '../pages/Article/List';
+import ArticleEdit from '../pages/Article/ArticleEdit';
+import Price from '../pages/Price/List';
+// import Pricematerial from './pages/Pricematerial/List';
+// import PricematerialDetail from './pages/Pricematerial/Pricematerialdetail';
+// import RelatedFarms from './pages/Relatedfarms/List';
+// import RelatedFarmsEdit from './pages/Relatedfarms/RelatedfarmsEdit';
+// import Threshold from './pages/Threshold/List';
+// import ThresholdEdit from './pages/Threshold/ThresholdEdit';
+// import Admin from './pages/Administration/List';
+// import AdminEdit from './pages/Administration/AdminEdit';
+// import AdminAuthority from './pages/Administration/Authority';
+// import User from './pages/Usered/List';
+// import UserEdit from './pages/Usered/UseredAdd';
+// import ChangePwd from './pages/User/Changepassword';
+
+import GlobalFooter from '../components/GlobalFooter';
+import { Route, Switch } from 'react-router-dom';
+
+const { Footer } = Layout;
 
 // lazy load SettingDrawer
-const SettingDrawer = React.lazy(() => import('../components/SettingDrawer'));
+// const SettingDrawer = React.lazy(() => import('../components/SettingDrawer'));
 
 const { Content } = Layout;
 
@@ -45,22 +68,22 @@ const query = {
 };
 
 class BasicLayout extends React.Component {
-  componentDidMount() {
-    const {
-      dispatch,
-      route: { routes, authority },
-    } = this.props;
-    dispatch({
-      type: 'user/fetchCurrent',
-    });
-    dispatch({
-      type: 'setting/getSetting',
-    });
-    dispatch({
-      type: 'menu/getMenuData',
-      payload: { routes, authority },
-    });
-  }
+  // componentDidMount() {
+  //   const {
+  //     dispatch,
+  //     route: { routes, authority },
+  //   } = this.props;
+  //   dispatch({
+  //     type: 'user/fetchCurrent',
+  //   });
+  //   dispatch({
+  //     type: 'setting/getSetting',
+  //   });
+  //   dispatch({
+  //     type: 'menu/getMenuData',
+  //     payload: { routes, authority },
+  //   });
+  // }
 
   getContext() {
     const { location, breadcrumbNameMap } = this.props;
@@ -81,20 +104,11 @@ class BasicLayout extends React.Component {
   };
 
   handleMenuCollapse = collapsed => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'global/changeLayoutCollapsed',
-      payload: collapsed,
-    });
-  };
-
-  renderSettingDrawer = () => {
-    // Do not render SettingDrawer in production
-    // unless it is deployed in preview.pro.ant.design as demo
-    if (process.env.NODE_ENV === 'production' && APP_TYPE !== 'site') {
-      return null;
-    }
-    return <SettingDrawer />;
+    // const { dispatch } = this.props;
+    // dispatch({
+    //   type: 'global/changeLayoutCollapsed',
+    //   payload: collapsed,
+    // });
   };
 
   render() {
@@ -102,12 +116,13 @@ class BasicLayout extends React.Component {
       navTheme,
       layout: PropsLayout,
       children,
-      location: { pathname },
+      location,
       isMobile,
       menuData,
       breadcrumbNameMap,
       fixedHeader,
     } = this.props;
+
     const isTop = PropsLayout === 'topmenu';
     const contentStyle = !fixedHeader ? { paddingTop: 0 } : {};
     const layout = (
@@ -135,16 +150,53 @@ class BasicLayout extends React.Component {
             isMobile={isMobile}
             {...this.props}
           />
-          <Content className={styles.content} style={contentStyle}>
-            {children}
+          <Content className='content' style={contentStyle}>
+              <Switch>
+                <Route path="/home" component={Home} />
+                <Route exact path='/article' component={ArticleList} />
+                <Route path='/article/add' component={ArticleEdit} />
+                <Route path='/article/edit/:id' component={ArticleEdit} />
+                <Route path='/price' component={Price} />
+                {/*<Route exact path='/pricematerial' component={Pricematerial} />
+                <Route path='/pricematerial/edit/:id/:orderId' component={PricematerialDetail} />
+                <Route exact path='/relatedfarms' component={RelatedFarms} />
+                <Route path='/relatedfarms/edit/:id' component={RelatedFarmsEdit} />
+                <Route exact path='/threshold' component={Threshold} />
+                <Route path='/threshold/edit/:id' component={ThresholdEdit} />
+                <Route exact path='/administration' component={Admin} />
+                <Route path='/administration/edit/:id' component={AdminEdit} />
+                <Route path='/administration/add' component={AdminEdit} />
+                <Route path='/administration/authority/:id' component={AdminAuthority} />
+                <Route exact path='/usered' component={User} />
+                <Route path='/usered/add' component={UserEdit} />
+                <Route path='/usered/edit/:id' component={UserEdit} />
+                <Route path='/login/password' component={ChangePwd} /> */}
+              </Switch>
           </Content>
-          <Footer />
+          <Footer style={{ padding: 0 }}>
+            <GlobalFooter
+              links={[
+                {
+                  key: '正大集团',
+                  title: '正大集团',
+                  href: 'http://www.cpgroup.cn/',
+                  blankTarget: true,
+                },
+              ]}
+              copyright={
+                <Fragment>
+                  Copyright <Icon type="copyright" /> 2019 正大集团
+                </Fragment>
+              }
+            />
+          </Footer>
         </Layout>
       </Layout>
     );
     return (
       <React.Fragment>
-        <DocumentTitle title={getPageTitle(pathname, breadcrumbNameMap)}>
+        {/* <DocumentTitle title={getPageTitle(pathname, breadcrumbNameMap)}> */}
+        <DocumentTitle title="系统首页">
           <ContainerQuery query={query}>
             {params => (
               <Context.Provider value={this.getContext()}>
@@ -153,20 +205,20 @@ class BasicLayout extends React.Component {
             )}
           </ContainerQuery>
         </DocumentTitle>
-        <Suspense fallback={<PageLoading />}>{this.renderSettingDrawer()}</Suspense>
       </React.Fragment>
     );
   }
 }
+export default BasicLayout;
 
-export default connect(({ global, setting, menu: menuModel }) => ({
-  collapsed: global.collapsed,
-  layout: setting.layout,
-  menuData: menuModel.menuData,
-  breadcrumbNameMap: menuModel.breadcrumbNameMap,
-  ...setting,
-}))(props => (
-  <Media query="(max-width: 599px)">
-    {isMobile => <BasicLayout {...props} isMobile={isMobile} />}
-  </Media>
-));
+// export default connect(({ global, setting, menu: menuModel }) => ({
+//   collapsed: global.collapsed,
+//   layout: setting.layout,
+//   menuData: menuModel.menuData,
+//   breadcrumbNameMap: menuModel.breadcrumbNameMap,
+//   ...setting,
+// }))(props => (
+//   <Media query="(max-width: 599px)">
+//     {isMobile => <BasicLayout {...props} isMobile={isMobile} />}
+//   </Media>
+// ));

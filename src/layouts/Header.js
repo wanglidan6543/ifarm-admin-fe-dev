@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Layout, message } from 'antd';
 import Animate from 'rc-animate';
-import { connect } from 'dva';
+// import { connect } from 'dva';
 import { HashRouter as router } from 'react-router-dom';
 import GlobalHeader from '../components/GlobalHeader';
 import TopNavHeader from '../components/TopNavHeader';
-import styles from './Header.less';
+import './Header.css';
 
 const { Header } = Layout;
 
@@ -121,7 +121,7 @@ class HeaderView extends Component {
     const isTop = layout === 'topmenu';
     const width = this.getHeadWidth();
     const HeaderDom = visible ? (
-      <Header style={{ padding: 0, width }} className={fixedHeader ? styles.fixedHeader : ''}>
+      <Header style={{ padding: 0, width }} className={fixedHeader ? 'fixedHeader' : ''}>
         {isTop && !isMobile ? (
           <TopNavHeader
             theme={navTheme}
@@ -153,11 +153,13 @@ class HeaderView extends Component {
   }
 }
 
-export default connect(({ user, global, setting, loading }) => ({
-  // currentUser: user.currentUser,
-  collapsed: global.collapsed,
-  fetchingMoreNotices: loading.effects['global/fetchMoreNotices'],
-  fetchingNotices: loading.effects['global/fetchNotices'],
-  notices: global.notices,
-  setting,
-}))(HeaderView);
+// export default connect(({ user, global, setting, loading }) => ({
+//   // currentUser: user.currentUser,
+//   collapsed: global.collapsed,
+//   fetchingMoreNotices: loading.effects['global/fetchMoreNotices'],
+//   fetchingNotices: loading.effects['global/fetchNotices'],
+//   notices: global.notices,
+//   setting,
+// }))(HeaderView);
+
+export default Header;
