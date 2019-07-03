@@ -14,12 +14,12 @@ import {
 } from 'antd';
 import { Link } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
-import styles from './List.less';
-import StandardTable from '../components/StandardTable'; // 分页显示
+// import styles from './List.less';
+import './List.css';
+import StandardTable from '../../components/StandardTable'; // 分页显示
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
 import { timingSafeEqual } from 'crypto';
-import { Link } from 'react-router-dom';
 import { isNull } from 'util';
 const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
 
@@ -29,10 +29,10 @@ const Option = Select.Option;
 
 const Search = Input.Search;
 var jwt_token = window.localStorage.getItem('jwt_token');
-axios.defaults.headers.common['Authorization'] = jwt_token;
-if (!jwt_token || jwt_token.length < 32) {
-  location.hash = '/user/login';
-}
+// axios.defaults.headers.common['Authorization'] = jwt_token;
+// if (!jwt_token || jwt_token.length < 32) {
+//   window.location.hash = '/user/login';
+// }
 
 const getValue = obj =>
   Object.keys(obj)
@@ -48,8 +48,7 @@ const rowSelection = {
   }),
 };
 
-@Form.create()
-class TableForm extends Component {
+class PriceMaterial extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -86,6 +85,7 @@ class TableForm extends Component {
       },
     };
   }
+
   columns = [
     {
       title: '创建时间',
@@ -248,15 +248,18 @@ class TableForm extends Component {
       const { station, desabled } = this.state;
     });
   };
+
   componentDidMount() {
     this.ListShow();
   }
+
   handleUpdateModalVisible = (flag, record) => {
     this.setState({
       updateModalVisible: !!flag,
       stepFormValues: record || {},
     });
   };
+
   // 分页
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
     const { loading, data, adminList, selectedRows, station, desabled, formValues } = this.state;
@@ -266,6 +269,7 @@ class TableForm extends Component {
       newObj[key] = getValue(filtersArg[key]);
       return newObj;
     }, {});
+    let params = {};
     if (sorter.field) {
       params.sorter = `${sorter.field}_${sorter.order}`;
     }
@@ -619,19 +623,19 @@ class TableForm extends Component {
         >
           <Row>
             <Col md={8} sm={24}>
-              <Form.Item label="订单时间" className={styles.formselet}>
+              <Form.Item label="订单时间" className='formselet'>
                 {getFieldDecorator('order_time')(<RangePicker format="YYYY-MM-DD HH:mm:ss" />)}
               </Form.Item>
             </Col>
             <Col md={8} sm={24}>
-              <Form.Item label="提货时间" className={styles.formselet}>
+              <Form.Item label="提货时间" className='formselet'>
                 {getFieldDecorator('take_delivery_time')(<RangePicker format="YYYY-MM-DD HH:mm:ss" />)}
               </Form.Item>
             </Col>
           </Row>
           <Row>
             <Col md={8} sm={24}>
-              <FormItem label="下单方式" className={styles.formselet}>
+              <FormItem label="下单方式" className='formselet'>
                 {getFieldDecorator('order_way', {
                   initialValue: '0',
                 })(
@@ -654,7 +658,7 @@ class TableForm extends Component {
               </FormItem>
             </Col>
             <Col md={8} sm={24}>
-              <FormItem label="支付方式" className={styles.formselet}>
+              <FormItem label="支付方式" className='formselet'>
                 {getFieldDecorator('payment_mode', {
                   initialValue: '0',
                 })(
@@ -677,7 +681,7 @@ class TableForm extends Component {
               </FormItem>
             </Col>
             <Col md={8} sm={24}>
-              <FormItem label="订单状态" className={styles.formselet}>
+              <FormItem label="订单状态" className='formselet'>
                 {getFieldDecorator('order_status', {
                   initialValue: '0',
                 })(
@@ -708,7 +712,7 @@ class TableForm extends Component {
           </Row>
           <Row>
             <Col md={8} sm={24}>
-              <FormItem className={styles.inpform}>
+              <FormItem className='inpform'>
                 {getFieldDecorator('company')(
                   <Input
                     placeholder="公司名称或ID"
@@ -721,7 +725,7 @@ class TableForm extends Component {
               </FormItem>
             </Col>
             <Col md={8} sm={24}>
-              <FormItem className={styles.inpform}>
+              <FormItem className='inpform'>
                 {getFieldDecorator('user')(
                   <Input
                     placeholder="客户名称或ID"
@@ -734,7 +738,7 @@ class TableForm extends Component {
               </FormItem>
             </Col>
             <Col md={8} sm={24}>
-              <FormItem className={styles.inpform}>
+              <FormItem className='inpform'>
                 {getFieldDecorator('order_id')(
                   <Input
                     placeholder="订单号"
@@ -766,16 +770,18 @@ class TableForm extends Component {
           onChange={this.handleStandardTableChange}
           // className={data.current_page === '1' ? 'ant-pagination-item-active' :''}
         />
-         {stepFormValues && Object.keys(stepFormValues).length ? (
+         {/* {stepFormValues && Object.keys(stepFormValues).length ? (
           <UpdateForm
             {...updateMethods}
             updateModalVisible={updateModalVisible}
             values={stepFormValues}
           />
-        ) : null}
+        ) : null} */}
       </Fragment>
     );
   }
 }
 
-export default TableForm;
+PriceMaterial = Form.create()(PriceMaterial);
+
+export default PriceMaterial;

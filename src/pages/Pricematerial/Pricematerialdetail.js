@@ -1,18 +1,18 @@
 import React, { PureComponent, Fragment } from 'react';
 import { Table, Button, Input, message, Popconfirm, Divider, Row, Col, List } from 'antd';
-import StandardTable from '../components/StandardTable'; // 分页显示
-import PageHeaderWrapper from '../components/PageHeaderWrapper';
+import StandardTable from '../../components/StandardTable'; // 分页显示
+// import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import isEqual from 'lodash/isEqual';
-import styles from './List.less';
+// import styles from './List.less';
 import { ROOT_PATH } from '../pathrouter';
 import axios from 'axios';
 import { stat } from 'fs';
 
 var jwt_token = window.localStorage.getItem('jwt_token');
-axios.defaults.headers.common['Authorization'] = jwt_token;
-if (!jwt_token || jwt_token.length < 32) {
-  location.hash = '/user/login';
-}
+// axios.defaults.headers.common['Authorization'] = jwt_token;
+// if (!jwt_token || jwt_token.length < 32) {
+//   location.hash = '/user/login';
+// }
 const rowSelection = {
   onChange: (selectedRowKeys, selectedRows) => {
     console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
@@ -23,7 +23,7 @@ const rowSelection = {
   }),
 };
 
-class TableForm extends PureComponent {
+class PriceMaterialDetail extends PureComponent {
   index = 0;
 
   cacheOriginData = {};
@@ -222,7 +222,7 @@ class TableForm extends PureComponent {
       thpaymentMmethod
     } = this.state;
     return (
-      <PageHeaderWrapper>
+      <Fragment>
         <List style={{ background: '#fff', padding: '10px' }}>
           <List.Item style={{ color: '#001529', fontWeight: 'bold' }}>订单基础信息</List.Item>
           <Row style={{ margin: '40px 0' }}>
@@ -283,9 +283,9 @@ class TableForm extends PureComponent {
         >
           总重量 : <span style={{ fontSize: '18px', fontWeight: 'bold' }}>{totalWeight}KG</span>
         </p>
-      </PageHeaderWrapper>
+      </Fragment>
     );
   }
 }
 
-export default TableForm;
+export default PriceMaterialDetail;

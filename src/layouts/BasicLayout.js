@@ -19,8 +19,8 @@ import Home from '../pages/Home/List';
 import ArticleList from '../pages/Article/List';
 import ArticleEdit from '../pages/Article/ArticleEdit';
 import Price from '../pages/Price/List';
-// import Pricematerial from './pages/Pricematerial/List';
-// import PricematerialDetail from './pages/Pricematerial/Pricematerialdetail';
+import Pricematerial from '../pages/Pricematerial/List';
+import PricematerialDetail from '../pages/Pricematerial/Pricematerialdetail';
 // import RelatedFarms from './pages/Relatedfarms/List';
 // import RelatedFarmsEdit from './pages/Relatedfarms/RelatedfarmsEdit';
 // import Threshold from './pages/Threshold/List';
@@ -157,9 +157,9 @@ class BasicLayout extends React.Component {
                 <Route path='/article/add' component={ArticleEdit} />
                 <Route path='/article/edit/:id' component={ArticleEdit} />
                 <Route path='/price' component={Price} />
-                {/*<Route exact path='/pricematerial' component={Pricematerial} />
+                <Route exact path='/pricematerial' component={Pricematerial} />
                 <Route path='/pricematerial/edit/:id/:orderId' component={PricematerialDetail} />
-                <Route exact path='/relatedfarms' component={RelatedFarms} />
+                {/*<Route exact path='/relatedfarms' component={RelatedFarms} />
                 <Route path='/relatedfarms/edit/:id' component={RelatedFarmsEdit} />
                 <Route exact path='/threshold' component={Threshold} />
                 <Route path='/threshold/edit/:id' component={ThresholdEdit} />
