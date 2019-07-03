@@ -1,13 +1,11 @@
 import React from 'react';
-import classNames from 'classnames';
-import styles from './index.less';
+import './index.css';
 
-const GlobalFooter = ({ className, links, copyright }) => {
-  const clsString = classNames(styles.globalFooter, className);
+const GlobalFooter = ({links, copyright }) => {
   return (
-    <footer className={clsString}>
+    <footer className="globalFooter">
       {links && (
-        <div className={styles.links}>
+        <div className="links">
           {links.map(link => (
             <a
               key={link.key}
@@ -20,7 +18,7 @@ const GlobalFooter = ({ className, links, copyright }) => {
           ))}
         </div>
       )}
-      {copyright && <div className={styles.copyright}>{copyright}</div>}
+      {copyright && <div className="copyright">{copyright}</div>}
     </footer>
   );
 };
