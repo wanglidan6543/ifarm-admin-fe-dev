@@ -2,8 +2,8 @@ import React, { Component, Fragment } from 'react';
 import { Table, Button, Input, message, Popconfirm, Divider, Row, Col, Select } from 'antd';
 
 import isEqual from 'lodash/isEqual';
-import styles from './List.less';
-import StandardTable from '../components/StandardTable'; // 分页显示
+// import styles from './List.less';
+import StandardTable from '../../components/StandardTable'; // 分页显示
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
 import { timingSafeEqual } from 'crypto';
@@ -13,9 +13,9 @@ const Search = Input.Search;
 
 var jwt_token = window.localStorage.getItem('jwt_token');
 axios.defaults.headers.common['Authorization'] = jwt_token;
-if (!jwt_token || jwt_token.length < 32) {
-  location.hash = '/user/login';
-}
+// if (!jwt_token || jwt_token.length < 32) {
+//   window.location.hash = '/user/login';
+// }
 
 const getValue = obj =>
   Object.keys(obj)
@@ -24,7 +24,7 @@ const getValue = obj =>
 
 const Option = Select.Option;
 
-class TableForm extends Component {
+class Threshold extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -198,7 +198,8 @@ class TableForm extends Component {
     })
   };
   componentDidMount() {
-    this.ListShow();
+    //TODO:
+    // this.ListShow();
   }
   // input搜索
   onsearchVal = value => {
@@ -297,6 +298,7 @@ class TableForm extends Component {
       pagination,
       indexList
     } = this.state;
+
     return (
       <Fragment>
         <Row style={{ paddingBottom: '10px' }}>
@@ -342,4 +344,4 @@ class TableForm extends Component {
   }
 }
 
-export default TableForm;
+export default Threshold;

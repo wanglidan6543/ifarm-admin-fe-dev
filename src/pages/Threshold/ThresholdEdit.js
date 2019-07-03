@@ -2,14 +2,15 @@ import React, { PureComponent, Fragment } from 'react';
 import { Table, Input, Button, Popconfirm, Form, Row, Col, message, Radio } from 'antd';
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
-import PageHeaderWrapper from '../components/PageHeaderWrapper';
-import styles from './List.less';
+// import PageHeaderWrapper from '../components/PageHeaderWrapper';
+// import styles from './List.less';
+import './List.css';
 
 var jwt_token = window.localStorage.getItem('jwt_token');
 axios.defaults.headers.common['Authorization'] = jwt_token;
-if (!jwt_token || jwt_token.length < 32) {
-  location.hash = '/user/login';
-}
+// if (!jwt_token || jwt_token.length < 32) {
+//   window.location.hash = '/user/login';
+// }
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -23,7 +24,6 @@ const EditableRow = ({ form, index, ...props }) => (
 
 const EditableFormRow = Form.create()(EditableRow);
 
-@Form.create()
 class EditableCell extends PureComponent {
   state = {
     editing: false,
@@ -71,7 +71,7 @@ class EditableCell extends PureComponent {
               return editing ? (
                 <Form style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <FormItem
-                    className={styles.inpcen}
+                    className='inpcen'
                     style={{ margin: 0, width: '40%', display: 'flex', alignItems: 'center' }}
                   >
                     {form.getFieldDecorator(dataIndex, {
@@ -241,7 +241,8 @@ class EditableTable extends PureComponent {
     });
   };
   componentDidMount() {
-    this.HandList();
+    // TODO:
+    // this.HandList();
   }
   onSave = () => {
     let { data, farmList, savedata, value } = this.state;
@@ -258,7 +259,7 @@ class EditableTable extends PureComponent {
         message.error(result.data.msg);
       } else {
         message.success(result.data.msg);
-        location.hash = '/threshold';
+        window.location.hash = '/threshold';
       }
     });
   };
@@ -293,7 +294,7 @@ class EditableTable extends PureComponent {
       };
     });
     return (
-      <PageHeaderWrapper>
+      <Fragment>
         <div style={{ background: '#fff', padding: '15px 0' }}>
           <Row
             gutter={8}
@@ -364,7 +365,7 @@ class EditableTable extends PureComponent {
             </Button>
           </div>
         </div>
-      </PageHeaderWrapper>
+      </Fragment>
     );
   }
 }

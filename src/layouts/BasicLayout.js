@@ -23,8 +23,8 @@ import Pricematerial from '../pages/Pricematerial/List';
 import PricematerialDetail from '../pages/Pricematerial/Pricematerialdetail';
 import RelatedFarms from '../pages/Relatedfarms/List';
 import RelatedFarmsEdit from '../pages/Relatedfarms/RelatedfarmsEdit';
-// import Threshold from './pages/Threshold/List';
-// import ThresholdEdit from './pages/Threshold/ThresholdEdit';
+import Threshold from '../pages/Threshold/List';
+import ThresholdEdit from '../pages/Threshold/ThresholdEdit';
 // import Admin from './pages/Administration/List';
 // import AdminEdit from './pages/Administration/AdminEdit';
 // import AdminAuthority from './pages/Administration/Authority';
@@ -161,9 +161,9 @@ class BasicLayout extends React.Component {
                 <Route path='/pricematerial/edit/:id/:orderId' component={PricematerialDetail} />
                 <Route exact path='/relatedfarms' component={RelatedFarms} />
                 <Route path='/relatedfarms/edit/:id' component={RelatedFarmsEdit} />
-                {/*<Route exact path='/threshold' component={Threshold} />
+                <Route exact path='/threshold' component={Threshold} />
                 <Route path='/threshold/edit/:id' component={ThresholdEdit} />
-                <Route exact path='/administration' component={Admin} />
+                {/*<Route exact path='/administration' component={Admin} />
                 <Route path='/administration/edit/:id' component={AdminEdit} />
                 <Route path='/administration/add' component={AdminEdit} />
                 <Route path='/administration/authority/:id' component={AdminAuthority} />
