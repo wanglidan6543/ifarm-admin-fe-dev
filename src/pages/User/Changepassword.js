@@ -1,7 +1,7 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import axios from 'axios';
 import E from 'wangeditor';
-import router from 'react-router';
+// import router from 'react-router';
 import {
   Form,
   Input,
@@ -17,19 +17,20 @@ import {
   message,
   Modal,
 } from 'antd';
-import PageHeaderWrapper from '../components/PageHeaderWrapper';
-import styles from './Changepassword.less';
+// import PageHeaderWrapper from '../components/PageHeaderWrapper';
+// import styles from './Changepassword.less';
+import './Changepassword.css';
 import { ROOT_PATH } from '../pathrouter';
 const FormItem = Form.Item;
 
 var jwt_token = window.localStorage.getItem('jwt_token');
-axios.defaults.headers.common['Authorization'] = jwt_token;
-if (!jwt_token || jwt_token.length < 32) {
-  location.hash = '/user/login';
-}
+// axios.defaults.headers.common['Authorization'] = jwt_token;
+// if (!jwt_token || jwt_token.length < 32) {
+//   location.hash = '/user/login';
+// }
 
-@Form.create()
-class BasicForms extends PureComponent {
+
+class Changepassword extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -71,7 +72,8 @@ class BasicForms extends PureComponent {
         } else {
           message.success(result.data.msg);
           // location.hash = '/administration';
-          router.push('/user/login');
+          // router.push('/user/login');
+          window.location.push('/user/login');
         }
       });
     }
@@ -130,12 +132,12 @@ class BasicForms extends PureComponent {
       icontyping,
     } = this.state;
     return (
-      <PageHeaderWrapper>
+      <Fragment>
         <Card bordered={false}>
           <Form hideRequiredMark style={{ marginTop: 8 }}>
             <FormItem
               label="原密码"
-              className={styles.form_input}
+              className='form_input'
               style={{ width: '40%', display: 'flex' }}
             >
               {getFieldDecorator('password', {
@@ -159,7 +161,7 @@ class BasicForms extends PureComponent {
             </FormItem>
             <FormItem
               label="新密码"
-              className={styles.form_input}
+              className='form_input'
               style={{ width: '40%', display: 'flex' }}
             >
               {getFieldDecorator('new_password', {
@@ -184,7 +186,7 @@ class BasicForms extends PureComponent {
             </FormItem>
             <FormItem
               label="确认密码"
-              className={styles.form_input}
+              className='form_input'
               style={{ width: '40%', display: 'flex' }}
             >
               {getFieldDecorator('confirm_password', {
@@ -234,9 +236,11 @@ class BasicForms extends PureComponent {
             </Button>
           </div>
         </Card>
-      </PageHeaderWrapper>
+      </Fragment>
     );
   }
 }
 
-export default BasicForms;
+Changepassword = Form.create()(Changepassword);
+
+export default Changepassword;

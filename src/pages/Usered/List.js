@@ -2,8 +2,8 @@ import React, { Component, Fragment } from 'react';
 import { Table, Button, Input, message, Popconfirm, Divider, Row, Col } from 'antd';
 
 import isEqual from 'lodash/isEqual';
-import styles from './List.less';
-import StandardTable from '../components/StandardTable'; // 分页显示
+// import styles from './List.less';
+import StandardTable from '../../components/StandardTable'; // 分页显示
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
 import { isNull } from 'util';
@@ -12,9 +12,9 @@ const Search = Input.Search;
 // ???
 var jwt_token = window.localStorage.getItem('jwt_token');
 axios.defaults.headers.common['Authorization'] = jwt_token;
-if (!jwt_token || jwt_token.length < 32) {
-  location.hash = '/user/login';
-}
+// if (!jwt_token || jwt_token.length < 32) {
+//   location.hash = '/user/login';
+// }
 
 const getValue = obj =>
   Object.keys(obj)
@@ -29,7 +29,8 @@ const rowSelection = {
 };
 const HEADPICURL =
   'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1555412492&di=d5d5a04572ede36ae3448f86a163e19e&src=http://img.zcool.cn/community/01786557e4a6fa0000018c1bf080ca.png@1280w_1l_2o_100sh.png';
-class TableForm extends Component {
+
+  class User extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -115,7 +116,7 @@ class TableForm extends Component {
     },
   ];
   editID = id => {
-    location.hash = '/usered/edit/' + id.uid;
+    window.location.hash = '/usered/edit/' + id.uid;
   };
   // 需改动
   ListShow = value => {
@@ -198,7 +199,7 @@ class TableForm extends Component {
     });
   };
   adminAdd = () => {
-    location.hash = '/usered/add';
+    window.location.hash = '/usered/add';
   };
   // 分页
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
@@ -330,4 +331,4 @@ class TableForm extends Component {
   }
 }
 
-export default TableForm;
+export default User;

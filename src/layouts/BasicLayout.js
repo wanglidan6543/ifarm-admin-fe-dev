@@ -28,9 +28,9 @@ import ThresholdEdit from '../pages/Threshold/ThresholdEdit';
 import Admin from '../pages/Administration/List';
 import AdminEdit from '../pages/Administration/AdminEdit';
 import AdminAuthority from '../pages/Administration/Authority';
-// import User from './pages/Usered/List';
-// import UserEdit from './pages/Usered/UseredAdd';
-// import ChangePwd from './pages/User/Changepassword';
+import User from '../pages/Usered/List';
+import UserEdit from '../pages/Usered/UseredAdd';
+import ChangePwd from '../pages/User/Changepassword';
 
 import GlobalFooter from '../components/GlobalFooter';
 import { Route, Switch } from 'react-router-dom';
@@ -167,10 +167,10 @@ class BasicLayout extends React.Component {
                 <Route path='/administration/edit/:id' component={AdminEdit} />
                 <Route path='/administration/add' component={AdminEdit} />
                 <Route path='/administration/authority/:id' component={AdminAuthority} />
-                {/*<Route exact path='/usered' component={User} />
+                <Route exact path='/usered' component={User} />
                 <Route path='/usered/add' component={UserEdit} />
                 <Route path='/usered/edit/:id' component={UserEdit} />
-                <Route path='/login/password' component={ChangePwd} /> */}
+                <Route path='/login/password' component={ChangePwd} />
               </Switch>
           </Content>
           <Footer style={{ padding: 0 }}>

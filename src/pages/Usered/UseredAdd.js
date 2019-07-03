@@ -14,17 +14,19 @@ import {
   Upload,
   Modal,
 } from 'antd';
-import PageHeaderWrapper from '../components/PageHeaderWrapper';
+// import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import axios from 'axios';
-import styles from './List.less';
+// import styles from './List.less';
+import './List.css';
+
 import { ROOT_PATH } from '../pathrouter';
 import { isNull } from 'util';
 
 var jwt_token = window.localStorage.getItem('jwt_token');
 axios.defaults.headers.common['Authorization'] = jwt_token;
-if (!jwt_token || jwt_token.length < 32) {
-  location.hash = '/user/login';
-}
+// if (!jwt_token || jwt_token.length < 32) {
+//   window.location.hash = '/user/login';
+// }
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -36,8 +38,7 @@ const getBase64 = (img, callback) => {
 const HEADPICURL =
   'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1555412492&di=d5d5a04572ede36ae3448f86a163e19e&src=http://img.zcool.cn/community/01786557e4a6fa0000018c1bf080ca.png@1280w_1l_2o_100sh.png';
 
-@Form.create()
-class TableForm extends PureComponent {
+class UserAdd extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -82,22 +83,26 @@ class TableForm extends PureComponent {
         this.setState({
           data: result.data.data,
         });
-        if(isNull(result.data.data.login_limit)){
-          result.data.data.login_limit = 1
+
+        let userData = result.data.data;
+        if (!userData) { return; }
+
+        if(isNull(userData.login_limit)){
+          userData.login_limit = 1
         }
-        if(isNull(result.data.data.realname)){
-          result.data.data.realname = ''
+        if(isNull(userData.realname)){
+          userData.realname = ''
         }
-        if (result.data.data.avatar_url === '') {
+        if (userData.avatar_url === '') {
           this.setState({
             imageUrl: HEADPICURL,
           });
         } else {
           this.setState({
-            imageUrl: result.data.data.avatar_url,
+            imageUrl: userData.avatar_url,
           });
         }
-        data.uid = result.data.data.uid;
+        data.uid = userData.uid;
       });
     }
   }
@@ -132,7 +137,7 @@ class TableForm extends PureComponent {
             message.error(result.data.msg);
           } else {
             message.success(result.data.msg);
-            location.hash = '/usered';
+            window.location.hash = '/usered';
           }
         });
       } else if (this.props.match.url === '/usered/add') {
@@ -153,7 +158,7 @@ class TableForm extends PureComponent {
             message.error(result.data.msg);
           } else {
             message.success(result.data.msg);
-            location.hash = '/usered';
+            window.hash = '/usered';
           }
         });
       }
@@ -192,6 +197,10 @@ class TableForm extends PureComponent {
     const {
       form: { getFieldDecorator, getFieldValue, isFieldTouched, getFieldError, isShow },
     } = this.props;
+
+    //TODO;
+    data = {};
+
     if (this.props.match.url === '/usered/edit/' + this.props.match.params.id) {
       if(isNull(data.login_limit)){
         data.login_limit = ''
@@ -199,7 +208,7 @@ class TableForm extends PureComponent {
       data.login_limit === 2 ? (limit = '非员工') : (limit = '员工');
       data.password = this.state.password;
     } else {
-      data.status === 0 ? '启用' : '禁用';
+      // data.status === 0 ? '启用' : '禁用';
       data.password = data.password;
     }
     const uploadButton = (
@@ -209,13 +218,13 @@ class TableForm extends PureComponent {
       </div>
     );
     return (
-      <PageHeaderWrapper>
+      <Fragment>
         <Form hideRequiredMark style={{ marginTop: 8, background: '#fff', padding: '30px 0' }}>
           {this.props.match.url === '/usered/edit/' + this.props.match.params.id ? (
             <FormItem
               name="number"
               label="ID"
-              className={styles.form_input}
+              className='form_input'
               style={{ width: '40%', display: 'flex', alignItems: 'center' }}
             >
               {getFieldDecorator('ID', {
@@ -252,7 +261,7 @@ class TableForm extends PureComponent {
           </FormItem> */}
           <FormItem
             label="用户名"
-            className={styles.form_input}
+            className='form_input'
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('username', {
@@ -274,7 +283,7 @@ class TableForm extends PureComponent {
           </FormItem>
           <FormItem
             label="昵称"
-            className={styles.form_input}
+            className='form_input'
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('昵称', {
@@ -296,7 +305,7 @@ class TableForm extends PureComponent {
           </FormItem>
           <FormItem
             label="手机号"
-            className={styles.form_input}
+            className='form_input'
             autoComplete="off"
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
@@ -319,7 +328,7 @@ class TableForm extends PureComponent {
           </FormItem>
           <FormItem
             label="默认邮箱"
-            className={styles.form_input}
+            className='form_input'
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('邮箱号', {
@@ -344,7 +353,7 @@ class TableForm extends PureComponent {
           </FormItem>
           <FormItem
             label="类型"
-            className={styles.form_input}
+            className='form_input'
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('data.login_limit', {
@@ -368,7 +377,7 @@ class TableForm extends PureComponent {
           </FormItem>
           <FormItem
             label="状态"
-            className={styles.form_input}
+            className='form_input'
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('data.status', {
@@ -402,9 +411,11 @@ class TableForm extends PureComponent {
             </Button>
           </div>
         </Form>
-      </PageHeaderWrapper>
+      </Fragment>
     );
   }
 }
 
-export default TableForm;
+UserAdd = Form.create()(UserAdd);
+
+export default UserAdd;
