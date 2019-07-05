@@ -1,5 +1,5 @@
 import { stringify } from 'qs';
-import request from '@/utils/request';
+import request from '../utils/request';
 import { ROOT_PATH } from '../pages/pathrouter';
 
 // 获取菜单数据

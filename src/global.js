@@ -1,6 +1,6 @@
 import React from 'react';
 import { notification, Button, message } from 'antd';
-import {tr} from './base/i18n';
+import {tr} from './common/i18n';
  
 import defaultSettings from './defaultSettings';
 

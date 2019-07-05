@@ -1,8 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Table, Button, Input, message, Popconfirm, Divider, Row, Col } from 'antd';
-
-import isEqual from 'lodash/isEqual';
-// import styles from './List.less';
+import { Button, Input, Row, Col } from 'antd';
 import StandardTable from '../../components/StandardTable'; // 分页显示
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
@@ -20,17 +17,11 @@ const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
     .join(',');
-const rowSelection = {
-  onChange: (selectedRowKeys, selectedRows) => {},
-  getCheckboxProps: record => ({
-    disabled: record.name === 'Disabled User', // Column configuration not to be checked
-    name: record.name,
-  }),
-};
+
 const HEADPICURL =
   'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1555412492&di=d5d5a04572ede36ae3448f86a163e19e&src=http://img.zcool.cn/community/01786557e4a6fa0000018c1bf080ca.png@1280w_1l_2o_100sh.png';
 
-  class User extends Component {
+class User extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -284,14 +275,9 @@ const HEADPICURL =
   render() {
     const {
       loading,
-      data,
       adminList,
       selectedRows,
-      datalisted,
-      station,
-      desabled,
       pagination,
-      key,
     } = this.state;
     return (
       <Fragment>

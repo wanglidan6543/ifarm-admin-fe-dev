@@ -132,26 +132,6 @@ export default {
 
   reducers: {
     save(state, action) {
-      // // 左侧菜单栏的判断显示隐藏
-      // if (window.localStorage.getItem('username') == '13972609591') {
-      //   // 周亮  文章管理+价格管理
-      //   action.payload.menuData.splice(2,6);
-      // }
-      // if (window.localStorage.getItem('username') == '13297989614') {
-      //   // 奚晓春 用户管理+全价料订单查询  13297989614
-      //   action.payload.menuData.splice(0, 2);
-      //   action.payload.menuData.splice(1, 3);
-      // }
-      // if (window.localStorage.getItem('username') == '15171001970') {
-      //   // 郑亚运 用户管理+全价料订单查询  15171001970
-      //   action.payload.menuData.splice(0, 2);
-      //   action.payload.menuData.splice(1, 3);
-      // }
-      // if (window.localStorage.getItem('username') == '15671286660') {
-      //   // 胡秀娥 用户管理+用户关联农场管理+农场指标阈值管理  15671286660
-      //   action.payload.menuData.splice(0, 3);
-      //   action.payload.menuData.splice(2, 1);
-      // }
       return {
         ...state,
         ...action.payload,

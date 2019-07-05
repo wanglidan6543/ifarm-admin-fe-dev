@@ -9,17 +9,17 @@
   }
 }
 
-.ant-tabs .ant-tabs-bar {
+.main .ant-tabs .ant-tabs-bar {
   margin-bottom: 24px;
   text-align: center;
   border-bottom: 0;
 }
 
-.ant-form-item {
+.main .ant-form-item {
   margin: 0 2px 24px;
 }
 
-.submit {
+.login-btn {
   width: 100%;
   margin-top: 24px;
 }

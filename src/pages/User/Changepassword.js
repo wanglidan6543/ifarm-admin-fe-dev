@@ -1,26 +1,18 @@
 import React, { PureComponent, Fragment } from 'react';
 import axios from 'axios';
-import E from 'wangeditor';
-// import router from 'react-router';
-import {
+import { 
   Form,
   Input,
-  DatePicker,
-  Select,
   Button,
   Card,
-  InputNumber,
-  Radio,
   Icon,
-  Tooltip,
-  Upload,
   message,
-  Modal,
 } from 'antd';
-// import PageHeaderWrapper from '../components/PageHeaderWrapper';
+
+import { ROOT_PATH } from '../pathrouter';
 // import styles from './Changepassword.less';
 import './Changepassword.css';
-import { ROOT_PATH } from '../pathrouter';
+
 const FormItem = Form.Item;
 
 var jwt_token = window.localStorage.getItem('jwt_token');
@@ -28,7 +20,6 @@ var jwt_token = window.localStorage.getItem('jwt_token');
 // if (!jwt_token || jwt_token.length < 32) {
 //   location.hash = '/user/login';
 // }
-
 
 class Changepassword extends PureComponent {
   constructor(props) {
@@ -78,6 +69,7 @@ class Changepassword extends PureComponent {
       });
     }
   };
+
   eyeone = () => {
     if (this.state.types === 'password' || this.state.icontype === 'eye-invisible') {
       this.setState({
@@ -91,6 +83,7 @@ class Changepassword extends PureComponent {
       });
     }
   };
+
   eyetwo = () => {
     if (this.state.typed === 'password' || this.state.icontyped === 'eye-invisible') {
       this.setState({
@@ -104,6 +97,7 @@ class Changepassword extends PureComponent {
       });
     }
   };
+
   eyethree = () => {
     if (this.state.typing === 'password' || this.state.icontyping === 'eye-invisible') {
       this.setState({
@@ -117,10 +111,12 @@ class Changepassword extends PureComponent {
       });
     }
   };
+
   render() {
     const {
       form: { getFieldDecorator, getFieldValue },
     } = this.props;
+
     let {
       changepassword,
       isShow,
@@ -131,6 +127,7 @@ class Changepassword extends PureComponent {
       icontyped,
       icontyping,
     } = this.state;
+
     return (
       <Fragment>
         <Card bordered={false}>
@@ -227,7 +224,7 @@ class Changepassword extends PureComponent {
             <Button
               style={{ width: '20%', height: '50px' }}
               type="primary"
-              size="large "
+              size="large"
               onClick={() => {
                 this.onSave();
               }}

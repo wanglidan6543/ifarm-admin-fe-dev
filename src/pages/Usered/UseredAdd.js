@@ -1,24 +1,15 @@
 import React, { PureComponent, Fragment } from 'react';
 import {
   Form,
-  Table,
   Button,
   Input,
   message,
-  Divider,
-  Row,
-  Col,
   Select,
-  Card,
   Icon,
-  Upload,
-  Modal,
 } from 'antd';
 // import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import axios from 'axios';
-// import styles from './List.less';
 import './List.css';
-
 import { ROOT_PATH } from '../pathrouter';
 import { isNull } from 'util';
 
@@ -193,9 +184,9 @@ class UserAdd extends PureComponent {
     }
   }
   render() {
-    let { data, isPnone, previewVisible, imageUrl, fileList, limit } = this.state;
+    let { data, limit } = this.state;
     const {
-      form: { getFieldDecorator, getFieldValue, isFieldTouched, getFieldError, isShow },
+      form: { getFieldDecorator },
     } = this.props;
 
     //TODO;
@@ -238,27 +229,6 @@ class UserAdd extends PureComponent {
           ) : (
             ''
           )}
-          {/* <FormItem
-            label="头像"
-            className={styles.form_input}
-            style={{ width: '40%', display: 'flex', alignItems: 'center' }}
-          >
-            <Upload
-              name="file"
-              listType="picture-card"
-              className="avatar-uploader"
-              showUploadList={false}
-              action={ROOT_PATH + '/api/backend/v1/file_upload'}
-              beforeUpload={this.beforeUpload}
-              onChange={this.handleChange}
-            >
-              {imageUrl ? (
-                <img style={{ width: '80px', height: '80px' }} src={imageUrl} alt="avatar" />
-              ) : (
-                uploadButton
-              )}
-            </Upload>
-          </FormItem> */}
           <FormItem
             label="用户名"
             className='form_input'

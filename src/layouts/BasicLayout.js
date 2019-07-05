@@ -4,17 +4,22 @@ import DocumentTitle from 'react-document-title';
 // import { connect } from 'dva';
 import { connect } from 'react-redux';
 import { ContainerQuery } from 'react-container-query';
-import classNames from 'classnames';
 import Media from 'react-media';
 import logo from '../assets/logo.png';
-// import Footer from './Footer';
 import Header from './Header';
-import Context from './MenuContext';
-import PageLoading from '../components/PageLoading';
 import SiderMenu from '../components/SiderMenu';
-import getPageTitle from '../utils/getPageTitle';
-// import styles from './BasicLayout.less';
+// import getPageTitle from '../utils/getPageTitle';
+import GlobalFooter from '../components/GlobalFooter';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import './BasicLayout.css';
+
+import UserLayout from './UserLayout';
+
+import { requestMenuData } from '../services/api';
+import axios from 'axios';
+import { ROOT_PATH } from '../pages/pathrouter';
+import { tr } from '../common/i18n';
+
 import Home from '../pages/Home/List';
 import ArticleList from '../pages/Article/List';
 import ArticleEdit from '../pages/Article/ArticleEdit';
@@ -32,15 +37,11 @@ import User from '../pages/Usered/List';
 import UserEdit from '../pages/Usered/UseredAdd';
 import ChangePwd from '../pages/User/Changepassword';
 
-import GlobalFooter from '../components/GlobalFooter';
-import { Route, Switch } from 'react-router-dom';
+import Authorized from '../utils/Authorized';
+import defaultSetting from '../defaultSettings';
 
-const { Footer } = Layout;
-
-// lazy load SettingDrawer
-// const SettingDrawer = React.lazy(() => import('../components/SettingDrawer'));
-
-const { Content } = Layout;
+const { Footer, Content} = Layout;
+const { check } = Authorized;
 
 const query = {
   'screen-xs': {
@@ -68,33 +69,143 @@ const query = {
 };
 
 class BasicLayout extends React.Component {
-  // componentDidMount() {
-  //   const {
-  //     dispatch,
-  //     route: { routes, authority },
-  //   } = this.props;
-  //   dispatch({
-  //     type: 'user/fetchCurrent',
-  //   });
-  //   dispatch({
-  //     type: 'setting/getSetting',
-  //   });
-  //   dispatch({
-  //     type: 'menu/getMenuData',
-  //     payload: { routes, authority },
-  //   });
-  // }
 
-  getContext() {
-    const { location, breadcrumbNameMap } = this.props;
-    return {
-      location,
-      breadcrumbNameMap,
-    };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      collapsed: false,
+      menuData: [],
+      breadcrumbNameMap: {},
+      currentUser: {},
+      setting: defaultSetting
+    }
   }
 
+  componentDidMount() {
+    // user/fetchCurrent
+    this.getCurrentUser();
+
+    // meun/getMenuData
+    this.getMenuData();
+  }
+
+  getCurrentUser(params) {
+    axios.get(
+      ROOT_PATH + `/api/backend/v1/user/info?${JSON.stringify(params)}`,
+      {
+      headers: { Authorization: window.localStorage.getItem('jwt_token')  }
+      }
+      )
+      .then(res => {
+        console.log('getCurrentUser');
+        console.log(res);
+        this.setState({
+          currentUser: res.data.data
+        })
+      })
+  }
+
+  getMenuData() {
+    axios.get(
+       `${ROOT_PATH}/api/backend/v1/menu`,
+       {
+        headers: { Authorization: window.localStorage.getItem('jwt_token')  }
+        }
+       )
+       .then(res => {
+        console.log('getMenuData');
+         console.log(res);
+  
+         let originalMenuData = this.formatter(res.data.data);
+         const menuData = this.filterMenuData(originalMenuData);
+  
+         const breadcrumbNameMap = this.getBreadcrumbNameMap(originalMenuData);
+  
+         this.setState({
+           menuData,
+           breadcrumbNameMap
+         });
+       }) 
+    }
+
+  formatter = (data, parentAuthority, parentName) => {
+    if (!data) {
+      return null;
+    }
+    return data.map(item => {
+      if (!item.name || !item.path) {
+        return null;
+      }
+
+      let locale = 'menu';
+      if (parentName) {
+        locale = `${parentName}.${item.name}`;
+      } else {
+        locale = `menu.${item.name}`;
+      }
+      // if enableMenuLocale use item.name,
+      // close menu international
+      const name = item.name;
+      const result = {
+        ...item,
+        name,
+        locale,
+        authority: item.authority || parentAuthority,
+      };
+      if (item.routes) {
+        const children = this.formatter(item.routes, item.authority, locale);
+        // Reduce memory usage
+        result.children = children;
+      }
+      delete result.routes;
+      return result;
+    })
+    .filter(item => item);      
+  }
+
+  getSubMenu = item => {
+    // doc: add hideChildrenInMenu
+    if (item.children && !item.hideChildrenInMenu && item.children.some(child => child.name)) {
+      return {
+        ...item,
+        children: filterMenuData(item.children), // eslint-disable-line
+      };
+    }
+    return item;
+  };
+
+  filterMenuData = menuData => {
+    if (!menuData) { 
+      return [];
+    }
+    return menuData
+      .filter(item => item.name && !item.hideInMenu)
+      .map(item => check(item.authority, this.getSubMenu(item)))
+      .filter(item => item);
+  };
+
+  getBreadcrumbNameMap = menuData => {
+    if (!menuData) {
+      return {};
+    }
+    const routerMap = {};
+  
+    const flattenMenuData = data => {
+      data.forEach(menuItem => {
+        if (menuItem.children) {
+          flattenMenuData(menuItem.children);
+        }
+        // Reduce memory usage
+        routerMap[menuItem.path] = menuItem;
+      });
+    };
+    flattenMenuData(menuData);
+    return routerMap;
+  };
+
   getLayoutStyle = () => {
-    const { fixSiderbar, isMobile, collapsed, layout } = this.props;
+    const { fixSiderbar, isMobile, collapsed, layout } = this.state;
     if (fixSiderbar && layout !== 'topmenu' && !isMobile) {
       return {
         paddingLeft: collapsed ? '80px' : '256px',
@@ -115,13 +226,10 @@ class BasicLayout extends React.Component {
     const {
       navTheme,
       layout: PropsLayout,
-      children,
-      location,
       isMobile,
       menuData,
-      breadcrumbNameMap,
       fixedHeader,
-    } = this.props;
+    } = this.state;
 
     const isTop = PropsLayout === 'topmenu';
     const contentStyle = !fixedHeader ? { paddingTop: 0 } : {};
@@ -199,9 +307,7 @@ class BasicLayout extends React.Component {
         <DocumentTitle title="系统首页">
           <ContainerQuery query={query}>
             {params => (
-              <Context.Provider value={this.getContext()}>
-                <div className={classNames(params)}>{layout}</div>
-              </Context.Provider>
+              <div className={params}>{layout}</div>
             )}
           </ContainerQuery>
         </DocumentTitle>
@@ -209,7 +315,7 @@ class BasicLayout extends React.Component {
     );
   }
 }
-export default BasicLayout;
+// export default BasicLayout;
 
 // export default connect(({ global, setting, menu: menuModel }) => ({
 //   collapsed: global.collapsed,
@@ -222,3 +328,19 @@ export default BasicLayout;
 //     {isMobile => <BasicLayout {...props} isMobile={isMobile} />}
 //   </Media>
 // ));
+
+// function mapStateToProps(state) {
+//   return {
+//     collapsed: state.global.collapsed,
+//     layout: state.setting.layout,
+//     menuData: state.menu.menuData,
+//     breadcrumbNameMap: state.menu.breadcrumbNameMap,
+//     ...state.setting,
+//   }
+// }
+
+export default connect()(props => (
+  <Media query="(max-width: 599px)">
+    {isMobile => <BasicLayout {...props} isMobile={isMobile} />}
+  </Media>
+));

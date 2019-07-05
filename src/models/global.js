@@ -1,12 +1,47 @@
-import { queryNotices } from '@/services/api';
+// import { queryNotices } from '../services/api';
 
+const ChANGE_LAYOUT_COLLAPSED = 'changeLayoutCollapsed';
+const SAVE_NOTICES = 'saveNotices';
+const SAVE_CLEARED_NOTICES = 'saveClearedNotices';
+
+const actionHandles = {
+  ChANGE_LAYOUT_COLLAPSED: (state, { payload }) =>{
+    return {
+      ...state,
+      collapsed: payload,
+    };
+  },
+  SAVE_NOTICES: (state, { payload }) =>{
+    return {
+      ...state,
+      notices: payload,
+    };
+  },
+  SAVE_CLEARED_NOTICES: (state, { payload }) =>{
+    return {
+      ...state,
+      notices: state.notices.filter(item => item.type !== payload),
+    };
+  },
+}
+
+// ------------------------------------
+// Reducer
+// ------------------------------------
+const initialState = {
+  collapsed: false,
+  notices: [],
+};
+
+export default global = (state = initialState, action) => {
+  const handler = actionHandles[action.type]
+
+  return handler ? handler(state, action) : state
+}
+
+/*
 export default {
   namespace: 'global',
-
-  state: {
-    collapsed: false,
-    notices: [],
-  },
 
   effects: {
     *fetchNotices(_, { call, put, select }) {
@@ -68,24 +103,7 @@ export default {
   },
 
   reducers: {
-    changeLayoutCollapsed(state, { payload }) {
-      return {
-        ...state,
-        collapsed: payload,
-      };
-    },
-    saveNotices(state, { payload }) {
-      return {
-        ...state,
-        notices: payload,
-      };
-    },
-    saveClearedNotices(state, { payload }) {
-      return {
-        ...state,
-        notices: state.notices.filter(item => item.type !== payload),
-      };
-    },
+    
   },
 
   subscriptions: {
@@ -99,3 +117,4 @@ export default {
     },
   },
 };
+*/
