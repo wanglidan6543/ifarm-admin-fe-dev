@@ -6,12 +6,12 @@ import { ROOT_PATH } from '../pathrouter';
 import { isNull } from 'util';
 
 const Search = Input.Search;
-// ???
+
 var jwt_token = window.localStorage.getItem('jwt_token');
 axios.defaults.headers.common['Authorization'] = jwt_token;
-// if (!jwt_token || jwt_token.length < 32) {
-//   location.hash = '/user/login';
-// }
+if (!jwt_token || jwt_token.length < 32) {
+  window.location.hash = '/user/login';
+}
 
 const getValue = obj =>
   Object.keys(obj)
@@ -36,6 +36,7 @@ class User extends Component {
       desabled: [],
       formValues: {},
       searchval: '',
+      loading: true,
       pagination: {
         total: 0, // 总数量
         enable_total: 0, // 启用数量
@@ -106,20 +107,33 @@ class User extends Component {
       ),
     },
   ];
+
   editID = id => {
     window.location.hash = '/usered/edit/' + id.uid;
   };
+
   // 需改动
-  ListShow = value => {
+  getUserList = value => {
+    const params = {
+      search: value,
+      currentPage: this.state.currentPage,
+      pageSize: this.state.pageSize,
+    };
+    this.updateData(params);
+  };
+
+  updateData(params) {
+    this.setState({
+      loading: true
+    });
     axios({
       url: ROOT_PATH + '/api/backend/v1/users',
       method: 'GET',
-      params: {
-        search: value,
-        currentPage: this.state.currentPage,
-        pageSize: this.state.pageSize,
-      },
+      params: params,
     }).then(result => {
+      this.setState({
+        loading: false
+      });
       if (result.data.error === 0) {
         result.data.list.map((item, index) => {
           if (item.avatar_url === '') {
@@ -179,19 +193,23 @@ class User extends Component {
         });
       }
     });
-  };
-  componentDidMount() {
-    this.ListShow();
   }
+
+  componentDidMount() {
+    this.getUserList();
+  }
+
   onsearchVal = value => {
-    this.ListShow(value);
+    this.getUserList(value);
     this.setState({
       searchval: value,
     });
   };
+
   adminAdd = () => {
     window.location.hash = '/usered/add';
   };
+
   // 分页
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
     const { loading, data, adminList, selectedRows, datalisted, station, desabled } = this.state;
@@ -213,57 +231,8 @@ class User extends Component {
     if (sorter.field) {
       params.sorter = `${sorter.field}_${sorter.order}`;
     }
-    axios({
-      url: ROOT_PATH + '/api/backend/v1/users',
-      method: 'GET',
-      params: params,
-    }).then(result => {
-      if (result.data.error === 0) {
-        result.data.list.map(item => {
-          item.avatar_url === ''
-            ? (item.avatar_url = HEADPICURL)
-            : (item.avatar_url = item.avatar_url);
-          item.update_time === ''
-            ? (item.update_time = '--')
-            : (item.update_time = item.update_time);
-          if (item.realname === '') {
-            item.realname = '--';
-          } else {
-            item.realname = item.realname;
-          }
-          if (isNull(item.realname)) {
-            item.realname = '--';
-          } else {
-            item.realname = item.realname;
-          }
-          if (isNull(item.tel_mobile)) {
-            item.tel_mobile = '--';
-          } else {
-            item.tel_mobile = item.tel_mobile;
-          }
-          if (item.tel_mobile === '') {
-            item.tel_mobile = '--';
-          } else {
-            item.tel_mobile = item.tel_mobile;
-          }
-          if (isNull(item.email)) {
-            item.email = '--';
-          } else {
-            item.email = item.email;
-          }
-          if (item.email === '') {
-            item.email = '--';
-          } else {
-            item.email = item.email;
-          }
-        });
-      }
-      this.setState({
-        adminList: result.data,
-        datalisted: result.data.list,
-        pagination: result.data.pagination,
-      });
-    });
+
+    this.updateData(params);
   };
 
   handleSelectRows = rows => {

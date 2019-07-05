@@ -1,32 +1,22 @@
 import React, { Component, Fragment } from 'react';
 import { Table, Button, Input, message, Popconfirm, Divider, Row, Col } from 'antd';
-
-// import isEqual from 'lodash/isEqual';
-// import styles from './List.less';
 import StandardTable from '../../components/StandardTable'; // 分页显示
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
-// import { timingSafeEqual } from 'crypto';
 
 const Search = Input.Search;
 
 var jwt_token = window.localStorage.getItem('jwt_token');
 axios.defaults.headers.common['Authorization'] = jwt_token;
-// if (!jwt_token || jwt_token.length < 32) {
-//   window.location.hash = '/user/login';
-// }
+if (!jwt_token || jwt_token.length < 32) {
+  window.location.hash = '/user/login';
+}
 
 const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
     .join(',');
-const rowSelection = {
-  onChange: (selectedRowKeys, selectedRows) => {},
-  getCheckboxProps: record => ({
-    disabled: record.name === 'Disabled User', // Column configuration not to be checked
-    name: record.name,
-  }),
-};
+
 class Admin extends Component {
   constructor(props) {
     super(props);
@@ -42,6 +32,7 @@ class Admin extends Component {
       desabled: [],
       formValues: {},
       searchval: '',
+      loading: true,
       pagination: {
         total: 0, // 总数量
         enable_total: 0, // 启用数量
@@ -113,64 +104,65 @@ class Admin extends Component {
       ),
     },
   ];
+
   authOrity = id => {
     // location.hash = '/administration/authority/' + id.uid;
   }
+
   editID = id => {
     window.location.hash = '/administration/edit/' + id.uid;
   };
+
   // 需改动
-  ListShow = value => {
+  getAdminList = value => {
+    const params = {
+      search: value,
+      currentPage: this.state.currentPage,
+      pageSize: this.state.pageSize,
+    }
+    this.updateData(params);
+  };
+
+  updateData(params) {
+    this.setState({
+      loading: true,
+    })
     axios({
       url: ROOT_PATH + '/api/backend/v1/admin_users',
       method: 'GET',
-      params: {
-        search: value,
-        currentPage: this.state.currentPage,
-        pageSize: this.state.pageSize,
-      },
+      params: params
     }).then(result => {
-      const { station, desabled } = this.state;
-      if(result.data.error === 0){
-        result.data.list.map(item => {
-          if (item.status === 0) {
-            station.push(item.status);
-          }
-          if (item.status === 1) {
-            desabled.push(item.status);
-          }
+      if (result.data.error === 0) {
+        this.setState({
+          loading: false,
         });
         this.setState({
           adminList: result.data,
           datalisted: result.data.list,
-          pagination: this.state.pagination,
-        });
-      } else {
-        this.setState({
-          adminList: [],
-          datalisted: [],
-          pagination: result.data.pagination
+          pagination: result.data.pagination,
         });
       }
     });
-  };
-  componentDidMount() {
-    // TODO:
-    // this.ListShow();
   }
+
+  componentDidMount() {
+    this.getAdminList();
+  }
+
   onsearchVal = value => {
-    this.ListShow(value);
+    this.getAdminList(value);
     this.setState({
       searchval: value,
     });
   };
+
   // 新建管理员
   adminAdd = () => {
     window.location.hash = '/administration/add';
   };
+
   // 分页
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
-    const { loading, data, adminList, selectedRows, datalisted, station, desabled } = this.state;
     const { formValues } = this.state;
 
     const filters = Object.keys(filtersArg).reduce((obj, key) => {
@@ -189,17 +181,7 @@ class Admin extends Component {
     if (sorter.field) {
       params.sorter = `${sorter.field}_${sorter.order}`;
     }
-    axios({
-      url: ROOT_PATH + '/api/backend/v1/admin_users',
-      method: 'GET',
-      params: params,
-    }).then(result => {
-      this.setState({
-        adminList: result.data,
-        datalisted: result.data.list,
-        pagination: result.data.pagination,
-      });
-    });
+    this.updateData(params);
   };
 
   handleSelectRows = rows => {
@@ -209,16 +191,7 @@ class Admin extends Component {
   };
 
   render() {
-    const {
-      loading,
-      data,
-      adminList,
-      selectedRows,
-      datalisted,
-      station,
-      desabled,
-      pagination,
-    } = this.state;
+    const { loading, adminList, selectedRows, pagination } = this.state;
     return (
       <Fragment>
         <Row style={{ paddingBottom: '10px' }}>

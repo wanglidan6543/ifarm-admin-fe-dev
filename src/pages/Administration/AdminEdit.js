@@ -1,16 +1,16 @@
 import React, { PureComponent, Fragment } from 'react';
-import { Form, Table, Button, Input, message, Divider, Row, Col, Select, Card, Icon } from 'antd';
+import { Form, Button, Input, message, Select} from 'antd';
 // import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import axios from 'axios';
-import styles from './List.less';
-import './List.css';
 import { ROOT_PATH } from '../pathrouter';
+import './List.css';
 
 var jwt_token = window.localStorage.getItem('jwt_token');
-// axios.defaults.headers.common['Authorization'] = jwt_token;
-// if (!jwt_token || jwt_token.length < 32) {
-//   location.hash = '/user/login';
-// }
+axios.defaults.headers.common['Authorization'] = jwt_token;
+if (!jwt_token || jwt_token.length < 32) {
+  window.location.hash = '/user/login';
+}
+
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -50,12 +50,13 @@ class AdminEdit extends PureComponent {
   }
   onSave = () => {
     let { userShow } = this.state;
-    let user = new RegExp(/^[\u4e00-\u9fa5A-Za-z0-9-]{1,30}$/);
-    let phone = new RegExp(/^[1][3,4,5,7,8][0-9]{9}$/);
+    // let user = new RegExp(/^[\u4e00-\u9fa5A-Za-z0-9-]{1,30}$/);
+    let phone = new RegExp(/^[1][3,4,5,6,7,8,9][0-9]{9}$/);
     let pasd = new RegExp(/^[\w]{8,12}$/);
-    if (!user.test(userShow.realname) || userShow.realname === '') {
-      message.error('用户名输入有误');
-    } else if (!phone.test(userShow.tel_mobile || userShow.tel_mobile === '')) {
+    // if (!user.test(userShow.realname) || userShow.realname === '') {
+    //   message.error('用户名输入有误');
+    // } else 
+    if (!phone.test(userShow.tel_mobile || userShow.tel_mobile === '')) {
       message.error('手机号输入有误');
     } else {
       if (this.props.match.url === '/administration/edit/' + this.props.match.params.id) {
@@ -102,6 +103,7 @@ class AdminEdit extends PureComponent {
       }
     }
   };
+
   pswd = () => {
     let { userShow } = this.state;
     userShow.password = '1234qwer';
@@ -110,10 +112,11 @@ class AdminEdit extends PureComponent {
       userShow: { ...userShow },
     });
   };
+
   render() {
-    let { userShow, isPnone, desable } = this.state;
+    let { userShow, desable } = this.state;
     const {
-      form: { getFieldDecorator, getFieldValue, isFieldTouched, getFieldError, isShow, password },
+      form: { getFieldDecorator },
     } = this.props;
 
     if (this.props.match.url === '/administration/edit/' + this.props.match.params.id) {
@@ -156,13 +159,13 @@ class AdminEdit extends PureComponent {
           >
             {getFieldDecorator('userShow.realname', {
               initialValue: userShow ? userShow.realname : '',
-              rules: [
-                {
-                  required: true,
-                  pattern: new RegExp(/^[\u4e00-\u9fa5A-Za-z0-9-]{1,30}$/),
-                  message: '用户名最多为30为、字母、数字、汉字',
-                },
-              ],
+              // rules: [
+              //   {
+              //     required: true,
+              //     pattern: new RegExp(/^[\u4e00-\u9fa5A-Za-z0-9-]{1,30}$/),
+              //     message: '用户名最多为30为、字母、数字、汉字',
+              //   },
+              // ],
             })(
               <Input
                 onChange={event => {
@@ -183,7 +186,6 @@ class AdminEdit extends PureComponent {
                   required: true,
                   pattern: new RegExp(
                     /^([a-zA-Z0-9_-]{1,16})@([a-zA-Z0-9]{1,9})(\.(?:com|net|org|edu|gov|mil|cn|us))$/
-                    // /^([\u4e00-\u9fa5]{1,15},){0,}([\u4e00-\u9fa5]{1,15})$/
                   ),
                   message: '请输入正确的邮箱号',
                   len: 50,
@@ -208,7 +210,7 @@ class AdminEdit extends PureComponent {
               rules: [
                 {
                   required: true,
-                  pattern: new RegExp(/^[1][3,4,5,7,8][0-9]{9}$/),
+                  pattern: new RegExp(/^[1][3,4,5,6,7,8,9][0-9]{9}$/),
                   message: '请输入正确的手机号',
                 },
               ],
@@ -239,9 +241,6 @@ class AdminEdit extends PureComponent {
                 disabled={desable}
                 onChange={event => {
                   userShow.password = event.target.value;
-                  // this.setState({
-                  //   userShow: { ...userShow },
-                  // });
                 }}
               />
             )}

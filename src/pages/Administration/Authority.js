@@ -1,16 +1,15 @@
 import React, { PureComponent, Fragment } from 'react';
-import { Form, Table, Button, Input, message, Divider, Row, Col, Select, Card, Icon,Transfer } from 'antd';
+import { Form, Button, Select, Transfer } from 'antd';
 // import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import axios from 'axios';
-// import styles from './List.less';
 import './List.css';
-// import { ROOT_PATH } from '../pathrouter';
 
 var jwt_token = window.localStorage.getItem('jwt_token');
 axios.defaults.headers.common['Authorization'] = jwt_token;
-// if (!jwt_token || jwt_token.length < 32) {
-//   location.hash = '/user/login';
-// }
+if (!jwt_token || jwt_token.length < 32) {
+  window.location.hash = '/user/login';
+}
+
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -51,7 +50,7 @@ class Authority extends PureComponent {
   
   render() {
     const {
-      form: { getFieldDecorator, getFieldValue, isFieldTouched, getFieldError, isShow, password },
+      form: { getFieldDecorator },
     } = this.props;
     return (
       <Fragment>

@@ -5,21 +5,26 @@ import {
   Input,
   message,
   Select,
-  Icon,
+  Checkbox,
+  List,
+  Collapse,
 } from 'antd';
+
 // import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import axios from 'axios';
-import './List.css';
 import { ROOT_PATH } from '../pathrouter';
 import { isNull } from 'util';
+import './List.css';
 
 var jwt_token = window.localStorage.getItem('jwt_token');
 axios.defaults.headers.common['Authorization'] = jwt_token;
-// if (!jwt_token || jwt_token.length < 32) {
-//   window.location.hash = '/user/login';
-// }
+if (!jwt_token || jwt_token.length < 32) {
+  window.location.hash = '/user/login';
+}
+
 const Option = Select.Option;
 const FormItem = Form.Item;
+const Panel = Collapse.Panel;
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -45,6 +50,7 @@ class UserAdd extends PureComponent {
         tel_mobile: '', // 手机号
         status: 0, // 状态。0启用  1禁用
         login_limit: '', // 登陆类型。1员工   2非员工
+        role_ids: [],
       },
       isShow: false,
       isPnone: false,
@@ -59,10 +65,14 @@ class UserAdd extends PureComponent {
           url: '',
         },
       ],
+      UserIdentity: [],
+      userSize: '编辑',
     };
   }
+
   componentDidMount() {
     let { data } = this.state;
+    this.restUser();
     if (this.props.match.url === '/usered/edit/' + this.props.match.params.id) {
       axios({
         url: ROOT_PATH + '/api/backend/v1/user',
@@ -97,16 +107,19 @@ class UserAdd extends PureComponent {
       });
     }
   }
+
   onSave = () => {
     let { data } = this.state;
-    let user = new RegExp(/^[\u4e00-\u9fa5A-Za-z0-9-_]{1,30}$/); // 用户名
-    let realname = new RegExp(/^[\u4e00-\u9fa5A-Za-z0-9-]{1,30}$/); // 昵称
-    let phone = new RegExp(/^[1][3,4,5,7,8][0-9]{9}$/); // 手机号
-    if (!user.test(data.username) || data.username === '') {
-      message.error('用户名输入有误');
-    } else if (!realname.test(data.realname) || data.realname === '') {
-      message.error('昵称输入有误');
-    } else if (!phone.test(data.tel_mobile || data.tel_mobile === '')) {
+    // let user = new RegExp(/^[\u4e00-\u9fa5A-Za-z0-9-_]{1,30}$/); // 用户名
+    // let realname = new RegExp(/^[\u4e00-\u9fa5A-Za-z0-9-]{1,30}$/); // 昵称
+    let phone = new RegExp(/^[1][3,4,5,6,7,8,9][0-9]{9}$/); // 手机号
+
+    // if (!user.test(data.username) || data.username === '') {
+    //   message.error('用户名输入有误');
+    // } else if (!realname.test(data.realname) || data.realname === '') {
+    //   message.error('昵称输入有误');
+    // } else 
+    if (!phone.test(data.tel_mobile || data.tel_mobile === '')) {
       message.error('手机号输入有误');
     } else {
       if (this.props.match.url === '/usered/edit/' + this.props.match.params.id) {
@@ -132,6 +145,10 @@ class UserAdd extends PureComponent {
           }
         });
       } else if (this.props.match.url === '/usered/add') {
+        let arr = [];
+        data.role_ids.forEach(item => {
+          arr.push(item.role_id);
+        });
         axios({
           url: ROOT_PATH + '/api/backend/v1/user',
           method: 'POST',
@@ -143,6 +160,7 @@ class UserAdd extends PureComponent {
             tel_mobile: data.tel_mobile, // 手机号
             status: data.status, // 状态。0启用  1禁用
             login_limit: data.login_limit, // 登陆类型。1员工   2非员工
+            role_ids: arr,
           },
         }).then(result => {
           if (result.data.error !== 0) {
@@ -155,6 +173,7 @@ class UserAdd extends PureComponent {
       }
     }
   };
+
   handleChange = info => {
     if (info.file.status === 'uploading') {
       this.setState({ loading: true });
@@ -171,6 +190,7 @@ class UserAdd extends PureComponent {
       );
     }
   };
+
   beforeUpload(file) {
     const isPng = file.type;
     if (isPng != 'image/png' && isPng != 'image/jpeg') {
@@ -183,31 +203,122 @@ class UserAdd extends PureComponent {
       return false;
     }
   }
+  // 多选框选中和没选中的情况下，选中添加，取消删除
+  onCheckout = (value, index, e, arr) => {
+    let check = e.target.checked;
+    let { data } = this.state;
+    arr[index].indeterminate = !arr[index].indeterminate;
+    this.setState({
+      UserIdentity: [...arr],
+    });
+  };
+
+  restUser = () => {
+    let { data, UserIdentity, userSize, listed } = this.state;
+    axios({
+      url: ROOT_PATH + '/api/backend/v1/user/roles',
+      method: 'GET',
+    }).then(result => {
+      result.data.data.forEach(item => {
+        item.indeterminate = false;
+      });
+      UserIdentity = result.data.data.map((item, value) => {
+        data.role_ids.map((value, index) => {
+          if (item.name === value.role_name) {
+            item.indeterminate = true;
+          }
+        });
+        return item;
+      });
+      this.setState({
+        UserIdentity,
+      });
+    });
+  };
+
+  // 删除操作
+  deled = (value, index) => {
+    let { data, UserIdentity } = this.state;
+    data.role_ids.splice(index, 1);
+    UserIdentity.forEach((item, index) => {
+      if (value.role_name === item.name) {
+        UserIdentity.splice(index, 1);
+      }
+    });
+    this.restUser();
+    this.setState({
+      data: { ...data },
+    });
+  };
+
+  //确定事件
+  userChange = key => {
+    let { data, UserIdentity } = this.state;
+    this.restUser();
+    if (key.length == 0) {
+      this.state.UserIdentity.forEach((item, index) => {
+        if (item.indeterminate) {
+          let object = {
+            role_name: item.name,
+            role_id: item.role_id,
+          };
+          var allArr = []; //新数组
+          if (data.role_id.length > 0) {
+            for (var i = 0; i < data.role_ids.length; i++) {
+              var flag = true;
+              if (data.role_ids[i].role_name === object.role_name) {
+                flag = false;
+                allArr.push(flag);
+              } else {
+                flag = true;
+                allArr.push(flag);
+              }
+            }
+            flag = allArr.every(item => {
+              return item === true;
+            });
+            if (flag) {
+              data.role_ids.push(object);
+            }
+          } else {
+            data.role_ids.push(object);
+          }
+        } else {
+          data.role_ids.splice(index);
+        }
+      });
+      this.setState({
+        data: { ...data },
+        userSize: '编辑',
+      });
+    } else {
+      this.setState({
+        userSize: '确定',
+      });
+    }
+  };
+
   render() {
-    let { data, limit } = this.state;
+    let {
+      data,
+      UserIdentity,
+      userSize,
+    } = this.state;
     const {
       form: { getFieldDecorator },
     } = this.props;
-
-    //TODO;
-    data = {};
 
     if (this.props.match.url === '/usered/edit/' + this.props.match.params.id) {
       if(isNull(data.login_limit)){
         data.login_limit = ''
       }
-      data.login_limit === 2 ? (limit = '非员工') : (limit = '员工');
+      // data.login_limit === 2 ? (limit = '非员工') : (limit = '员工');
       data.password = this.state.password;
     } else {
       // data.status === 0 ? '启用' : '禁用';
       data.password = data.password;
     }
-    const uploadButton = (
-      <div>
-        <Icon type={this.state.loading ? 'loading' : 'plus'} />
-        <div className="ant-upload-text">上传头像</div>
-      </div>
-    );
+
     return (
       <Fragment>
         <Form hideRequiredMark style={{ marginTop: 8, background: '#fff', padding: '30px 0' }}>
@@ -236,13 +347,13 @@ class UserAdd extends PureComponent {
           >
             {getFieldDecorator('username', {
               initialValue: data.username,
-              rules: [
-                {
-                  required: true,
-                  pattern: new RegExp(/^[\u4e00-\u9fa5A-Za-z0-9-_]{1,30}$/),
-                  message: '用户名最多为30为、字母、数字、汉字',
-                },
-              ],
+              // rules: [
+              //   {
+              //     required: true,
+              //     pattern: new RegExp(/^[\u4e00-\u9fa5A-Za-z0-9-_]{1,30}$/),
+              //     message: '用户名最多为30为、字母、数字、汉字',
+              //   },
+              // ],
             })(
               <Input
                 onChange={event => {
@@ -258,13 +369,13 @@ class UserAdd extends PureComponent {
           >
             {getFieldDecorator('昵称', {
               initialValue: data.realname,
-              rules: [
-                {
-                  required: true,
-                  pattern: new RegExp(/^[\u4e00-\u9fa5A-Za-z0-9-]{1,30}$/),
-                  message: '用户名最多为30为、字母、数字、汉字',
-                },
-              ],
+              // rules: [
+              //   {
+              //     required: true,
+              //     pattern: new RegExp(/^[\u4e00-\u9fa5A-Za-z0-9-]{1,30}$/),
+              //     message: '用户名最多为30为、字母、数字、汉字',
+              //   },
+              // ],
             })(
               <Input
                 onChange={event => {
@@ -284,7 +395,7 @@ class UserAdd extends PureComponent {
               rules: [
                 {
                   required: true,
-                  pattern: new RegExp(/^[1][3,4,5,7,8][0-9]{9}$/),
+                  pattern: new RegExp(/^[1][3,4,5,6,7,8,9][0-9]{9}$/),
                   message: '请输入正确的手机号',
                 },
               ],
@@ -322,29 +433,73 @@ class UserAdd extends PureComponent {
             )}
           </FormItem>
           <FormItem
-            label="类型"
-            className='form_input'
-            style={{ width: '40%', display: 'flex', alignItems: 'center' }}
+            label="用户身份"
+            className='form_col'
+            style={{ width: '40%', display: 'flex' }}
           >
-            {getFieldDecorator('data.login_limit', {
-              initialValue: limit,
-              rules: [
-                {
-                  rules: [{ required: true, message: 'Please select your gender!' }],
-                },
-              ],
-            })(
-              <Select
-                style={{ width: '100%' }}
-                onChange={value => {
-                  data.login_limit = Number(value);
-                }}
-              >
-                <Option value="2">非员工</Option>
-                <Option value="1">员工</Option>
-              </Select>
+            {getFieldDecorator('用户身份', {})(
+              <Collapse onChange={this.userChange}>
+                <Panel header={userSize} showArrow={false}>
+                  {UserIdentity.map((value, index, arr) => {
+                    return (
+                      <List key={index}>
+                        <Checkbox
+                          checked={value.indeterminate}
+                          value={value.role_id}
+                          onChange={e => this.onCheckout(value, index, e, arr)}
+                        >
+                          {value.name}
+                        </Checkbox>
+                      </List>
+                    );
+                  })}
+                </Panel>
+              </Collapse>
             )}
           </FormItem>
+          <div
+            style={{
+              display: 'flex',
+              alignContent: 'center',
+              padding: '10px 0',
+              marginBottom: '20px',
+            }}
+          >
+            <span style={{ width: '10%', textAlign: 'center' }}>已添加用户身份</span>
+            <div style={{ width: '50%' }}>
+              {data.role_ids.length > 0 &&
+                data.role_ids.map((item, index) => {
+                  return item.role_name != '' ? (
+                    <div
+                      key={index}
+                      style={{
+                        marginRight: '20px',
+                        background: '#eee',
+                        padding: '8px 10px',
+                        textAlign: 'center',
+                        display: 'inline-block',
+                        marginBottom: '10px',
+                      }}
+                    >
+                      {item.role_name}
+                      <b
+                        style={{
+                          color: 'red',
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => {
+                          this.deled(item, index);
+                        }}
+                      >
+                        x
+                      </b>
+                    </div>
+                  ) : (
+                    ''
+                  );
+                })}
+            </div>
+          </div>
           <FormItem
             label="状态"
             className='form_input'
