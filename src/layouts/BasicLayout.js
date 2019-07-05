@@ -1,4 +1,4 @@
-import React, { Suspense, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { Layout, Icon } from 'antd';
 import DocumentTitle from 'react-document-title';
 // import { connect } from 'dva';
@@ -10,15 +10,13 @@ import Header from './Header';
 import SiderMenu from '../components/SiderMenu';
 // import getPageTitle from '../utils/getPageTitle';
 import GlobalFooter from '../components/GlobalFooter';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import './BasicLayout.css';
 
-import UserLayout from './UserLayout';
+// import * as Error from '../pages/404';
 
-import { requestMenuData } from '../services/api';
 import axios from 'axios';
 import { ROOT_PATH } from '../pages/pathrouter';
-import { tr } from '../common/i18n';
 
 import Home from '../pages/Home/List';
 import ArticleList from '../pages/Article/List';
@@ -279,6 +277,7 @@ class BasicLayout extends React.Component {
                 <Route path='/usered/add' component={UserEdit} />
                 <Route path='/usered/edit/:id' component={UserEdit} />
                 <Route path='/login/password' component={ChangePwd} />
+                {/* <Route component={Error} /> */}
               </Switch>
           </Content>
           <Footer style={{ padding: 0 }}>
