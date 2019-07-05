@@ -1,33 +1,16 @@
 import React, { PureComponent, Fragment } from 'react';
-import { Table, Button, Input, message, Popconfirm, Divider, Row, Col, List } from 'antd';
-import StandardTable from '../../components/StandardTable'; // 分页显示
+import { Table, Row, Col, List } from 'antd';
 // import PageHeaderWrapper from '../components/PageHeaderWrapper';
-import isEqual from 'lodash/isEqual';
-// import styles from './List.less';
 import { ROOT_PATH } from '../pathrouter';
 import axios from 'axios';
-import { stat } from 'fs';
 
 var jwt_token = window.localStorage.getItem('jwt_token');
-// axios.defaults.headers.common['Authorization'] = jwt_token;
-// if (!jwt_token || jwt_token.length < 32) {
-//   location.hash = '/user/login';
-// }
-const rowSelection = {
-  onChange: (selectedRowKeys, selectedRows) => {
-    console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-  },
-  getCheckboxProps: record => ({
-    disabled: record.name === 'Disabled User',
-    name: record.name,
-  }),
-};
+axios.defaults.headers.common['Authorization'] = jwt_token;
+if (!jwt_token || jwt_token.length < 32) {
+  window.location.hash = '/user/login';
+}
 
 class PriceMaterialDetail extends PureComponent {
-  index = 0;
-
-  cacheOriginData = {};
-
   constructor(props) {
     super(props);
 
@@ -65,6 +48,50 @@ class PriceMaterialDetail extends PureComponent {
       thpaymentMmethod:''
     };
   }
+
+  columns = [
+    {
+      title: 'No.',
+      dataIndex: 'id',
+      align: 'center',
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'name',
+      align: 'center',
+    },
+    {
+      title: '商品简称',
+      align: 'center',
+      dataIndex: 'short_name',
+    },
+    {
+      title: '商品代码',
+      dataIndex: 'goods_code',
+      align: 'center',
+    },
+    {
+      title: '包装类型',
+      dataIndex: 'package_type',
+      align: 'center',
+    },
+    {
+      title: '规格',
+      dataIndex: 'size',
+      align: 'center',
+    },
+    {
+      title: '数量',
+      dataIndex: 'count',
+      align: 'center',
+    },
+    {
+      title: '合计重量/KG',
+      dataIndex: 'total_weight',
+      align: 'center',
+    },
+  ];
+
   forMat = time => {
     var date = new Date(time);
     let Y = date.getFullYear() + '-';
@@ -75,6 +102,7 @@ class PriceMaterialDetail extends PureComponent {
     let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
     return Y + M + D + h + m + s;
   };
+
   componentDidMount() {
     axios({
       url: ROOT_PATH + '/api/backend/v1/order_details',
@@ -159,65 +187,12 @@ class PriceMaterialDetail extends PureComponent {
     });
   }
 
-  columns = [
-    {
-      title: 'No.',
-      dataIndex: 'id',
-      align: 'center',
-    },
-    {
-      title: '商品名称',
-      dataIndex: 'name',
-      align: 'center',
-    },
-    {
-      title: '商品简称',
-      align: 'center',
-      dataIndex: 'short_name',
-    },
-    {
-      title: '商品代码',
-      dataIndex: 'goods_code',
-      align: 'center',
-    },
-    {
-      title: '包装类型',
-      dataIndex: 'package_type',
-      align: 'center',
-    },
-    {
-      title: '规格',
-      dataIndex: 'size',
-      align: 'center',
-    },
-    {
-      title: '数量',
-      dataIndex: 'count',
-      align: 'center',
-    },
-    {
-      title: '合计重量/KG',
-      dataIndex: 'total_weight',
-      align: 'center',
-    },
-  ];
-
   render() {
     const {
-      loading,
       data,
-      adminList,
-      selectedRows,
-      datalisted,
-      station,
-      desabled,
-      pagination,
       statu,
       orserWay,
       payMethod,
-      creatTime,
-      dateofDelivery,
-      updateStatustime,
       totalWeight,
       thpaymentMmethod
     } = this.state;

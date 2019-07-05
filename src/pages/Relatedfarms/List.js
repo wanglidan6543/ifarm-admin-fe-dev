@@ -1,32 +1,22 @@
 import React, { Component, Fragment } from 'react';
-import { Table, Button, Input, message, Popconfirm, Divider, Row, Col, Select } from 'antd';
+import { Input, Row, Col, Select } from 'antd';
 
-import isEqual from 'lodash/isEqual';
-import styles from './List.less';
 import StandardTable from '../../components/StandardTable'; // 分页显示
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
-import { timingSafeEqual } from 'crypto';
 
 const Search = Input.Search;
 
 var jwt_token = window.localStorage.getItem('jwt_token');
-// axios.defaults.headers.common['Authorization'] = jwt_token;
-// if (!jwt_token || jwt_token.length < 32) {
-//   window.location.hash = '/user/login';
-// }
+axios.defaults.headers.common['Authorization'] = jwt_token;
+if (!jwt_token || jwt_token.length < 32) {
+  window.location.hash = '/user/login';
+}
 
 const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
     .join(',');
-const rowSelection = {
-  onChange: (selectedRowKeys, selectedRows) => {},
-  getCheckboxProps: record => ({
-    disabled: record.name === 'Disabled User', // Column configuration not to be checked
-    name: record.name,
-  }),
-};
 
 const Option = Select.Option;
 
@@ -45,6 +35,7 @@ class RelatedFarms extends Component {
       desabled: [],
       userList: [],
       formValues: {},
+      loading: true,
       searchval: '',
       role_id: '', // 用户身份
       pagination: {
@@ -127,11 +118,6 @@ class RelatedFarms extends Component {
       ),
     },
     {
-      title: '用户身份',
-      dataIndex: 'role_name',
-      align: 'center',
-    },
-    {
       title: '状态',
       align: 'center',
       render: (text, record) => <span>{text.status === 0 ? '启用' : '禁用'}</span>,
@@ -142,102 +128,27 @@ class RelatedFarms extends Component {
       render: (text, record) => <a onClick={() => this.editID(record)}> 编辑 </a>,
     },
   ];
+  
   editID = id => {
     window.location.hash = '/relatedfarms/edit/' + id.uid;
   };
+
   // 列表
-  ListShow = (value, id) => {
-    axios({
-      url: ROOT_PATH + '/api/backend/v1/user_farms',
-      method: 'GET',
-      params: {
-        search: value,
-        role_id: id,
-        currentPage: this.state.currentPage,
-        pageSize: this.state.pageSize,
-      },
-    }).then(result => {
-      if (result.data.error === 0) {
-        result.data.list.map((item, index) => {
-          if (item.username === '') {
-            item.username = '--';
-          } else {
-            item.username = item.username;
-          }
-          if (item.update_time === '') {
-            item.update_time = '--';
-          } else {
-            item.update_time = item.update_time;
-          }
-          if (item.tel_mobile === '') {
-            item.tel_mobile = '--';
-          } else {
-            item.tel_mobile = item.tel_mobile;
-          }
-          if (item.farm_name === '') {
-            item.farm_name = '--';
-          } else {
-            item.farm_name = item.farm_name;
-          }
-          if (item.farm_code === '') {
-            item.farm_code = '--';
-          } else {
-            item.farm_code = item.farm_code;
-          }
-        });
-        this.setState({
-          adminList: result.data,
-          datalisted: result.data.list,
-          pagination: result.data.pagination,
-        });
-      } else {
-        this.setState({
-          datalisted: [],
-        });
-      }
-    });
-  };
-  componentDidMount() {
-    this.ListShow();
-    axios({
-      url: ROOT_PATH + '/api/backend/v1/user/roles',
-      method: 'GET',
-    }).then(result => {
-      // TODO:
-      // this.setState({
-      //   userList: result.data.data,
-      // });
-    });
-  }
-  // input搜索
-  onsearchVal = value => {
-    this.setState({
-      searchval: value,
-    });
-    this.ListShow(value, this.state.role_id);
-  };
-  // 分页
-  handleStandardTableChange = (pagination, filtersArg, sorter) => {
-    const { loading, data, adminList, selectedRows, datalisted, station, desabled } = this.state;
-    const { formValues } = this.state;
-
-    const filters = Object.keys(filtersArg).reduce((obj, key) => {
-      const newObj = { ...obj };
-      newObj[key] = getValue(filtersArg[key]);
-      return newObj;
-    }, {});
-
-    const params = {
-      currentPage: pagination.current,
-      pageSize: pagination.pageSize,
-      search: this.state.searchval,
-      role_id: this.state.role_id,
-      ...formValues,
-      ...filters,
+  getDataList = (value, id) => {
+    const params =  {
+      search: value,
+      role_id: id,
+      currentPage: this.state.currentPage,
+      pageSize: this.state.pageSize,
     };
-    if (sorter.field) {
-      params.sorter = `${sorter.field}_${sorter.order}`;
-    }
+
+    this.updateData(params);
+  };
+
+  updateData(params) {
+    this.setState({
+      loading: true
+    });
     axios({
       url: ROOT_PATH + '/api/backend/v1/user_farms',
       method: 'GET',
@@ -271,20 +182,67 @@ class RelatedFarms extends Component {
             item.farm_code = item.farm_code;
           }
         });
+        this.setState({
+          adminList: result.data,
+          datalisted: result.data.list,
+          pagination: result.data.pagination,
+          loading: false,
+        });
       }
+    });
+  }
+
+  componentDidMount() {
+    this.getDataList();
+    axios({
+      url: ROOT_PATH + '/api/backend/v1/user/roles',
+      method: 'GET',
+    }).then(result => {
       this.setState({
-        adminList: result.data,
-        datalisted: result.data.list,
-        pagination: result.data.pagination,
+        userList: result.data.data,
       });
     });
+  }
+
+  // input搜索
+  onsearchVal = value => {
+    this.setState({
+      searchval: value,
+    });
+    this.getDataList(value, this.state.role_id);
   };
+
+  // 分页
+  handleStandardTableChange = (pagination, filtersArg, sorter) => {
+    const { formValues } = this.state;
+
+    const filters = Object.keys(filtersArg).reduce((obj, key) => {
+      const newObj = { ...obj };
+      newObj[key] = getValue(filtersArg[key]);
+      return newObj;
+    }, {});
+
+    const params = {
+      currentPage: pagination.current,
+      pageSize: pagination.pageSize,
+      search: this.state.searchval,
+      role_id: this.state.role_id,
+      ...formValues,
+      ...filters,
+    };
+    if (sorter.field) {
+      params.sorter = `${sorter.field}_${sorter.order}`;
+    }
+
+    this.updateData(params);
+  };
+
   // 用户
   seletval = value => {
     this.setState({
       role_id: value,
     });
-    this.ListShow(this.state.searchval, value);
+    this.getDataList(this.state.searchval, value);
   };
 
   handleSelectRows = rows => {
@@ -294,17 +252,7 @@ class RelatedFarms extends Component {
   };
 
   render() {
-    const {
-      loading,
-      data,
-      adminList,
-      selectedRows,
-      datalisted,
-      station,
-      desabled,
-      pagination,
-      userList,
-    } = this.state;
+    const { loading, adminList, selectedRows, pagination, userList } = this.state;
     return (
       <Fragment>
         <Row style={{ paddingBottom: '10px' }}>

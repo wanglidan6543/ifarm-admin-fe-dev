@@ -1,11 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import {
-  Table,
   Button,
   Input,
   message,
-  Popconfirm,
-  Divider,
   Row,
   Col,
   Form,
@@ -13,40 +10,20 @@ import {
   Select,
 } from 'antd';
 import { Link } from 'react-router-dom';
-import isEqual from 'lodash/isEqual';
-// import styles from './List.less';
 import './List.css';
 import StandardTable from '../../components/StandardTable'; // 分页显示
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
-import { timingSafeEqual } from 'crypto';
-import { isNull } from 'util';
-const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
+const { RangePicker} = DatePicker;
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-
-const Search = Input.Search;
 var jwt_token = window.localStorage.getItem('jwt_token');
-// axios.defaults.headers.common['Authorization'] = jwt_token;
-// if (!jwt_token || jwt_token.length < 32) {
-//   window.location.hash = '/user/login';
-// }
-
-const getValue = obj =>
-  Object.keys(obj)
-    .map(key => obj[key])
-    .join(',');
-const rowSelection = {
-  onChange: (selectedRowKeys, selectedRows) => {
-    console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-  },
-  getCheckboxProps: record => ({
-    disabled: record.name === 'Disabled User', // Column configuration not to be checked
-    name: record.name,
-  }),
-};
+axios.defaults.headers.common['Authorization'] = jwt_token;
+if (!jwt_token || jwt_token.length < 32) {
+  window.location.hash = '/user/login';
+}
 
 class PriceMaterial extends Component {
   constructor(props) {
@@ -60,7 +37,7 @@ class PriceMaterial extends Component {
       desabled: [],
       formValues: {},
       stepFormValues: {},
-      loading:true,
+      loading: true,
       searchval: '',
       current:1,
       pagination: {
@@ -148,12 +125,6 @@ class PriceMaterial extends Component {
       align: 'center',
       size: 'small',
     },
-    // {
-    //   title: '订单总重量/KG',
-    //   dataIndex: '',
-    //   align: 'center',
-    //   size: 'small',
-    // },
     {
       title: '订单状态',
       dataIndex: 'order_status',
@@ -186,7 +157,7 @@ class PriceMaterial extends Component {
     },
   ];
   // 需改动
-  ListShow = () => {
+  getOrderList = () => {
     axios({
       url: ROOT_PATH + '/api/backend/v1/order_list',
       method: 'GET',
@@ -245,30 +216,18 @@ class PriceMaterial extends Component {
           loading:true
         });
       }
-      const { station, desabled } = this.state;
     });
   };
 
   componentDidMount() {
-    this.ListShow();
+    this.getOrderList();
   }
-
-  handleUpdateModalVisible = (flag, record) => {
-    this.setState({
-      updateModalVisible: !!flag,
-      stepFormValues: record || {},
-    });
-  };
 
   // 分页
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
-    const { loading, data, adminList, selectedRows, station, desabled, formValues } = this.state;
+    const { data } = this.state;
     const { form } = this.props;
-    const filters = Object.keys(filtersArg).reduce((obj, key) => {
-      const newObj = { ...obj };
-      newObj[key] = getValue(filtersArg[key]);
-      return newObj;
-    }, {});
+
     let params = {};
     if (sorter.field) {
       params.sorter = `${sorter.field}_${sorter.order}`;
@@ -276,31 +235,48 @@ class PriceMaterial extends Component {
     data.current_page = pagination.current;
     data.page_size = pagination.pageSize;
     form.validateFields((err, fieldsValue) => {
-      let {data} = this.state;
+      let { data } = this.state;
       let values = {
         ...fieldsValue,
       };
-      if(fieldsValue['order_time'] && fieldsValue['order_time'].length > 0 && fieldsValue['take_delivery_time'] && fieldsValue['take_delivery_time'].length > 0){
-        fieldsValue['order_time_start'] = fieldsValue['order_time'][0].format('YYYY-MM-DD H:MM:SS')
-        fieldsValue['order_time_stop'] = fieldsValue['order_time'][1].format('YYYY-MM-DD H:MM:SS')
-        fieldsValue['take_delivery_time_start'] = fieldsValue['take_delivery_time'][0].format('YYYY-MM-DD H:MM:SS')
-        fieldsValue['take_delivery_time_stop'] = fieldsValue['take_delivery_time'][1].format('YYYY-MM-DD H:MM:SS')
+      if (
+        fieldsValue['order_time'] &&
+        fieldsValue['order_time'].length > 0 &&
+        fieldsValue['take_delivery_time'] &&
+        fieldsValue['take_delivery_time'].length > 0
+      ) {
+        fieldsValue['order_time_start'] = fieldsValue['order_time'][0].format('YYYY-MM-DD H:MM:SS');
+        fieldsValue['order_time_stop'] = fieldsValue['order_time'][1].format('YYYY-MM-DD H:MM:SS');
+        fieldsValue['take_delivery_time_start'] = fieldsValue['take_delivery_time'][0].format(
+          'YYYY-MM-DD ' + '00:00:00'
+        );
+        fieldsValue['take_delivery_time_stop'] = fieldsValue['take_delivery_time'][1].format(
+          'YYYY-MM-DD ' + '23:59:59'
+        );
       } else {
-        if(fieldsValue['order_time'] && fieldsValue['order_time'].length > 0){
-          fieldsValue['order_time_start'] = fieldsValue['order_time'][0].format('YYYY-MM-DD H:MM:SS')
-          fieldsValue['order_time_stop'] = fieldsValue['order_time'][1].format('YYYY-MM-DD H:MM:SS')
+        if (fieldsValue['order_time'] && fieldsValue['order_time'].length > 0) {
+          fieldsValue['order_time_start'] = fieldsValue['order_time'][0].format(
+            'YYYY-MM-DD ' + '00:00:00'
+          );
+          fieldsValue['order_time_stop'] = fieldsValue['order_time'][1].format(
+            'YYYY-MM-DD ' + '23:59:59'
+          );
         } else {
-          fieldsValue['order_time_start'] = ''
-          fieldsValue['order_time_stop'] = ''
-          fieldsValue['order_time'] = ''
+          fieldsValue['order_time_start'] = '';
+          fieldsValue['order_time_stop'] = '';
+          fieldsValue['order_time'] = '';
         }
-        if(fieldsValue['take_delivery_time'] && fieldsValue['take_delivery_time'].length > 0){
-          fieldsValue['take_delivery_time_start'] = fieldsValue['take_delivery_time'][0].format('YYYY-MM-DD H:MM:SS')
-          fieldsValue['take_delivery_time_stop'] = fieldsValue['take_delivery_time'][1].format('YYYY-MM-DD H:MM:SS')
+        if (fieldsValue['take_delivery_time'] && fieldsValue['take_delivery_time'].length > 0) {
+          fieldsValue['take_delivery_time_start'] = fieldsValue['take_delivery_time'][0].format(
+            'YYYY-MM-DD ' + '00:00:00'
+          );
+          fieldsValue['take_delivery_time_stop'] = fieldsValue['take_delivery_time'][1].format(
+            'YYYY-MM-DD ' + '23:59:59'
+          );
         } else {
-          fieldsValue['take_delivery_time_start'] = ''
-          fieldsValue['take_delivery_time_stop'] = ''
-          fieldsValue['take_delivery_time'] = ''
+          fieldsValue['take_delivery_time_start'] = '';
+          fieldsValue['take_delivery_time_stop'] = '';
+          fieldsValue['take_delivery_time'] = '';
         }
       }
       axios({
@@ -364,13 +340,13 @@ class PriceMaterial extends Component {
           });
           this.setState({
             adminList: result.data.data,
-            loading:false
+            loading: false,
           });
         } else {
           this.setState({
             adminList: [],
-            pagination:this.state.pagination,
-            loading:false
+            pagination: this.state.pagination,
+            loading: false,
           });
         }
       });
@@ -379,11 +355,13 @@ class PriceMaterial extends Component {
       data:{...data}
     })
   };
+
   handleSelectRows = rows => {
     this.setState({
       selectedRows: rows,
     });
   };
+
   forMat = time => {
     var date = new Date(time);
     let Y = date.getFullYear() + '-';
@@ -394,37 +372,59 @@ class PriceMaterial extends Component {
     let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
     return Y + M + D + h + m + s;
   };
+
   resqust = () => {
     const { form } = this.props;
     form.validateFields((err, fieldsValue) => {
-      let {data} = this.state;
+      let { data } = this.state;
       let values = {
         ...fieldsValue,
-      }; 
-      if(fieldsValue['order_time'] && fieldsValue['order_time'].length > 0 && fieldsValue['take_delivery_time'] && fieldsValue['take_delivery_time'].length > 0){
-        fieldsValue['order_time_start'] = fieldsValue['order_time'][0].format('YYYY-MM-DD HH:mm:ss')
-        fieldsValue['order_time_stop'] = fieldsValue['order_time'][1].format('YYYY-MM-DD HH:mm:ss')
-        fieldsValue['take_delivery_time_start'] = fieldsValue['take_delivery_time'][0].format('YYYY-MM-DD HH:mm:ss')
-        fieldsValue['take_delivery_time_stop'] = fieldsValue['take_delivery_time'][1].format('YYYY-MM-DD HH:mm:ss')
+      };
+      if (
+        fieldsValue['order_time'] &&
+        fieldsValue['order_time'].length > 0 &&
+        fieldsValue['take_delivery_time'] &&
+        fieldsValue['take_delivery_time'].length > 0
+      ) {
+        fieldsValue['order_time_start'] = fieldsValue['order_time'][0].format(
+          'YYYY-MM-DD ' + '00:00:00'
+        );
+        fieldsValue['order_time_stop'] = fieldsValue['order_time'][1].format(
+          'YYYY-MM-DD ' + '23:59:59'
+        );
+        fieldsValue['take_delivery_time_start'] = fieldsValue['take_delivery_time'][0].format(
+          'YYYY-MM-DD ' + '00:00:00'
+        );
+        fieldsValue['take_delivery_time_stop'] = fieldsValue['take_delivery_time'][1].format(
+          'YYYY-MM-DD ' + '23:59:59'
+        );
       } else {
-        if(fieldsValue['order_time'] && fieldsValue['order_time'].length > 0){
-          fieldsValue['order_time_start'] = fieldsValue['order_time'][0].format('YYYY-MM-DD HH:mm:ss')
-          fieldsValue['order_time_stop'] = fieldsValue['order_time'][1].format('YYYY-MM-DD HH:mm:ss')
+        if (fieldsValue['order_time'] && fieldsValue['order_time'].length > 0) {
+          fieldsValue['order_time_start'] = fieldsValue['order_time'][0].format(
+            'YYYY-MM-DD ' + '00:00:00'
+          );
+          fieldsValue['order_time_stop'] = fieldsValue['order_time'][1].format(
+            'YYYY-MM-DD ' + '23:59:59'
+          );
         } else {
-          fieldsValue['order_time_start'] = ''
-          fieldsValue['order_time_stop'] = ''
-          fieldsValue['order_time'] = ''
+          fieldsValue['order_time_start'] = '';
+          fieldsValue['order_time_stop'] = '';
+          fieldsValue['order_time'] = '';
         }
-        if(fieldsValue['take_delivery_time'] && fieldsValue['take_delivery_time'].length > 0){
-          fieldsValue['take_delivery_time_start'] = fieldsValue['take_delivery_time'][0].format('YYYY-MM-DD HH:mm:ss')
-          fieldsValue['take_delivery_time_stop'] = fieldsValue['take_delivery_time'][1].format('YYYY-MM-DD HH:mm:ss')
+        if (fieldsValue['take_delivery_time'] && fieldsValue['take_delivery_time'].length > 0) {
+          fieldsValue['take_delivery_time_start'] = fieldsValue['take_delivery_time'][0].format(
+            'YYYY-MM-DD ' + '00:00:00'
+          );
+          fieldsValue['take_delivery_time_stop'] = fieldsValue['take_delivery_time'][1].format(
+            'YYYY-MM-DD ' + '23:59:59'
+          );
         } else {
-          fieldsValue['take_delivery_time_start'] = ''
-          fieldsValue['take_delivery_time_stop'] = ''
-          fieldsValue['take_delivery_time'] = ''
+          fieldsValue['take_delivery_time_start'] = '';
+          fieldsValue['take_delivery_time_stop'] = '';
+          fieldsValue['take_delivery_time'] = '';
         }
       }
-      if(values.order_id){
+      if (values.order_id) {
         axios({
           url: ROOT_PATH + '/api/backend/v1/order_list',
           method: 'GET',
@@ -440,7 +440,7 @@ class PriceMaterial extends Component {
             order_status: fieldsValue.order_status, // 订单状态(1表示待付款，2表示待备货，3表示待提货， 4表示提货中， 5表示待收货，6表示已完成， 7表示已取消，0表示默认返回所有）
             company: fieldsValue.company, // 公司名称或公司代码
             user: fieldsValue.user, // 用户名称或用户代码
-            order_id: fieldsValue.order_id
+            order_id: fieldsValue.order_id,
           },
         }).then(result => {
           if (result.data.error === 0) {
@@ -484,26 +484,27 @@ class PriceMaterial extends Component {
             this.setState({
               adminList: result.data.data,
               pagination: result.data.data.pagination,
-              loading:false
+              loading: false,
             });
           } else {
             this.setState({
               adminList: [],
-              pagination:this.state.pagination,
-              loading:false
+              pagination: this.state.pagination,
+              loading: false,
             });
           }
         });
-      } 
+        return;
+      }
       if (!fieldsValue['order_time'] && !fieldsValue['take_delivery_time']) {
         this.setState({
-          loading:false
-        })
+          loading: false,
+        });
       }
       if (!fieldsValue['order_time'] && !fieldsValue['take_delivery_time']) {
         message.info('请选择订单时间或提货时间');
         return;
-      } 
+      }
       if (values.order_way === '' || typeof values.order_way == 'undefined') {
         message.info('请输入下单方式');
         return;
@@ -516,7 +517,6 @@ class PriceMaterial extends Component {
         message.info('请输入订单方式');
         return;
       }
-      console.log(fieldsValue['order_time_start'])
       axios({
         url: ROOT_PATH + '/api/backend/v1/order_list',
         method: 'GET',
@@ -578,42 +578,36 @@ class PriceMaterial extends Component {
           });
           this.setState({
             adminList: result.data.data,
-            loading:false
+            loading: false,
           });
         } else {
           this.setState({
             adminList: [],
-            pagination:this.state.pagination,
-            loading:false
+            pagination: this.state.pagination,
+            loading: false,
           });
         }
       });
     });
-  }
+  };
+
   // 点击查询
   handleSearch = e => {
     e.preventDefault();
-    let {loading,data} = this.state; 
-    data.current_page = 1
+    let { data } = this.state; 
+    data.current_page = 1;
     this.setState({
-      loading:true
+      loading: true
     })
-    this.resqust()
-  };
-  handleUpdate = fields => {
-    this.ListShow();
-    this.handleUpdateModalVisible();
+    this.resqust();
   };
 
   render() {
-    const { data, adminList, selectedRows, station, desabled, pagination, stepFormValues,list,loading } = this.state;
+    const { data, adminList, selectedRows, loading } = this.state;
     const {
-      form: { getFieldDecorator, getFieldValue, isFieldTouched, getFieldError, isShow, password }
+      form: { getFieldDecorator }
     } = this.props;
-    const updateMethods = {
-      handleUpdateModalVisible: this.handleUpdateModalVisible,
-      handleUpdate: this.handleUpdate,
-    };
+
     return (
       <Fragment>
         <Form
@@ -768,15 +762,7 @@ class PriceMaterial extends Component {
           style={{ background: '#fff' }}
           onSelectRow={this.handleSelectRows}
           onChange={this.handleStandardTableChange}
-          // className={data.current_page === '1' ? 'ant-pagination-item-active' :''}
         />
-         {/* {stepFormValues && Object.keys(stepFormValues).length ? (
-          <UpdateForm
-            {...updateMethods}
-            updateModalVisible={updateModalVisible}
-            values={stepFormValues}
-          />
-        ) : null} */}
       </Fragment>
     );
   }

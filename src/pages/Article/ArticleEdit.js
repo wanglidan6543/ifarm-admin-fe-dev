@@ -1,31 +1,19 @@
 import React, { Component, Fragment } from 'react';
-// import { connect } from 'dva';
 import axios from 'axios';
 import E from 'wangeditor';
-// import CateSelect from './components/select.js';
 import {
   Form,
   Input,
-  DatePicker,
+  Icon,
   Select,
   Button,
   Card,
-  InputNumber,
-  Radio,
-  Icon,
-  Tooltip,
   Upload,
   message,
-  Modal,
 } from 'antd';
-// import PageHeaderWrapper from '../components/PageHeaderWrapper';
-// import styles from './ArticleEdit.less';
+
 import { ROOT_PATH } from '../pathrouter';
-// import Editor from './components/editor';
 const FormItem = Form.Item;
-// const { Option } = Select;
-// const { RangePicker } = DatePicker;
-// const { TextArea } = Input;
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -34,24 +22,16 @@ const getBase64 = (img, callback) => {
 };
 
 var editorObj;
-// var jwt_token = window.localStorage.getItem('jwt_token');
-// axios.defaults.headers.common['Authorization'] = jwt_token;
-// if (!jwt_token || jwt_token.length < 32) {
-//   location.hash = '/user/login';
-// }
-
-// var loginInfo = window.localStorage.getItem('loginInfo');
-// if (!loginInfo){
-//   var loginInfo = JSON.parse(loginInfo);
-// }else{
-//   loginInfo = {};
-//   loginInfo.realname = '';
-// }
+var jwt_token = window.localStorage.getItem('jwt_token');
+axios.defaults.headers.common['Authorization'] = jwt_token;
+if (!jwt_token || jwt_token.length < 32) {
+  window.location.hash = '/user/login';
+}
 
 // @connect(({ loading }) => ({
 //   submitting: loading.effects['form/submitRegularForm'],
 // }))
-// @Form.create()
+
 class ArtcicleEdit extends Component {
   constructor(props) {
     super(props);
@@ -77,10 +57,11 @@ class ArtcicleEdit extends Component {
   }
 
   componentDidMount() {
-    const { dispatch, match } = this.props;
+    const { match } = this.props;
     const { params } = match;
     const elem = this.refs.editorElem;
     const editor = new E(elem);
+
     // 使用 onchange 函数监听内容的变化，并实时更新到 state 中
     editor.customConfig.onchange = html => {
       this.setState({
@@ -168,9 +149,6 @@ class ArtcicleEdit extends Component {
             status: result.data.data.status,
             title: result.data.data.title,
           });
-          this.state.fileList.forEach(item => {
-            // item.url = result.data.data.cover;
-          });
           editor.txt.html(this.state.content);
         }
       });
@@ -180,7 +158,7 @@ class ArtcicleEdit extends Component {
   handleChange = ({ fileList }) => this.setState({ fileList });
 
   handleBack = e => {
-    window.location.history.go(-1);
+    window.history.go(-1);
   };
 
   handlePublish = e => {
@@ -208,12 +186,12 @@ class ArtcicleEdit extends Component {
           alert('初始阅读量不能为空');
         } else {
           axios({
-            url: ROOT_PATH + '/api/backend/v1/article', // /api/backend/v1/article/release
+            url: ROOT_PATH + '/api/backend/v1/article',
             method: md,
             data: d,
           }).then(result => {
             if (result.data.error == 0) {
-              window.location.hash = '/';
+              window.location.hash = '/article';
             } else {
               alert(result.data.msg);
             }
@@ -245,7 +223,7 @@ class ArtcicleEdit extends Component {
           data: d,
         }).then(result => {
           if (result.data.error == 0) {
-            window.location.hash = '/';
+            window.location.hash = '/article';
           } else {
             message.error(result.data.msg);
           }
@@ -294,22 +272,10 @@ class ArtcicleEdit extends Component {
 
   render() {
     const { submitting } = this.props;
-    const { previewVisible, previewImage, fileList } = this.state;
+    const { previewImage } = this.state;
     const {
-      form: { getFieldDecorator, getFieldValue },
+      form: { getFieldDecorator },
     } = this.props;
-
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 7 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 12 },
-        md: { span: 10 },
-      },
-    };
 
     const submitFormLayout = {
       wrapperCol: {
@@ -317,6 +283,7 @@ class ArtcicleEdit extends Component {
         sm: { span: 10, offset: 7 },
       },
     };
+
     const uploadButton = (
       <div>
         <Icon type="plus" />
@@ -334,7 +301,6 @@ class ArtcicleEdit extends Component {
                 initialValue: this.state.title,
               })(<Input placeholder="请输入标题" />)}
             </FormItem>
-            {/* name="content"   */}
             <FormItem name="content" layout="vertical" label="正文" placeholder="请输入正文">
               <div ref="editorElem" style={{ textAlign: 'left' }} />
             </FormItem>
@@ -363,7 +329,6 @@ class ArtcicleEdit extends Component {
                 <Select
                   placeholder="请选择"
                   showSearch
-                  // style={{ width: 200 }}
                   optionFilterProp="children"
                   onChange={this.handleChange}
                   onFocus={this.handleFocus}

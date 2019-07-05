@@ -270,7 +270,7 @@ class BasicLayout extends React.Component {
                 <Route exact path='/relatedfarms' component={RelatedFarms} />
                 <Route path='/relatedfarms/edit/:id' component={RelatedFarmsEdit} />
                 <Route exact path='/threshold' component={Threshold} />
-                <Route path='/threshold/edit/:id' component={ThresholdEdit} />
+                <Route path='/threshold/edit/:id/:code' component={ThresholdEdit} />
                 <Route exact path='/administration' component={Admin} />
                 <Route path='/administration/edit/:id' component={AdminEdit} />
                 <Route path='/administration/add' component={AdminEdit} />

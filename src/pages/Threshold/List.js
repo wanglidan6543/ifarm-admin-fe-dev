@@ -1,21 +1,17 @@
 import React, { Component, Fragment } from 'react';
 import { Table, Button, Input, message, Popconfirm, Divider, Row, Col, Select } from 'antd';
 
-import isEqual from 'lodash/isEqual';
-// import styles from './List.less';
 import StandardTable from '../../components/StandardTable'; // 分页显示
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
-import { timingSafeEqual } from 'crypto';
-import { routerRedux } from 'dva/router';
 import { Link } from 'react-router-dom';
 const Search = Input.Search;
 
 var jwt_token = window.localStorage.getItem('jwt_token');
 axios.defaults.headers.common['Authorization'] = jwt_token;
-// if (!jwt_token || jwt_token.length < 32) {
-//   window.location.hash = '/user/login';
-// }
+if (!jwt_token || jwt_token.length < 32) {
+  window.location.hash = '/user/login';
+}
 
 const getValue = obj =>
   Object.keys(obj)
@@ -41,6 +37,7 @@ class Threshold extends Component {
       formValues: {},
       searchval: '',
       index_id: '', // 用户身份
+      loading: true,
       pagination: {
         total: 0, // 总数量
         enable_total: 0, // 启用数量
@@ -132,7 +129,7 @@ class Threshold extends Component {
         <Link
           to={{
             state: record.parent_farm_code,
-            pathname: '/threshold/edit/' + record.farm_code,
+            pathname: '/threshold/edit/' + record.farm_code + '/' + record.parent_farm_code,
           }}
         >
           {' '}
@@ -141,53 +138,18 @@ class Threshold extends Component {
       ),
     },
   ];
+
   // 列表
-  ListShow = (value, id) => {
-    axios({
-      url: ROOT_PATH + '/api/backend/v1/ifarm_benchmarks',
-      method: 'GET',
-      params: {
-        search: value,
-        index_id: id,
-        currentPage: this.state.currentPage,
-        pageSize: this.state.pageSize,
-      },
-    }).then(result => {
-      if (result.data.error === 0) {
-        result.data.list.map((item, index) => {
-          if (item.username === '') {
-            item.username = '--';
-          } else {
-            item.username = item.username;
-          }
-          if (item.update_time === '') {
-            item.update_time = '--';
-          } else {
-            item.update_time = item.update_time;
-          }
-          if (item.tel_mobile === '') {
-            item.tel_mobile = '--';
-          } else {
-            item.tel_mobile = item.tel_mobile;
-          }
-          if (item.farm_name === '') {
-            item.farm_name = '--';
-          } else {
-            item.farm_name = item.farm_name;
-          }
-          if (item.farm_code === '') {
-            item.farm_code = '--';
-          } else {
-            item.farm_code = item.farm_code;
-          }
-        });
-      }
-      this.setState({
-        adminList: result.data,
-        datalisted: result.data.list,
-        pagination: result.data.pagination,
-      });
-    });// 
+  getDataList = (value, id) => {
+    const params = {
+      search: value,
+      index_id: id,
+      currentPage: this.state.currentPage,
+      pageSize: this.state.pageSize,
+    };
+
+    this.updateData(params);
+  
     axios({
       url: ROOT_PATH + '/api/backend/v1/farm_indexs',
       method: 'GET',
@@ -197,40 +159,11 @@ class Threshold extends Component {
       })
     })
   };
-  componentDidMount() {
-    //TODO:
-    // this.ListShow();
-  }
-  // input搜索
-  onsearchVal = value => {
+
+  updateData(params) {
     this.setState({
-      searchval: value,
+      loading: true
     });
-    this.ListShow(value, this.state.index_id);
-  };
-  // 分页
-  handleStandardTableChange = (pagination, filtersArg, sorter) => {
-    console.log(pagination)
-    const { loading, data, adminList, selectedRows, datalisted, station, desabled } = this.state;
-    const { formValues } = this.state;
-
-    const filters = Object.keys(filtersArg).reduce((obj, key) => {
-      const newObj = { ...obj };
-      newObj[key] = getValue(filtersArg[key]);
-      return newObj;
-    }, {});
-
-    const params = {
-      currentPage: pagination.current,
-      pageSize: pagination.pageSize,
-      search: this.state.searchval,
-      index_id: this.state.index_id,
-      ...formValues,
-      ...filters,
-    };
-    if (sorter.field) {
-      params.sorter = `${sorter.field}_${sorter.order}`;
-    }
     axios({
       url: ROOT_PATH + '/api/backend/v1/ifarm_benchmarks',
       method: 'GET',
@@ -269,15 +202,55 @@ class Threshold extends Component {
         adminList: result.data,
         datalisted: result.data.list,
         pagination: result.data.pagination,
+        loading: false
       });
     });
+  }
+
+  componentDidMount() {
+    this.getDataList();
+  }
+
+  // input搜索
+  onsearchVal = value => {
+    this.setState({
+      searchval: value,
+    });
+
+    this.getDataList(value, this.state.index_id);
   };
+
+  // 分页
+  handleStandardTableChange = (pagination, filtersArg, sorter) => {
+    const { formValues } = this.state;
+
+    const filters = Object.keys(filtersArg).reduce((obj, key) => {
+      const newObj = { ...obj };
+      newObj[key] = getValue(filtersArg[key]);
+      return newObj;
+    }, {});
+
+    const params = {
+      currentPage: pagination.current,
+      pageSize: pagination.pageSize,
+      search: this.state.searchval,
+      index_id: this.state.index_id,
+      ...formValues,
+      ...filters,
+    };
+    if (sorter.field) {
+      params.sorter = `${sorter.field}_${sorter.order}`;
+    }
+    // 
+    this.updateData(params);
+  };
+
   // 指标项目
   seletval = value => {
     this.setState({
       index_id: value,
     });
-    this.ListShow(this.state.searchval, value);
+    this.getDataList(this.state.searchval, value);
   };
 
   handleSelectRows = rows => {
@@ -289,12 +262,8 @@ class Threshold extends Component {
   render() {
     const {
       loading,
-      data,
       adminList,
       selectedRows,
-      datalisted,
-      station,
-      desabled,
       pagination,
       indexList
     } = this.state;

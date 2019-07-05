@@ -1,16 +1,15 @@
 import React, { PureComponent, Fragment } from 'react';
-import { Table, Input, Button, Popconfirm, Form, Row, Col, message, Radio } from 'antd';
+import { Table, Input, Button, Form, Row, Col, message, Radio } from 'antd';
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
 // import PageHeaderWrapper from '../components/PageHeaderWrapper';
-// import styles from './List.less';
 import './List.css';
 
 var jwt_token = window.localStorage.getItem('jwt_token');
 axios.defaults.headers.common['Authorization'] = jwt_token;
-// if (!jwt_token || jwt_token.length < 32) {
-//   window.location.hash = '/user/login';
-// }
+if (!jwt_token || jwt_token.length < 32) {
+  window.location.hash = '/user/login';
+}
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -50,6 +49,7 @@ class EditableCell extends PureComponent {
       Handinpval({ ...record, ...values });
     });
   };
+
   render() {
     const { editing } = this.state;
     const {
@@ -90,7 +90,6 @@ class EditableCell extends PureComponent {
                           ref={node => (this.input = node)}
                           onPressEnter={this.save}
                           onBlur={this.save}
-                          // onChange={event => {this.onChanginp(event)}}
                         />
                         <span>%</span>
                       </div>
@@ -147,6 +146,7 @@ class EditableTable extends PureComponent {
       benchmarks: [],
     },
   };
+
   // 恢复默认
   handleDefault = key => {
     axios({
@@ -164,7 +164,7 @@ class EditableTable extends PureComponent {
         message.success(result.data.msg);
       }
     });
-    this.HandList();
+    this.getHandList();
   };
 
   Handinpval = row => {
@@ -213,17 +213,15 @@ class EditableTable extends PureComponent {
     },
   ];
 
-  HandList = () => {
+  getHandList = () => {
     axios({
       url: ROOT_PATH + '/api/backend/v1/ifarm_benchmark',
       method: 'GET',
       params: {
         farm_code: this.props.match.params.id,
-        parent_farm_code: this.props.history.location.state,
+        parent_farm_code:this.props.match.params.code
       },
     }).then(result => {
-      let { value } = this.state;
-      result.data.data.auto_transfer === 1 ? (value = 1) : (value = 0);
       if(result.data.data.auto_transfer === 1){
         this.setState({
           value:1
@@ -240,16 +238,18 @@ class EditableTable extends PureComponent {
       });
     });
   };
+
   componentDidMount() {
-    // TODO:
-    // this.HandList();
+    this.getHandList();
   }
+
   onSave = () => {
-    let { data, farmList, savedata, value } = this.state;
-    const { form } = this.props;
+    let { data, savedata, value } = this.state;
+
     savedata.farm_code = data.farm_code;
     savedata.auto_transfer = value;
     savedata.parent_farm_code = this.props.history.location.state;
+
     axios({
       url: ROOT_PATH + '/api/backend/v1/ifarm_benchmark',
       method: 'POST',
@@ -263,14 +263,15 @@ class EditableTable extends PureComponent {
       }
     });
   };
+
   onChange = e => {
     this.setState({
       value: e.target.value,
     });
   };
+
   render() {
     const { dataSource, data, savedata } = this.state;
-    console.log(this.state.value)
     const components = {
       body: {
         row: EditableFormRow,

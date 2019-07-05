@@ -1,34 +1,18 @@
 import React, { PureComponent, Fragment } from 'react';
-import {
-  Form,
-  Table,
-  Button,
-  Input,
-  message,
-  Divider,
-  Row,
-  Col,
-  Select,
-  Card,
-  Icon,
-  AutoComplete,
-} from 'antd';
+import { Form, Button, Input, message, Select, AutoComplete } from 'antd';
 // import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import axios from 'axios';
-// import styles from './List.less';
 import './List.css';
 import { ROOT_PATH } from '../pathrouter';
-import { stat } from 'fs';
 
 var jwt_token = window.localStorage.getItem('jwt_token');
-// axios.defaults.headers.common['Authorization'] = jwt_token;
-// if (!jwt_token || jwt_token.length < 32) {
-//   location.hash = '/user/login';
-// }
+axios.defaults.headers.common['Authorization'] = jwt_token;
+if (!jwt_token || jwt_token.length < 32) {
+  window.location.hash = '/user/login';
+}
+
 const Option = Select.Option;
-const OptGroup = AutoComplete.OptGroup;
 const FormItem = Form.Item;
-const pattern = new RegExp(/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im);
 
 class RelatedFarmsEdit extends PureComponent {
   constructor(props) {
@@ -61,46 +45,44 @@ class RelatedFarmsEdit extends PureComponent {
       },
     };
   }
+
   componentDidMount() {
-    //TODO:
     // 用户身份列表
-    // axios({
-    //   url: ROOT_PATH + '/api/backend/v1/user/roles',
-    //   method: 'GET',
-    // }).then(result => {
-    //   this.setState({
-    //     userList: result.data.data,
-    //   });
-    // });
-    // // 详情
-    // axios({
-    //   url: ROOT_PATH + '/api/backend/v1/user_farm',
-    //   method: 'GET',
-    //   params: {
-    //     uid: this.props.match.params.id,
-    //   },
-    // }).then(result => {
-    //   if (result.data.data.role_id === null) {
-    //     result.data.data.role_id = 1;
-    //   }
-    //   this.setState({
-    //     data: result.data.data,
-    //   });
-    // });
+    axios({
+      url: ROOT_PATH + '/api/backend/v1/user/roles',
+      method: 'GET',
+    }).then(result => {
+      this.setState({
+        userList: result.data.data,
+      });
+    });
+    // 详情
+    axios({
+      url: ROOT_PATH + '/api/backend/v1/user_farm',
+      method: 'GET',
+      params: {
+        uid: this.props.match.params.id,
+      },
+    }).then(result => {
+      console.log('详情');
+      console.log(result.data);
+
+      if (result.data.data.role_id === null) {
+        result.data.data.role_id = 1;
+      }
+      this.setState({
+        data: result.data.data,
+      });
+    });
   }
 
-  black = () => {
-    window.location.hash = '/relatedfarms';
-  };
   onSave = () => {
-    let { data, farmList } = this.state;
-    const { form } = this.props;
-    let user = new RegExp(/^[\u4e00-\u9fa5A-Za-z0-9-]{1,30}$/);
+    let { data } = this.state;
     let arr = [];
     data.farms.forEach(item => {
-      console.log(item)
       arr.push(item.production_organization_id);
     });
+
     axios({
       url: ROOT_PATH + '/api/backend/v1/user_farm',
       method: 'PUT',
@@ -119,12 +101,23 @@ class RelatedFarmsEdit extends PureComponent {
       }
     });
   };
+
+  // 关联农场获取焦点时
+  autoVal = value => {
+    if (typeof value === 'undefined') {
+      value = this.state.autoVal;
+    }
+    this.formsearch(value);
+  };
+
   // 关联农场
   formsearch = value => {
-    let { farmList } = this.state;
-    const {
-      form: { setFieldsValue },
-    } = this.props;
+    this.setState({
+      autoVal: value,
+    });
+    this.setState({
+      farmList: [],
+    });
     axios({
       url: ROOT_PATH + '/api/backend/v1/farms',
       method: 'GET',
@@ -137,6 +130,7 @@ class RelatedFarmsEdit extends PureComponent {
       });
     });
   };
+
   handleSearch = value => {
     let { farmList } = this.state;
     if (!value) {
@@ -153,17 +147,14 @@ class RelatedFarmsEdit extends PureComponent {
   };
 
   render() {
-    let { data, farmList, userList, formval, identity } = this.state;
-    const {
-      form: { getFieldDecorator, getFieldValue, isFieldTouched, getFieldError, isShow },
-    } = this.props;
+    let { data, farmList, userList, identity } = this.state;
+    const { form: { getFieldDecorator } } = this.props;
+
     const children = farmList.map((item, index) => (
       <Option key={index} label={item.production_organization_id}>
         {item.name}
       </Option>
     ));
-    data.role_id === 1 ? (identity = '技术员') : (identity = '客户');
-    // data.status === 0 ? '启用' : '禁用';
     return (
       <Fragment>
         <Form hideRequiredMark style={{ marginTop: 8, background: '#fff', padding: '30px 0' }}>
