@@ -1,9 +1,11 @@
+@import '~antd/lib/style/themes/default.less';
+
 .container {
   display: flex;
   flex-direction: column;
   height: 100vh;
   overflow: auto;
-  background: #f0f2f5;
+  background: @layout-body-background;
 }
 
 .lang {
@@ -11,6 +13,9 @@
   height: 40px;
   line-height: 44px;
   text-align: right;
+  :global(.ant-dropdown-trigger) {
+    margin-right: 24px;
+  }
 }
 
 .content {
@@ -18,7 +23,7 @@
   padding: 32px 0;
 }
 
-@media (min-width: 768px) {
+@media (min-width: @screen-md-min) {
   .container {
     background-image: url('https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg');
     background-repeat: no-repeat;
@@ -38,6 +43,9 @@
 .top-header {
   height: 44px;
   line-height: 44px;
+  a {
+    text-decoration: none;
+  }
 }
 
 .top-logo {
@@ -49,7 +57,7 @@
 .system-title {
   position: relative;
   top: 2px;
-  color: rgba(0, 0, 0, 0.85);
+  color: @heading-color;
   font-weight: 600;
   font-size: 33px;
   font-family: Avenir, 'Helvetica Neue', Arial, Helvetica, sans-serif;
@@ -58,23 +66,6 @@
 .desc {
   margin-top: 12px;
   margin-bottom: 40px;
-  color: rgba(0, 0, 0, 0.45);
-  font-size: 14px;
+  color: @text-color-secondary;
+  font-size: @font-size-base;
 }
-
-/* .menu {
-  margin-right: 8px;
-  min-width: 160px;
-} */
-
-/* .dropDown {
-  line-height: 64px;
-  vertical-align: top;
-  cursor: pointer;
-  margin-right: 24px;
-}
-
-.dropDown .icon {
-  position: relative;
-  top: -1px;
-} */

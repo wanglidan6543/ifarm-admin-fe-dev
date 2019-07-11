@@ -3,7 +3,7 @@ import { Route, Switch, HashRouter } from 'react-router-dom';
 
 import BasicLayout from './layouts/BasicLayout';
 import UserLayout from './layouts/UserLayout';
-import Error from './pages/404';
+// import Error from './pages/404';
 
 import { Provider } from 'react-redux';
 import store from './store/index';

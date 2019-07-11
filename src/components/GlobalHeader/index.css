@@ -32,7 +32,7 @@
 
 .trigger {
   height: 64px;
-  padding: 'calc((@{layout-header-height} - 20px) / 2)' 24px;
+  /* padding: 'calc((64px - 20px) / 2)' 24px; */
   font-size: 20px;
   cursor: pointer;
   transition: all 0.3s, padding 0s;
@@ -81,7 +81,7 @@
 }
 
 .account .avatar {
-  margin: 'calc((@{layout-header-height} - 24px) / 2)' 0;
+  /* margin: 'calc((@{layout-header-height} - 24px) / 2)' 0; */
   margin-right: 8px;
   color: blue;
   vertical-align: top;

@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
-// import { formatMessage, setLocale, getLocale } from 'umi/locale';
-import { Menu, Icon, Dropdown } from 'antd';
-// import classNames from 'classnames';
-// import HeaderDropdown from '../HeaderDropdown';
-import './index.css';
+import { Menu, Icon } from 'antd';
+import classNames from 'classnames';
+import HeaderDropdown from '../HeaderDropdown/index';
 import { tr } from '../../common/i18n';
+// import './index.css';
+import styles from './index.less';
 
 export default class SelectLang extends PureComponent {
   changeLang = ({ key }) => {
@@ -12,6 +12,8 @@ export default class SelectLang extends PureComponent {
   };
 
   render() {
+    const { className } = this.props;
+    console.log(className);
     const selectedLang = 'zh-CN';
     const locales = ['zh-CN'];
     // const locales = ['zh-CN', 'zh-TW', 'en-US', 'pt-BR'];
@@ -28,7 +30,7 @@ export default class SelectLang extends PureComponent {
       // 'pt-BR': '🇧🇷',
     };
     const langMenu = (
-      <Menu className='menu' selectedKeys={[selectedLang]} onClick={this.changeLang}>
+      <Menu className={styles.menu} selectedKeys={[selectedLang]} onClick={this.changeLang}>
         {locales.map(locale => (
           <Menu.Item key={locale}>
             <span role="img" aria-label={languageLabels[locale]}>
@@ -40,11 +42,11 @@ export default class SelectLang extends PureComponent {
       </Menu>
     );
     return (
-      <Dropdown overlay={langMenu} placement="bottomRight" className="dropDown">
-        <span>
-          <Icon className="icon" type="global" title={tr('System','navBar.lang')} />
+      <HeaderDropdown overlay={langMenu} placement="bottomRight">
+        <span className={classNames(styles.dropDown, className)}>
+          <Icon type="global" title={tr('System','navBar.lang')} />
         </span>
-      </Dropdown>
+      </HeaderDropdown>
     );
   }
 }

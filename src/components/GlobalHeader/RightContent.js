@@ -8,7 +8,8 @@ import groupBy from 'lodash/groupBy';
 // import HeaderDropdown from '../HeaderDropdown';
 import SelectLang from '../SelectLang';
 // import styles from './index.less';
-import './index.css';
+// import './index.css';
+import './index.less';
 
 export default class GlobalHeaderRight extends PureComponent {
   getNoticeData() {

@@ -11,7 +11,8 @@ import SiderMenu from '../components/SiderMenu';
 // import getPageTitle from '../utils/getPageTitle';
 import GlobalFooter from '../components/GlobalFooter';
 import { Route, Switch } from 'react-router-dom';
-import './BasicLayout.css';
+// import './BasicLayout.css';
+import './BasicLayout.less';
 
 // import * as Error from '../pages/404';
 

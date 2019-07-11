@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 // import styles from './index.less';
 import RightContent from './RightContent';
 
-import './index.css';
+// import './index.css';
+import './index.less';
 
 export default class GlobalHeader extends PureComponent {
   componentWillUnmount() {

@@ -3,11 +3,13 @@ import { Link } from 'react-router-dom';
 import { Icon} from 'antd';
 import GlobalFooter from '../components/GlobalFooter';
 import DocumentTitle from 'react-document-title';
-import './UserLayout.css';
 import logo from '../assets/logo.png';
 // import getPageTitle from '../utils/getPageTitle';
 import Login from '../pages/User/Login';
 import SelectLang from '../components/SelectLang';
+
+// import './UserLayout.css';
+import './UserLayout.less';
 
 const links = [];
 

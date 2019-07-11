@@ -4,7 +4,8 @@ import { Icon, message, Tabs, Form, Input, Button } from 'antd';
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
 import { tr } from '../../common/i18n';
-import './Login.css';
+// import './Login.css';
+import './Login.less';
 
 const { TabPane } = Tabs;
 
@@ -49,12 +50,12 @@ class Login extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-    <div class="main">
+    <div className="login">
       <Form onSubmit={this.handleSubmit} >
         <Tabs
           animated={false}
-          className="tabs"
           defaultActiveKey="1"
+          className="tabs"
         >
           <TabPane tab="账号密码登录" key="1">
               <Form.Item>
@@ -83,7 +84,7 @@ class Login extends Component {
                 />,
               )}
             </Form.Item>
-            <Button size="large" type="primary" htmlType="submit" className="login-btn">
+            <Button size="large" type="primary" htmlType="submit" className="submit">
               {tr('System', 'app.login.login')}
             </Button>
           </TabPane>
