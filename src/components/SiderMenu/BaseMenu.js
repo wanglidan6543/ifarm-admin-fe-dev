@@ -4,8 +4,8 @@ import { Menu, Icon } from 'antd';
 import { urlToList } from '../_utils/pathTools';
 import { getMenuMatches } from './SiderMenuUtils';
 import { isUrl } from '../../utils/utils';
-// import styles from './index.less';
-import './index.css';
+import './index.less';
+// import './index.css';
 import IconFont from '../IconFont';
 import { Link } from 'react-router-dom';
 
@@ -133,13 +133,12 @@ export default class BaseMenu extends PureComponent {
       className,
       collapsed,
     } = this.props;
-    // if pathname can't match, use the nearest parent's key
 
-    // let selectedKeys = this.getSelectedMenuKeys(pathname);
-    // if (!selectedKeys.length && openKeys) {
-    //   selectedKeys = [openKeys[openKeys.length - 1]];
-    // }
-    let selectedKeys = [];
+    // if pathname can't match, use the nearest parent's key
+    let selectedKeys = this.getSelectedMenuKeys(location.pathname);
+    if (!selectedKeys.length && openKeys) {
+      selectedKeys = [openKeys[openKeys.length - 1]];
+    }
     let props = {};
     if (openKeys && !collapsed) {
       props = {

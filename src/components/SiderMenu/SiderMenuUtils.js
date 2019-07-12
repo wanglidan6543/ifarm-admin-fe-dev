@@ -1,11 +1,15 @@
 import pathToRegexp from 'path-to-regexp';
-import { urlToList } from '../_utils/pathTools';
-
 /**
  * Recursively flatten the data
  * [{path:string},{path:string}] => {path,path2}
  * @param  menus
  */
+
+export function urlToList(url) {
+  const urllist = url.split('/').filter(i => i);
+  return urllist.map((urlItem, index) => `/${urllist.slice(0, index + 1).join('/')}`);
+}
+
 export const getFlatMenuKeys = menuData => {
   let keys = [];
   if (!menuData || menuData.length === 0) { return keys; }
@@ -30,13 +34,12 @@ export const getMenuMatches = (flatMenuKeys, path) =>
  * @memberof SiderMenu
  */
 export const getDefaultCollapsedSubMenus = props => {
-  return [];
-  // const {
-  //   location: {pathname},
-  //   flatMenuKeys,
-  // } = props;
-  // return urlToList(pathname)
-  //   .map(item => getMenuMatches(flatMenuKeys, item)[0])
-  //   .filter(item => item)
-  //   .reduce((acc, curr) => [...acc, curr], ['/']);
+  const {
+    location: {pathname},
+    flatMenuKeys,
+  } = props;
+  return urlToList(pathname)
+    .map(item => getMenuMatches(flatMenuKeys, item)[0])
+    .filter(item => item)
+    .reduce((acc, curr) => [...acc, curr], ['/']);
 };

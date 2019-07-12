@@ -1,18 +1,12 @@
 import React, { Component } from 'react';
-// import { connect } from 'dva'; 
 import { Icon, message, Tabs, Form, Input, Button } from 'antd';
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
 import { tr } from '../../common/i18n';
-// import './Login.css';
-import './Login.less';
+import './Login.css';
+// import './Login.less';
 
 const { TabPane } = Tabs;
-
-// @connect(({ login, loading }) => ({
-//   login,
-//   submitting: loading.effects['login/login'],
-// }))
 
 class Login extends Component {
   constructor(props) {
@@ -50,46 +44,48 @@ class Login extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-    <div className="login">
-      <Form onSubmit={this.handleSubmit} >
-        <Tabs
-          animated={false}
-          defaultActiveKey="1"
-          className="tabs"
-        >
-          <TabPane tab="账号密码登录" key="1">
+    <div className="main">
+      <div className="login">
+        <Form onSubmit={this.handleSubmit} >
+          <Tabs
+            animated={false}
+            defaultActiveKey="1"
+            className="tabs"
+          >
+            <TabPane tab="账号密码登录" key="1">
+                <Form.Item>
+                {getFieldDecorator('username', {
+                  rules: [{ required: true, message: tr('System', 'validation.userName.required') }],
+                })(
+                  <Input
+                    prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    placeholder={tr('System', 'app.login.userName')}
+                  />,
+                )}
+              </Form.Item>
               <Form.Item>
-              {getFieldDecorator('username', {
-                rules: [{ required: true, message: tr('System', 'validation.userName.required') }],
-              })(
-                <Input
-                  prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder={tr('System', 'app.login.userName')}
-                />,
-              )}
-            </Form.Item>
-            <Form.Item>
-              {getFieldDecorator('password', {
-                rules: [{ required: true, message: tr('System', 'validation.password.required') }],
-              })(
-                <Input
-                  prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  type="password"
-                  placeholder={tr('System', 'app.login.password')}
-                  onPressEnter={e => {
-                    e.preventDefault();
-                    // this.loginForm.validateFields(this.handleSubmit);
-                    }                  
-                  }
-                />,
-              )}
-            </Form.Item>
-            <Button size="large" type="primary" htmlType="submit" className="submit">
-              {tr('System', 'app.login.login')}
-            </Button>
-          </TabPane>
-        </Tabs>
-      </Form>
+                {getFieldDecorator('password', {
+                  rules: [{ required: true, message: tr('System', 'validation.password.required') }],
+                })(
+                  <Input
+                    prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    type="password"
+                    placeholder={tr('System', 'app.login.password')}
+                    onPressEnter={e => {
+                      e.preventDefault();
+                      // this.loginForm.validateFields(this.handleSubmit);
+                      }                  
+                    }
+                  />,
+                )}
+              </Form.Item>
+              <Button size="large" type="primary" htmlType="submit" className="submit">
+                {tr('System', 'app.login.login')}
+              </Button>
+            </TabPane>
+          </Tabs>
+        </Form>
+      </div>
     </div>
     )  
   };

@@ -44,6 +44,32 @@
       "serviceworker.updated": "有新内容",
       "serviceworker.updated.hint": "请点击“刷新”按钮或者手动刷新页面",
       "serviceworker.updated.ok": "刷新"
+    },
+    "Menu": {
+      "menu.home": "首页",
+      "menu.login": "登录",
+      "menu.register": "注册",
+      "menu.register.result": "注册结果",
+      "menu.price": "价格管理",
+      "menu.article": "文章管理",
+      "menu.articleEdit": "文章编辑",
+      "menu.articleAdd": "新建文章",
+      "menu.pricematerial": "全价料订单查询",
+      "menu.pricematerialedit": "订单详情",
+      "menu.relatedfarms": "用户关联农场管理",
+      "menu.relatedfarmsEdit": "编辑用户关联农场管理",
+      "menu.threshold": "农场指标阈值管理",
+      "menu.thresholdedit": "编辑农场指标阈值管理",
+      "menu.indicatorsthrough": "用户指标穿透管理",
+      "menu.indicatorsthroughedit": "编辑用户指标穿透管理",
+      "menu.usered": "用户管理",
+      "menu.administration": "管理员管理",
+      "menu.authority": "管理权限",
+      "menu.jurisdiction": "管理员权限",
+      "menu.administrationEdit": "管理员编辑",
+      "menu.administrationAdd": "新增管理员",
+      "menu.useredAdd": "新增用户",
+      "menu.useredEdit": "编辑用户"
     }
   }
 }

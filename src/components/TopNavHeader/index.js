@@ -26,15 +26,15 @@ export default class TopNavHeader extends PureComponent {
     const { maxWidth } = this.state;
     const flatMenuKeys = getFlatMenuKeys(menuData);
     return (
-      <div className={`${styles.head} ${theme === 'light' ? styles.light : ''}`}>
+      <div className={`${'head'} ${theme === 'light' ? 'light' : ''}`}>
         <div
           ref={ref => {
             this.maim = ref;
           }}
-          className={`${styles.main} ${contentWidth === 'Fixed' ? styles.wide : ''}`}
+          className={`${'main'} ${contentWidth === 'Fixed' ? 'wide' : ''}`}
         >
-          <div className={styles.left}>
-            <div className={styles.logo} key="logo" id="logo">
+          <div className='left'>
+            <div className='logo' key="logo" id="logo">
               <Link to="/">
                 <img src={logo} alt="logo" />
                 <h1>{title}</h1>
@@ -45,7 +45,7 @@ export default class TopNavHeader extends PureComponent {
                 maxWidth,
               }}
             >
-              <BaseMenu {...this.props} flatMenuKeys={flatMenuKeys} className={styles.menu} />
+              <BaseMenu {...this.props} flatMenuKeys={flatMenuKeys} className='menu' />
             </div>
           </div>
           <RightContent {...this.props} />

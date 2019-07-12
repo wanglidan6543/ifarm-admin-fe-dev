@@ -13,8 +13,8 @@ import GlobalFooter from '../components/GlobalFooter';
 import { Route, Switch } from 'react-router-dom';
 // import './BasicLayout.css';
 import './BasicLayout.less';
-
-// import * as Error from '../pages/404';
+import {tr} from '../common/i18n';
+import Context from './menuContext';
 
 import axios from 'axios';
 import { ROOT_PATH } from '../pages/pathrouter';
@@ -38,6 +38,7 @@ import ChangePwd from '../pages/User/Changepassword';
 
 import Authorized from '../utils/Authorized';
 import defaultSetting from '../defaultSettings';
+import { thisTypeAnnotation } from '@babel/types';
 
 const { Footer, Content} = Layout;
 const { check } = Authorized;
@@ -77,7 +78,9 @@ class BasicLayout extends React.Component {
       menuData: [],
       breadcrumbNameMap: {},
       currentUser: {},
-      setting: defaultSetting
+      setting: defaultSetting,
+      layout: defaultSetting.layout,
+      isMobile: false,
     }
   }
 
@@ -87,6 +90,13 @@ class BasicLayout extends React.Component {
 
     // meun/getMenuData
     this.getMenuData();
+  }
+
+  getContext() {
+    const { location } = this.props;
+    return {
+      location
+    }
   }
 
   getCurrentUser(params) {
@@ -113,14 +123,12 @@ class BasicLayout extends React.Component {
         }
        )
        .then(res => {
-        console.log('getMenuData');
-         console.log(res);
   
          let originalMenuData = this.formatter(res.data.data);
          const menuData = this.filterMenuData(originalMenuData);
   
          const breadcrumbNameMap = this.getBreadcrumbNameMap(originalMenuData);
-  
+
          this.setState({
            menuData,
            breadcrumbNameMap
@@ -145,7 +153,8 @@ class BasicLayout extends React.Component {
       }
       // if enableMenuLocale use item.name,
       // close menu international
-      const name = item.name;
+      const name = defaultSetting.disableLocal ? item.name
+        : tr('Menu', locale);
       const result = {
         ...item,
         name,
@@ -204,7 +213,9 @@ class BasicLayout extends React.Component {
   };
 
   getLayoutStyle = () => {
-    const { fixSiderbar, isMobile, collapsed, layout } = this.state;
+    const { isMobile, collapsed, layout } = this.state;
+    const { fixSiderbar } = this.state.setting;
+
     if (fixSiderbar && layout !== 'topmenu' && !isMobile) {
       return {
         paddingLeft: collapsed ? '80px' : '256px',
@@ -214,25 +225,16 @@ class BasicLayout extends React.Component {
   };
 
   handleMenuCollapse = collapsed => {
-    // const { dispatch } = this.props;
-    // dispatch({
-    //   type: 'global/changeLayoutCollapsed',
-    //   payload: collapsed,
-    // });
+    this.setState({collapsed});
   };
 
   render() {
-    const {
-      navTheme,
-      layout: PropsLayout,
-      isMobile,
-      menuData,
-      fixedHeader,
-    } = this.state;
+    const { layout, isMobile, menuData, collapsed } = this.state;
+    const { navTheme, fixedHeader } = this.state.setting;
 
-    const isTop = PropsLayout === 'topmenu';
+    const isTop = layout === 'topmenu';
     const contentStyle = !fixedHeader ? { paddingTop: 0 } : {};
-    const layout = (
+    const layoutDom = (
       <Layout>
         {isTop && !isMobile ? null : (
           <SiderMenu
@@ -241,6 +243,8 @@ class BasicLayout extends React.Component {
             onCollapse={this.handleMenuCollapse}
             menuData={menuData}
             isMobile={isMobile}
+            collapsed={collapsed}
+            location={this.state.location}
             {...this.props}
           />
         )}
@@ -306,9 +310,11 @@ class BasicLayout extends React.Component {
         {/* <DocumentTitle title={getPageTitle(pathname, breadcrumbNameMap)}> */}
         <DocumentTitle title="系统首页">
           <ContainerQuery query={query}>
-            {params => (
-              <div className={params}>{layout}</div>
-            )}
+          {params => (
+            <Context.Provider value={this.getContext()}>
+              <div className={params}>{layoutDom}</div>
+            </Context.Provider>
+          )}
           </ContainerQuery>
         </DocumentTitle>
       </React.Fragment>

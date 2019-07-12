@@ -1,19 +1,14 @@
 import React, { PureComponent } from 'react';
 import { Icon } from 'antd';
 import { Link } from 'react-router-dom';
-// import Debounce from 'lodash-decorators/debounce';
-// import styles from './index.less';
 import RightContent from './RightContent';
-
-// import './index.css';
 import './index.less';
 
 export default class GlobalHeader extends PureComponent {
   componentWillUnmount() {
     this.triggerResizeEvent.cancel();
   }
-  /* eslint-disable*/
-  // @Debounce(600)
+
   triggerResizeEvent() {
     // eslint-disable-line
     const event = document.createEvent('HTMLEvents');
@@ -28,13 +23,13 @@ export default class GlobalHeader extends PureComponent {
   render() {
     const { collapsed, isMobile, logo } = this.props;
     return (
-      <div className={styles.header}>
+      <div className="header">
         {isMobile && (
-          <Link to="/" className={styles.logo} key="logo">
+          <Link to="/" className="logo" key="logo">
             <img src={logo} alt="logo" width="32" />
           </Link>
         )}
-        <span className={styles.trigger} onClick={this.toggle}>
+        <span className="trigger" onClick={this.toggle}>
           <Icon type={collapsed ? 'menu-unfold' : 'menu-fold'} />
         </span>
         <RightContent {...this.props} />

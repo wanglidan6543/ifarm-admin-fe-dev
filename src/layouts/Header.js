@@ -5,7 +5,7 @@ import Animate from 'rc-animate';
 import { HashRouter as router } from 'react-router-dom';
 import GlobalHeader from '../components/GlobalHeader';
 import TopNavHeader from '../components/TopNavHeader';
-import './Header.css';
+import './Header.less';
 
 const { Header } = Layout;
 
