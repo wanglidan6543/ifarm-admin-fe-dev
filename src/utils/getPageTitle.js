@@ -17,7 +17,7 @@ const getPageTitle = (pathname, breadcrumbNameMap) => {
   }
   const pageName = menu.disableLocal
     ? currRouterData.name
-    : tr('System', currRouterData.locale || currRouterData.name);
+    : tr('Menu', currRouterData.locale || currRouterData.name);
 
   return `${pageName} - ${title}`;
 };

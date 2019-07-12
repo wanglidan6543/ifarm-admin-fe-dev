@@ -1,17 +1,15 @@
 import React, { Fragment } from 'react';
-import { Layout, Icon, Breadcrumb } from 'antd';
+import { Layout, Icon } from 'antd';
 import DocumentTitle from 'react-document-title';
-// import { connect } from 'dva';
 import { connect } from 'react-redux';
 import { ContainerQuery } from 'react-container-query';
 import Media from 'react-media';
 import logo from '../assets/logo.png';
 import HeaderView from './Header';
 import SiderMenu from '../components/SiderMenu';
-// import getPageTitle from '../utils/getPageTitle';
+import getPageTitle from '../utils/getPageTitle';
 import GlobalFooter from '../components/GlobalFooter';
-import { Route, Switch } from 'react-router-dom';
-// import './BasicLayout.css';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import './BasicLayout.less';
 import {tr} from '../common/i18n';
 import Context from './menuContext';
@@ -38,7 +36,6 @@ import ChangePwd from '../pages/User/Changepassword';
 
 import Authorized from '../utils/Authorized';
 import defaultSetting from '../defaultSettings';
-import { thisTypeAnnotation } from '@babel/types';
 import PageHeaderWrapper from '../components/PageHeaderWrapper';
 
 const { Footer, Content} = Layout;
@@ -267,10 +264,10 @@ class BasicLayout extends React.Component {
             {...this.props}
           />
           <Content className='content' style={contentStyle}>
+          <Switch>
             <PageHeaderWrapper 
               breadcrumbNameMap={this.state.breadcrumbNameMap}
               {...this.props}>
-              <Switch>
                 <Route path="/home" component={Home} />
                 <Route exact path='/article' component={ArticleList} />
                 <Route path='/article/add' component={ArticleEdit} />
@@ -290,9 +287,9 @@ class BasicLayout extends React.Component {
                 <Route path='/usered/add' component={UserEdit} />
                 <Route path='/usered/edit/:id' component={UserEdit} />
                 <Route path='/login/password' component={ChangePwd} />
-                {/* <Route component={Error} /> */}
-              </Switch>
+                {/* <Redirect from='/' to='/home' /> */}
             </PageHeaderWrapper>
+            </Switch>
           </Content>
           <Footer style={{ padding: 0 }}>
             <GlobalFooter
@@ -316,8 +313,7 @@ class BasicLayout extends React.Component {
     );
     return (
       <React.Fragment>
-        {/* <DocumentTitle title={getPageTitle(pathname, breadcrumbNameMap)}> */}
-        <DocumentTitle title="系统首页">
+        <DocumentTitle title={getPageTitle(this.props.location.pathname, this.state.breadcrumbNameMap)}>
           <ContainerQuery query={query}>
           {params => (
             <Context.Provider value={this.getContext()}>
@@ -330,29 +326,6 @@ class BasicLayout extends React.Component {
     );
   }
 }
-// export default BasicLayout;
-
-// export default connect(({ global, setting, menu: menuModel }) => ({
-//   collapsed: global.collapsed,
-//   layout: setting.layout,
-//   menuData: menuModel.menuData,
-//   breadcrumbNameMap: menuModel.breadcrumbNameMap,
-//   ...setting,
-// }))(props => (
-//   <Media query="(max-width: 599px)">
-//     {isMobile => <BasicLayout {...props} isMobile={isMobile} />}
-//   </Media>
-// ));
-
-// function mapStateToProps(state) {
-//   return {
-//     collapsed: state.global.collapsed,
-//     layout: state.setting.layout,
-//     menuData: state.menu.menuData,
-//     breadcrumbNameMap: state.menu.breadcrumbNameMap,
-//     ...state.setting,
-//   }
-// }
 
 export default connect()(props => (
   <Media query="(max-width: 599px)">

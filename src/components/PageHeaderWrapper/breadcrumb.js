@@ -107,7 +107,7 @@ export default class BreadcrumbView extends PureComponent {
           {createElement(
             linkElement,
             {
-              [linkElement === 'a' ? 'href' : 'to']: '/',
+              [linkElement === 'a' ? 'href' : 'to']: '/home',
             },
             home
           )}

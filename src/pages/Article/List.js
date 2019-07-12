@@ -1,12 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import moment from 'moment';
 import axios from 'axios';
-import { Card, Button, Modal, Divider, message, Breadcrumb } from 'antd';
+import { Card, Button, Modal, Divider, message } from 'antd';
 import StandardTable from '../../components/StandardTable'; // 分页显示
-import PageHeaderWrapper from '../../components/PageHeaderWrapper';
 import { ROOT_PATH } from '../pathrouter';
 
-import './list.css';
+import './List.less';
 
 var jwt_token = window.localStorage.getItem('jwt_token');
 axios.defaults.headers.common['Authorization'] = jwt_token;
@@ -20,14 +19,6 @@ const getValue = obj =>
     .join(',');
 
 const confirm = Modal.confirm;
-
-
-/* eslint react/no-multi-comp:0 */
-// @connect(({ article, loading }) => ({
-//   article,
-//   loading: loading.models.article,
-// }))
-// @Form.create()
 
 class ArticleList extends Component {
   constructor(props) {
@@ -311,8 +302,8 @@ class ArticleList extends Component {
     return (
       <Fragment>
         <Card bordered={false}>
-          <div className="tableList">
-            <div className="tableListOperator">
+          <div className="table-list">
+            <div className="table-list-operator">
               <Button icon="plus" type="primary" onClick={() => this.handleEdit()}>
                 文章发布
               </Button>

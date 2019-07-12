@@ -28,9 +28,7 @@ export default class PageHeaderWrapper extends Component {
           <Skeleton
             loading={false}
             title={false}
-            active
             paragraph={{ rows: 3 }}
-            avatar={{ size: 'large', shape: 'circle' }}
           >
           {
             <BreadcrumbView 
@@ -51,7 +49,7 @@ export default class PageHeaderWrapper extends Component {
         </div>
         {children ? (
           <div className='subcontent'>
-            <div className={contentClassName}>{children}</div>;
+            <div className={contentClassName}>{children}</div>
           </div>
         ) : null}
       </div>

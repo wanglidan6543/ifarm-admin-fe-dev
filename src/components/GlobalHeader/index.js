@@ -6,7 +6,7 @@ import RightContent from './RightContent';
 
 export default class GlobalHeader extends PureComponent {
   componentWillUnmount() {
-    this.triggerResizeEvent.cancel();
+    // this.triggerResizeEvent.cancel();
   }
 
   triggerResizeEvent() {
