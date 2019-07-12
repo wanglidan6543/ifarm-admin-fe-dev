@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import { Icon } from 'antd';
 import { Link } from 'react-router-dom';
-import RightContent from './RightContent';
 import './index.less';
+import RightContent from './RightContent';
 
 export default class GlobalHeader extends PureComponent {
   componentWillUnmount() {
@@ -22,6 +22,7 @@ export default class GlobalHeader extends PureComponent {
   };
   render() {
     const { collapsed, isMobile, logo } = this.props;
+    console.log('header :' + collapsed);
     return (
       <div className="header">
         {isMobile && (

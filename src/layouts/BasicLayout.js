@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react';
-import { Layout, Icon } from 'antd';
+import { Layout, Icon, Breadcrumb } from 'antd';
 import DocumentTitle from 'react-document-title';
 // import { connect } from 'dva';
 import { connect } from 'react-redux';
 import { ContainerQuery } from 'react-container-query';
 import Media from 'react-media';
 import logo from '../assets/logo.png';
-import Header from './Header';
+import HeaderView from './Header';
 import SiderMenu from '../components/SiderMenu';
 // import getPageTitle from '../utils/getPageTitle';
 import GlobalFooter from '../components/GlobalFooter';
@@ -39,6 +39,7 @@ import ChangePwd from '../pages/User/Changepassword';
 import Authorized from '../utils/Authorized';
 import defaultSetting from '../defaultSettings';
 import { thisTypeAnnotation } from '@babel/types';
+import PageHeaderWrapper from '../components/PageHeaderWrapper';
 
 const { Footer, Content} = Layout;
 const { check } = Authorized;
@@ -95,7 +96,8 @@ class BasicLayout extends React.Component {
   getContext() {
     const { location } = this.props;
     return {
-      location
+      location,
+      breadcrumbNameMap: this.state.breadcrumbNameMap
     }
   }
 
@@ -225,7 +227,9 @@ class BasicLayout extends React.Component {
   };
 
   handleMenuCollapse = collapsed => {
-    this.setState({collapsed});
+    this.setState({
+      collapsed
+    });
   };
 
   render() {
@@ -244,7 +248,6 @@ class BasicLayout extends React.Component {
             menuData={menuData}
             isMobile={isMobile}
             collapsed={collapsed}
-            location={this.state.location}
             {...this.props}
           />
         )}
@@ -254,14 +257,19 @@ class BasicLayout extends React.Component {
             minHeight: '100vh',
           }}
         >
-          <Header
+          <HeaderView
             menuData={menuData}
             handleMenuCollapse={this.handleMenuCollapse}
             logo={logo}
             isMobile={isMobile}
+            setting={this.state.setting}
+            collapsed={collapsed}
             {...this.props}
           />
           <Content className='content' style={contentStyle}>
+            <PageHeaderWrapper 
+              breadcrumbNameMap={this.state.breadcrumbNameMap}
+              {...this.props}>
               <Switch>
                 <Route path="/home" component={Home} />
                 <Route exact path='/article' component={ArticleList} />
@@ -284,6 +292,7 @@ class BasicLayout extends React.Component {
                 <Route path='/login/password' component={ChangePwd} />
                 {/* <Route component={Error} /> */}
               </Switch>
+            </PageHeaderWrapper>
           </Content>
           <Footer style={{ padding: 0 }}>
             <GlobalFooter

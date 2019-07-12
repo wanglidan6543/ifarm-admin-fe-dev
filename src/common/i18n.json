@@ -69,7 +69,9 @@
       "menu.administrationEdit": "管理员编辑",
       "menu.administrationAdd": "新增管理员",
       "menu.useredAdd": "新增用户",
-      "menu.useredEdit": "编辑用户"
+      "menu.useredEdit": "编辑用户",
+      "menu.account.logout": "退出登录",
+      "menu.account.password": "修改密码"
     }
   }
 }

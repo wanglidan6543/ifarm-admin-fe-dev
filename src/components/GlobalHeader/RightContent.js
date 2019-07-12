@@ -5,6 +5,7 @@ import groupBy from 'lodash/groupBy';
 import HeaderDropdown from '../HeaderDropdown';
 import SelectLang from '../SelectLang';
 import './index.less';
+import { tr } from '../../common/i18n';
 
 export default class GlobalHeaderRight extends PureComponent {
   getNoticeData() {
@@ -79,11 +80,15 @@ export default class GlobalHeaderRight extends PureComponent {
       <Menu className="menu" selectedKeys={[]} onClick={onMenuClick}>
         <Menu.Item key="logout">
           <Icon type="logout" />
-          <span id="menu.account.logout" defaultMessage="logout" />
+          <span defaultMessage="logout">
+            {tr('Menu', "menu.account.logout")}
+          </span>
         </Menu.Item>
         <Menu.Item key="pasd">
           <Icon type="key" />
-          <span id="menu.account.password" defaultMessage="logout" onClick={()=>this.pasd()} />
+          <span defaultMessage="logout" onClick={()=>this.pasd()}>
+           {tr('Menu', 'menu.account.password')}
+          </span>
         </Menu.Item>
       </Menu>
     );

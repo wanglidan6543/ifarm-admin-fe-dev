@@ -1,7 +1,7 @@
 import React, { PureComponent, createElement } from 'react';
 import pathToRegexp from 'path-to-regexp';
 import { Breadcrumb } from 'antd';
-import styles from './index.less';
+import './index.less';
 import { urlToList } from '../_utils/pathTools';
 
 export const getBreadcrumb = (breadcrumbNameMap, url) => {
@@ -57,7 +57,7 @@ export default class BreadcrumbView extends PureComponent {
   conversionFromProps = () => {
     const { breadcrumbList, breadcrumbSeparator, itemRender, linkElement = 'a' } = this.props;
     return (
-      <Breadcrumb className={styles.breadcrumb} separator={breadcrumbSeparator}>
+      <Breadcrumb className="breadcrumb" separator={breadcrumbSeparator}>
         {breadcrumbList.map(item => {
           const title = itemRender ? itemRender(item) : item.title;
           return (
@@ -115,7 +115,7 @@ export default class BreadcrumbView extends PureComponent {
       );
     }
     return (
-      <Breadcrumb className={styles.breadcrumb} separator={breadcrumbSeparator}>
+      <Breadcrumb className="breadcrumb" separator={breadcrumbSeparator}>
         {extraBreadcrumbItems}
       </Breadcrumb>
     );
@@ -136,7 +136,7 @@ export default class BreadcrumbView extends PureComponent {
     if (routes && params) {
       return (
         <Breadcrumb
-          className={styles.breadcrumb}
+          className="breadcrumb"
           routes={routes.filter(route => route.breadcrumbName)}
           params={params}
           itemRender={this.itemRender}

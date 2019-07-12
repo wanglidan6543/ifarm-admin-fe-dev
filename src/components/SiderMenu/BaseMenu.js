@@ -5,7 +5,6 @@ import { urlToList } from '../_utils/pathTools';
 import { getMenuMatches } from './SiderMenuUtils';
 import { isUrl } from '../../utils/utils';
 import './index.less';
-// import './index.css';
 import IconFont from '../IconFont';
 import { Link } from 'react-router-dom';
 
