@@ -1,6 +1,5 @@
 import React, { PureComponent, Fragment } from 'react';
 import { Table, Row, Col, List } from 'antd';
-// import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import { ROOT_PATH } from '../pathrouter';
 import axios from 'axios';
 

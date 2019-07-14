@@ -10,10 +10,11 @@ import {
   Select,
 } from 'antd';
 import { Link } from 'react-router-dom';
-import './List.css';
 import StandardTable from '../../components/StandardTable'; // 分页显示
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
+import './List.less';
+
 const { RangePicker} = DatePicker;
 
 const FormItem = Form.Item;
@@ -68,79 +69,118 @@ class PriceMaterial extends Component {
       title: '创建时间',
       dataIndex: 'create_time',
       align: 'center',
-      size: 'small',
-      render: text => <span href="javascript:;">{text}</span>,
+      render: text => (
+        <span
+          style={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            display: 'inline-block',
+            whiteSpace: 'pre-wrap',
+            width: '80px',
+          }}
+        >
+          {text}
+        </span>
+      ),
     },
     {
       title: '订单编码',
       dataIndex: 'order_id',
       align: 'center',
-      size: 'small',
     },
     {
       title: '公司名称',
       align: 'center',
-      size: 'small',
-      render: text => <span>{text.company_name}</span>,
+      render: text => (
+        <span
+          style={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            display: 'inline-block',
+            whiteSpace: 'pre-wrap',
+            width: '100px',
+          }}
+        >
+          {text.company_name}
+        </span>
+      ),
     },
     {
       title: '客户名称',
-      dataIndex: 'user_name',
       align: 'center',
-      size: 'small',
+      render: text => (
+        <span
+          style={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            display: 'inline-block',
+            whiteSpace: 'pre-wrap',
+            width: '100px',
+          }}
+        >
+          {text.user_name}
+        </span>
+      ),
     },
     {
       title: '客户代码',
       dataIndex: 'user_code',
       align: 'center',
-      size: 'small',
     },
     {
       title: '客户手机号',
       dataIndex: 'user_mobile',
       align: 'center',
-      size: 'small',
     },
     {
       title: '下单方式',
       dataIndex: 'order_way',
       align: 'center',
-      size: 'small',
     },
     {
       title: '付款方式',
       dataIndex: 'pay_way',
       align: 'center',
-      size: 'small',
     },
     {
       title: '提货日期',
       dataIndex: 'delivery_date',
       align: 'center',
-      size: 'small',
     },
     {
       title: '订单实收金额/元',
       dataIndex: 'total_price',
       align: 'center',
-      size: 'small',
     },
     {
       title: '订单状态',
       dataIndex: 'order_status',
       align: 'center',
-      size: 'small',
     },
     {
       title: '状态更新时间',
-      dataIndex: 'update_status',
       align: 'center',
-      size: 'small',
+      render: text => (
+        <span
+          style={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            display: 'inline-block',
+            whiteSpace: 'pre-wrap',
+            width: '80px',
+          }}
+        >
+          {text.update_status}
+        </span>
+      ),
     },
     {
       title: '操作',
       align: 'center',
-      size: 'small',
       fixed: 'right',
       width: 100,
       render: (text, record) => (
@@ -617,25 +657,25 @@ class PriceMaterial extends Component {
         >
           <Row>
             <Col md={8} sm={24}>
-              <Form.Item label="订单时间" className='formselet'>
-                {getFieldDecorator('order_time')(<RangePicker format="YYYY-MM-DD HH:mm:ss" />)}
+              <Form.Item label="订单时间" className="formselet">
+                {getFieldDecorator('order_time')(<RangePicker format="YYYY-MM-DD" />)}
               </Form.Item>
             </Col>
             <Col md={8} sm={24}>
-              <Form.Item label="提货时间" className='formselet'>
-                {getFieldDecorator('take_delivery_time')(<RangePicker format="YYYY-MM-DD HH:mm:ss" />)}
+              <Form.Item label="提货时间" className="formselet">
+                {getFieldDecorator('take_delivery_time')(<RangePicker format="YYYY-MM-DD" />)}
               </Form.Item>
             </Col>
           </Row>
           <Row>
             <Col md={8} sm={24}>
-              <FormItem label="下单方式" className='formselet'>
+              <FormItem label="下单方式" className="formselet">
                 {getFieldDecorator('order_way', {
                   initialValue: '0',
                 })(
                   <Select
                     showSearch
-                    style={{ width: 200 }}
+                    style={{ width: 250 }}
                     optionFilterProp="children"
                     onChange={this.handleChange}
                     onFocus={this.handleFocus}
@@ -644,21 +684,21 @@ class PriceMaterial extends Component {
                       option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                     }
                   >
+                    <Option value="0">全部下单方式</Option>
                     <Option value="1">客户下单</Option>
                     <Option value="2">行销员代下单</Option>
-                    <Option value="0">全部下单方式</Option>
                   </Select>
                 )}
               </FormItem>
             </Col>
             <Col md={8} sm={24}>
-              <FormItem label="支付方式" className='formselet'>
+              <FormItem label="支付方式" className="formselet">
                 {getFieldDecorator('payment_mode', {
                   initialValue: '0',
                 })(
                   <Select
                     showSearch
-                    style={{ width: 200 }}
+                    style={{ width: 250 }}
                     optionFilterProp="children"
                     onChange={this.handleChange}
                     onFocus={this.handleFocus}
@@ -667,22 +707,22 @@ class PriceMaterial extends Component {
                       option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                     }
                   >
+                    <Option value="0">全部支付方式</Option>
                     <Option value="1">在线支付</Option>
                     <Option value="2">到场支付</Option>
-                    <Option value="0">全部支付方式</Option>
                   </Select>
                 )}
               </FormItem>
             </Col>
             <Col md={8} sm={24}>
-              <FormItem label="订单状态" className='formselet'>
+              <FormItem label="订单状态" className="formselet">
                 {getFieldDecorator('order_status', {
                   initialValue: '0',
                 })(
                   <Select
                     showSearch
                     placeholder="全部订单状态"
-                    style={{ width: 200 }}
+                    style={{ width: 250 }}
                     optionFilterProp="children"
                     onChange={this.handleChange}
                     onFocus={this.handleFocus}
@@ -691,6 +731,7 @@ class PriceMaterial extends Component {
                       option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                     }
                   >
+                    <Option value="0">全部订单状态</Option>
                     <Option value="1">待付款</Option>
                     <Option value="2">待备货</Option>
                     <Option value="3">待提货</Option>
@@ -698,7 +739,6 @@ class PriceMaterial extends Component {
                     <Option value="5">待收货</Option>
                     <Option value="6">已完成</Option>
                     <Option value="7">已取消</Option>
-                    <Option value="0">全部订单状态</Option>
                   </Select>
                 )}
               </FormItem>
@@ -706,7 +746,7 @@ class PriceMaterial extends Component {
           </Row>
           <Row>
             <Col md={8} sm={24}>
-              <FormItem className='inpform'>
+              <FormItem className="inpform">
                 {getFieldDecorator('company')(
                   <Input
                     placeholder="公司名称或ID"
@@ -719,7 +759,7 @@ class PriceMaterial extends Component {
               </FormItem>
             </Col>
             <Col md={8} sm={24}>
-              <FormItem className='inpform'>
+              <FormItem className="inpform">
                 {getFieldDecorator('user')(
                   <Input
                     placeholder="客户名称或ID"
@@ -732,7 +772,7 @@ class PriceMaterial extends Component {
               </FormItem>
             </Col>
             <Col md={8} sm={24}>
-              <FormItem className='inpform'>
+              <FormItem className="inpform">
                 {getFieldDecorator('order_id')(
                   <Input
                     placeholder="订单号"
@@ -746,7 +786,7 @@ class PriceMaterial extends Component {
             </Col>
           </Row>
           <div style={{ overflow: 'hidden' }}>
-            <div style={{ marginBottom: 24 }}>
+            <div style={{ marginBottom: 10, marginTop: 20, marginLeft: '93%' }}>
               <Button type="primary" htmlType="submit" onClick={this.handleSearch}>
                 查询
               </Button>

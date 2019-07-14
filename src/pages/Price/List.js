@@ -14,8 +14,7 @@ import {
   message,
 } from 'antd';
 import StandardTable from '../../components/StandardTable';
-// import PageHeaderWrapper from '../components/PageHeaderWrapper';
-import './List.css';
+import './List.less';
 
 import { ROOT_PATH } from '../pathrouter';
 
@@ -77,7 +76,7 @@ const CreateForm = Form.create()(props => {
       visible={modalVisible}
       onOk={okHandle}
       okText="导入"
-      className='daoru'
+      className="daoru"
       onCancel={() => handleModalVisible()}
     >
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="">
@@ -90,12 +89,6 @@ const CreateForm = Form.create()(props => {
     </Modal>
   );
 });
-
-/* eslint react/no-multi-comp:0 */
-// @connect(({ rule, loading }) => ({
-//   rule,
-//   loading: loading.models.rule,
-// }))
 
 class PriceList extends PureComponent {
   state = {
@@ -110,7 +103,8 @@ class PriceList extends PureComponent {
     data: [],
     filed: '',
     currentPage: 1,
-    pageSize: 10
+    pageSize: 10,
+    loading: false,
   };
 
   columns = [
@@ -163,10 +157,13 @@ class PriceList extends PureComponent {
       }
     });
 
-    this.getPriceData();
+    this.getPriceData({});
   }
 
   getPriceData(params) {
+    this.setState({
+      loading: true
+    });
     axios(
       {
         url: ROOT_PATH + '/api/backend/v1/prices',
@@ -175,9 +172,12 @@ class PriceList extends PureComponent {
       },
       {}
     ).then(result => {
+      this.setState({
+        loading: false
+      });
       if (result.data.error == 0) {
         this.setState({
-          data: result.data
+          data: result.data,
         });
       }
     });
@@ -201,26 +201,15 @@ class PriceList extends PureComponent {
       values['start_time'] = values['start_time'] ? values['start_time'].format('YYYY-MM-DD') : '';
       values['end_time'] = values['end_time'] ? values['end_time'].format('YYYY-MM-DD') : '';
 
-      axios({
-        url: ROOT_PATH + '/api/backend/v1/prices',
-        method: 'GET',
-        params: {
-          currentPage: pagination.current,
-          pageSize: pagination.pageSize,
-          district_id: fieldsValue.district_id,
-          breed_id: fieldsValue.breed_id,
-          start_time: values['start_time'],
-          end_time: values['end_time'],
-        },
-      }).then(result => {
-        this.setState({
-          data: result.data
-        });
-
-        if (result.data.error != 0) {
-          message.error(result.data.msg);
-        }
-      });
+      const params = {
+        currentPage: pagination.current,
+        pageSize: pagination.pageSize,
+        district_id: fieldsValue.district_id,
+        breed_id: fieldsValue.breed_id,
+        start_time: values['start_time'],
+        end_time: values['end_time'],
+      };
+      this.getPriceData(params);
     });
   };
 
@@ -335,23 +324,35 @@ class PriceList extends PureComponent {
 
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
-        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
+        <Row gutter={{ md: 8, lg: 24, xl: 48 }} style={{ marginBottom: '15px' }}>
+          <Col md={9} sm={24}>
             <FormItem label="开始日期">
               {getFieldDecorator('start_time')(
-                <DatePicker style={{ width: '100%' }} format="YYYY-MM-DD" placeholder="" />
+                <DatePicker
+                  style={{ width: '200px' }}
+                  className="datePick"
+                  format="YYYY-MM-DD"
+                  placeholder=""
+                />
               )}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="结束日期">
               {getFieldDecorator('end_time')(
-                <DatePicker style={{ width: '100%' }} format="YYYY-MM-DD" placeholder="" />
+                <DatePicker
+                  style={{ width: '200px' }}
+                  className="datePick"
+                  format="YYYY-MM-DD"
+                  placeholder=""
+                />
               )}
             </FormItem>
           </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="分类">
+        </Row>
+        <Row gutter={{ md: 8, lg: 24, xl: 48 }} style={{ marginBottom: '15px' }}>
+          <Col md={9} sm={24}>
+            <FormItem label="分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类">
               {getFieldDecorator('breed_id')(
                 <Select
                   placeholder="外三元生猪"
@@ -378,7 +379,7 @@ class PriceList extends PureComponent {
           </Col>
 
           <Col md={8} sm={24}>
-            <FormItem label="地区">
+            <FormItem label="地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区">
               {getFieldDecorator('district_id')(
                 <Select
                   placeholder="请选择"
@@ -405,7 +406,7 @@ class PriceList extends PureComponent {
           </Col>
         </Row>
         <div style={{ overflow: 'hidden' }}>
-          <div style={{ marginBottom: 24 }}>
+          <div style={{ marginBottom: 24, marginLeft: '53%' }}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
@@ -424,7 +425,6 @@ class PriceList extends PureComponent {
   }
 
   render() {
-    const { loading } = this.props;
     let { data } = this.state;
     const { selectedRows, modalVisible } = this.state;
 
@@ -452,7 +452,7 @@ class PriceList extends PureComponent {
             </div>
             <StandardTable
               selectedRows={selectedRows}
-              loading={loading}
+              loading={this.state.loading}
               data={data}
               columns={this.columns}
               onSelectRow={this.handleSelectRows}

@@ -1,5 +1,4 @@
 @import '~antd/lib/style/themes/default.less';
-@import '~@/utils/utils.less';
 
 .tableList {
   .tableListOperator {
@@ -47,25 +46,28 @@
     margin-right: 8px;
   }
 }
-.daoru{
-  >div{
-    >div{
-      &:nth-child(3){
+.daoru {
+  > div {
+    > div {
+      &:nth-child(3) {
         display: flex;
         justify-content: center;
         align-items: center;
-        }
-        &:nth-child(4){
-          >div{
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-          }
+      }
+      &:nth-child(4) {
+        > div {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
         }
       }
     }
   }
+}
 .avatar-uploader > .ant-upload {
   width: 128px;
   height: 128px;
+}
+.datePick > div input {
+  width: 200px;
 }
