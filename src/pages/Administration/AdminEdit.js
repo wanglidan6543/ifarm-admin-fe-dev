@@ -1,9 +1,8 @@
 import React, { PureComponent, Fragment } from 'react';
 import { Form, Button, Input, message, Select} from 'antd';
-// import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
-import './List.css';
+import './List.less';
 
 var jwt_token = window.localStorage.getItem('jwt_token');
 axios.defaults.headers.common['Authorization'] = jwt_token;
@@ -137,8 +136,8 @@ class AdminEdit extends PureComponent {
           {this.props.match.url === '/administration/edit/' + this.props.match.params.id ? (
             <FormItem
               name="number"
-              label="ID"
-              className='form_input'
+              label="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+              className="formInput"
               style={{ width: '40%', display: 'flex', alignItems: 'center' }}
             >
               {getFieldDecorator('ID', {
@@ -147,18 +146,18 @@ class AdminEdit extends PureComponent {
                     required: true,
                   },
                 ],
-              })(<span>{userShow ? userShow.uid : ''}</span>)}
+              })(<span>{userShow.uid}</span>)}
             </FormItem>
           ) : (
             ''
           )}
           <FormItem
-            label="用户名"
-            className='form_input'
+            label="&nbsp;&nbsp;用户名&nbsp;&nbsp;"
+            className="formInput"
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('userShow.realname', {
-              initialValue: userShow ? userShow.realname : '',
+              initialValue: userShow.realname,
               // rules: [
               //   {
               //     required: true,
@@ -175,12 +174,12 @@ class AdminEdit extends PureComponent {
             )}
           </FormItem>
           <FormItem
-            label="邮箱号"
-            className='form_input'
+            label="&nbsp;&nbsp;邮箱号&nbsp;&nbsp;"
+            className="formInput"
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('邮箱号', {
-              initialValue: userShow ? userShow.email : '',
+              initialValue: userShow.email,
               rules: [
                 {
                   required: true,
@@ -200,13 +199,13 @@ class AdminEdit extends PureComponent {
             )}
           </FormItem>
           <FormItem
-            label="手机号"
-            className='form_input'
+            label="&nbsp;&nbsp;手机号&nbsp;&nbsp;"
+            className="formInput"
             autoComplete="off"
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('input-number', {
-              initialValue: userShow ? userShow.tel_mobile: '',
+              initialValue: userShow.tel_mobile,
               rules: [
                 {
                   required: true,
@@ -223,9 +222,9 @@ class AdminEdit extends PureComponent {
             )}
           </FormItem>
           <FormItem
-            label="默认密码"
-            className='form_input'
-            style={{ width: '40%', display: 'flex', alignItems: 'center' }}
+            label="默认密码 "
+            className="formInput"
+            style={{ width: '40%', display: 'flex' }}
           >
             {getFieldDecorator('passward', {
               initialValue: this.state.password,
@@ -244,11 +243,27 @@ class AdminEdit extends PureComponent {
                 }}
               />
             )}
+            {this.props.match.url === '/administration/edit/' + this.props.match.params.id ? (
+              <span
+                onClick={() => {
+                  this.pswd();
+                }}
+                style={{ marginLeft: '223px', color: '#40a9ff',cursor: 'pointer', }}
+              >
+                恢复默认密码
+              </span>
+            ) : (
+              ''
+            )}
           </FormItem>
-          {this.props.match.url === '/administration/edit/' + this.props.match.params.id ? (
-            <div style={{ marginLeft: '15%' }}>
+          {/* {this.props.match.url === '/administration/edit/' + this.props.match.params.id ? (
+            <div
+              onClick={() => {
+                this.pswd();
+              }}
+            >
               <Button
-                style={{ width: '20%', height: '40px' }}
+                style={{ width: '20%', height: '40px', marginBottom: '25px' }}
                 type="primary"
                 onClick={() => {
                   this.pswd();
@@ -259,14 +274,14 @@ class AdminEdit extends PureComponent {
             </div>
           ) : (
             ''
-          )}
+          )} */}
           <FormItem
-            label="状态"
-            className='form_input'
+            label="状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态 "
+            className="formInput"
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('userShow.status', {
-              initialValue: (userShow && userShow.status === 0) ? '启用' : '禁用',
+              initialValue: userShow.status === 0 ? '启用' : '禁用',
               rules: [
                 {
                   rules: [{ required: true, message: 'Please select your gender!' }],
@@ -286,7 +301,7 @@ class AdminEdit extends PureComponent {
           </FormItem>
           <div style={{ marginLeft: '15%' }}>
             <Button
-              style={{ width: '20%', height: '50px' }}
+              style={{ width: '20%', height: '40px' }}
               type="primary"
               onClick={() => {
                 this.onSave();

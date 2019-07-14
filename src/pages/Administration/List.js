@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Table, Button, Input, message, Popconfirm, Divider, Row, Col } from 'antd';
+import { Button, Input, Divider, Row, Col } from 'antd';
 import StandardTable from '../../components/StandardTable'; // 分页显示
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
@@ -45,7 +45,14 @@ class Admin extends Component {
       title: '更新时间',
       dataIndex: 'update_time',
       align: 'center',
-      render: text => <span href="javascript:;">{text}</span>,
+      render: text => <span style={{
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        display: 'inline-block',
+        whiteSpace:'pre-wrap',
+        width: '80px',
+      }} href="javascript:;">{text}</span>,
     },
     {
       title: 'ID',
@@ -63,12 +70,11 @@ class Admin extends Component {
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
               display: 'inline-block',
-              width: '400px',
+              width: '100px',
             }}
           >
             {text.realname}
           </span>
-          <Divider type="vertical" />
         </Fragment>
       ),
     },
@@ -113,7 +119,6 @@ class Admin extends Component {
     window.location.hash = '/administration/edit/' + id.uid;
   };
 
-  // 需改动
   getAdminList = value => {
     const params = {
       search: value,
@@ -140,6 +145,12 @@ class Admin extends Component {
           adminList: result.data,
           datalisted: result.data.list,
           pagination: result.data.pagination,
+        });
+      } else {
+        this.setState({
+          adminList: [],
+          datalisted: [],
+          pagination: this.state.pagination,
         });
       }
     });

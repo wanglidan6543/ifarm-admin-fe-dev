@@ -1,8 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import { Form, Button, Select, Transfer } from 'antd';
-// import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import axios from 'axios';
-import './List.css';
+import './List.less';
 
 var jwt_token = window.localStorage.getItem('jwt_token');
 axios.defaults.headers.common['Authorization'] = jwt_token;
@@ -54,47 +53,47 @@ class Authority extends PureComponent {
     } = this.props;
     return (
       <Fragment>
-        <Form onSubmit={this.handleSearch} style={{ marginTop: 8, background: '#fff', padding: '30px 0' }}>
+        <Form
+          onSubmit={this.handleSearch}
+          style={{ marginTop: 8, background: '#fff', padding: '30px 0' }}
+        >
           <input type="password" style={{ position: 'fixed', left: '-9999px' }} />
           {this.props.match.url === '/administration/authority/' + this.props.match.params.id ? (
             <FormItem
               name="number"
               label="ID"
-              className='form_input'
+              className="formInput"
               style={{ width: '60%', display: 'flex', alignItems: 'center' }}
             >
-              {getFieldDecorator('ID', {
-              })(<span>GLY0002</span>)}
+              {getFieldDecorator('ID', {})(<span>GLY0002</span>)}
             </FormItem>
           ) : (
             ''
           )}
           <FormItem
-              name="number"
-              label="管理员用户ID"
-              className='form_input'
-              style={{ width: '60%', display: 'flex', alignItems: 'center' }}
-            >
-              {getFieldDecorator('UserID', {
-              })(<span>GLY0002</span>)}
-            </FormItem>
+            name="number"
+            label="管理员用户ID"
+            className="formInput"
+            style={{ width: '60%', display: 'flex', alignItems: 'center' }}
+          >
+            {getFieldDecorator('UserID', {})(<span>GLY0002</span>)}
+          </FormItem>
           <FormItem
             name="number"
             label="管理员名称"
-            className='form_input'
+            className="formInput"
             style={{ width: '60%', display: 'flex', alignItems: 'center' }}
           >
-            {getFieldDecorator('User', {
-            })(<span>王小二</span>)}
+            {getFieldDecorator('User', {})(<span>王小二</span>)}
           </FormItem>
-          
+
           <Transfer
             dataSource={this.state.mockData}
             listStyle={{
               width: 300,
               height: 300,
-              border:'solid 1px #eee',
-              marginLeft:'40px'
+              border: 'solid 1px #eee',
+              marginLeft: '40px',
             }}
             titles={['功能未添加', '功能已添加']}
             operations={['to right', 'to left']}
@@ -105,21 +104,25 @@ class Authority extends PureComponent {
           />
           <FormItem
             label="可见业务"
-            className='form_input'
-            style={{ width: '40%', display: 'flex', alignItems: 'center',margin:'20px 0' ,display:'flex'}}
+            className="formInput"
+            style={{
+              width: '40%',
+              display: 'flex',
+              alignItems: 'center',
+              margin: '20px 0',
+              display: 'flex',
+            }}
           >
             {getFieldDecorator('look', {
               // initialValue: identity,
             })(
-              <div style={{display:'flex'}}>
-                <Select
-                style={{ width: '100%' }}
-              >
-                <Option value='0'>
-                  全部市
-                </Option>
-              </Select>
-              <Button type="primary" style={{marginLeft:'10px'}}>添加</Button>
+              <div style={{ display: 'flex' }}>
+                <Select style={{ width: '100%' }}>
+                  <Option value="0">全部市</Option>
+                </Select>
+                <Button type="primary" style={{ marginLeft: '10px' }}>
+                  添加
+                </Button>
               </div>
             )}
           </FormItem>
@@ -133,39 +136,63 @@ class Authority extends PureComponent {
           >
             <span style={{ width: '10%', textAlign: 'center' }}>已添加</span>
             <div style={{ width: '50%' }}>
+              {/* {data.farms.map((item, index) => {
+                return (
+                  <div
+                    key={index}
+                    style={{
+                      marginRight: '20px',
+                      background: '#eee',
+                      padding: '8px 10px',
+                      textAlign: 'center',
+                      display: 'inline-block',
+                      marginBottom: '10px',
+                    }}
+                  >
+                    {item.farm_name}
+                    <b
+                      style={{
+                        color: 'red',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => {
+                        this.deled(item, index);
+                      }}
+                    >
+                      x
+                    </b>
+                  </div>
+                );
+              })} */}
             </div>
           </div>
           <FormItem
             label="可见区域"
-            className='form_input'
-            style={{ width: '40%', display: 'flex', alignItems: 'center',margin:'20px 0' ,display:'flex'}}
+            className="formInput"
+            style={{
+              width: '40%',
+              display: 'flex',
+              alignItems: 'center',
+              margin: '20px 0',
+              display: 'flex',
+            }}
           >
             {getFieldDecorator('look', {
               // initialValue: identity,
             })(
-              <div style={{display:'flex'}}>
-                <Select
-                style={{ width: '100%' }}
-              >
-                <Option value='0'>
-                  全部省
-                </Option>
-              </Select>
-              <Select
-                style={{ width: '100%',margin:'0 10px' }}
-              >
-                <Option value='0'>
-                  全部市
-                </Option>
-              </Select>
-              <Select
-                style={{ width: '100%' }}
-              >
-                <Option value='0'>
-                  全部区
-                </Option>
-              </Select>
-              <Button type="primary" style={{marginLeft:'10px'}}>添加</Button>
+              <div style={{ display: 'flex' }}>
+                <Select style={{ width: '100%' }}>
+                  <Option value="0">全部省</Option>
+                </Select>
+                <Select style={{ width: '100%', margin: '0 10px' }}>
+                  <Option value="0">全部市</Option>
+                </Select>
+                <Select style={{ width: '100%' }}>
+                  <Option value="0">全部区</Option>
+                </Select>
+                <Button type="primary" style={{ marginLeft: '10px' }}>
+                  添加
+                </Button>
               </div>
             )}
           </FormItem>
@@ -179,14 +206,43 @@ class Authority extends PureComponent {
           >
             <span style={{ width: '10%', textAlign: 'center' }}>已添加</span>
             <div style={{ width: '50%' }}>
+              {/* {data.farms.map((item, index) => {
+                return (
+                  <div
+                    key={index}
+                    style={{
+                      marginRight: '20px',
+                      background: '#eee',
+                      padding: '8px 10px',
+                      textAlign: 'center',
+                      display: 'inline-block',
+                      marginBottom: '10px',
+                    }}
+                  >
+                    {item.farm_name}
+                    <b
+                      style={{
+                        color: 'red',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => {
+                        this.deled(item, index);
+                      }}
+                    >
+                      x
+                    </b>
+                  </div>
+                );
+              })} */}
             </div>
           </div>
           <FormItem
             label="状态"
-            className='form_input'
+            className="formInput"
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('Gender', {
+              // initialValue: data.status === 0 ? '启用' : '禁用',
               rules: [
                 {
                   rules: [{ required: true, message: 'Please select your gender!' }],
@@ -195,10 +251,9 @@ class Authority extends PureComponent {
             })(
               <Select
                 style={{ width: '100%' }}
-                //TODO:
-                // onChange={value => {
-                //   data.status = Number(value);
-                // }}
+                onChange={value => {
+                  // data.status = Number(value);
+                }}
               >
                 <Option value="0">启用</Option>
                 <Option value="1">禁用</Option>
@@ -208,7 +263,7 @@ class Authority extends PureComponent {
 
           <div style={{ marginLeft: '15%' }}>
             <Button
-              style={{ width: '20%', height: '50px',marginTop:'20px' }}
+              style={{ width: '20%', height: '50px', marginTop: '20px' }}
               type="primary"
               onClick={() => {
                 this.onSave();
