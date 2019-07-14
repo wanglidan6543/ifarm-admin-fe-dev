@@ -192,7 +192,7 @@ class UserAdd extends PureComponent {
 
   beforeUpload(file) {
     const isPng = file.type;
-    if (isPng != 'image/png' && isPng != 'image/jpeg') {
+    if (isPng !== 'image/png' && isPng !== 'image/jpeg') {
       message.error('头像只支持png、jpg');
       return false;
     }
@@ -254,7 +254,7 @@ class UserAdd extends PureComponent {
   userChange = key => {
     let { data, UserIdentity } = this.state;
     this.restUser();
-    if (key.length == 0) {
+    if (key.length === 0) {
       this.state.UserIdentity.forEach((item, index) => {
         if (item.indeterminate) {
           let object = {
@@ -489,7 +489,7 @@ class UserAdd extends PureComponent {
             <div style={{ width: '50%' }}>
               {data.role_ids.length > 0 &&
                 data.role_ids.map((item, index) => {
-                  return item.role_name != '' ? (
+                  return item.role_name !== '' ? (
                     <div
                       key={index}
                       style={{

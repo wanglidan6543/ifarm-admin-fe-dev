@@ -88,7 +88,7 @@ export default class BreadcrumbView extends PureComponent {
       if (currentBreadcrumb.inherited) {
         return null;
       }
-      const isLinkable = index !== pathSnippets.length - 1 && currentBreadcrumb.component;
+      const isLinkable = index !== pathSnippets.length - 1;
       const name = itemRender ? itemRender(currentBreadcrumb) : currentBreadcrumb.name;
       return currentBreadcrumb.name && !currentBreadcrumb.hideInBreadcrumb ? (
         <Breadcrumb.Item key={url}>

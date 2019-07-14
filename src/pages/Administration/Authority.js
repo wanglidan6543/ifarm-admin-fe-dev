@@ -110,7 +110,6 @@ class Authority extends PureComponent {
               display: 'flex',
               alignItems: 'center',
               margin: '20px 0',
-              display: 'flex',
             }}
           >
             {getFieldDecorator('look', {
@@ -174,7 +173,6 @@ class Authority extends PureComponent {
               display: 'flex',
               alignItems: 'center',
               margin: '20px 0',
-              display: 'flex',
             }}
           >
             {getFieldDecorator('look', {

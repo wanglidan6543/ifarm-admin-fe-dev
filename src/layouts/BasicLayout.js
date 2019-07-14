@@ -9,10 +9,11 @@ import HeaderView from './Header';
 import SiderMenu from '../components/SiderMenu';
 import getPageTitle from '../utils/getPageTitle';
 import GlobalFooter from '../components/GlobalFooter';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import './BasicLayout.less';
-import {tr} from '../common/i18n';
 import Context from './menuContext';
+
+import { formatter, getBreadcrumbNameMap, filterMenuData } from '../models/menu';
 
 import axios from 'axios';
 import { ROOT_PATH } from '../pages/pathrouter';
@@ -35,12 +36,10 @@ import UserEdit from '../pages/Usered/UseredAdd';
 import ChangePwd from '../pages/User/Changepassword';
 import Error from '../pages/404';
 
-import Authorized from '../utils/Authorized';
 import defaultSetting from '../defaultSettings';
 import PageHeaderWrapper from '../components/PageHeaderWrapper';
 
 const { Footer, Content} = Layout;
-const { check } = Authorized;
 
 const query = {
   'screen-xs': {
@@ -100,15 +99,15 @@ class BasicLayout extends React.Component {
   }
 
   getCurrentUser(params) {
-    axios.get(
-      ROOT_PATH + `/api/backend/v1/user/info?${JSON.stringify(params)}`,
+    axios(
       {
-      headers: { Authorization: window.localStorage.getItem('jwt_token')  }
-      }
-      )
-      .then(res => {
-        console.log('getCurrentUser');
-        console.log(res);
+        url: ROOT_PATH + '/api/backend/v1/user/info',
+        method: 'GET',
+        params: params
+      },
+      {
+        headers: { Authorization: window.localStorage.getItem('jwt_token')  }
+      }).then(res => {
         this.setState({
           currentUser: res.data.data
         })
@@ -116,101 +115,26 @@ class BasicLayout extends React.Component {
   }
 
   getMenuData() {
-    axios.get(
-       `${ROOT_PATH}/api/backend/v1/menu`,
-       {
-        headers: { Authorization: window.localStorage.getItem('jwt_token')  }
-        }
-       )
-       .then(res => {
-  
-         let originalMenuData = this.formatter(res.data.data);
-         const menuData = this.filterMenuData(originalMenuData);
-  
-         const breadcrumbNameMap = this.getBreadcrumbNameMap(originalMenuData);
-
-         this.setState({
-           menuData,
-           breadcrumbNameMap
-         });
-       }) 
+    axios(
+      {
+        url: ROOT_PATH + '/api/backend/v1/menu',
+        method: 'GET'
+      },
+      {
+       headers: { Authorization: window.localStorage.getItem('jwt_token')  }
+      }).then(res => {
+        let originalMenuData = formatter(res.data.data);
+        const menuData = filterMenuData(originalMenuData);
+        const breadcrumbNameMap = getBreadcrumbNameMap(originalMenuData);
+        console.log(originalMenuData);
+        console.log(menuData);
+        console.log(breadcrumbNameMap);
+        this.setState({
+          menuData,
+          breadcrumbNameMap
+        });
+      })
     }
-
-  formatter = (data, parentAuthority, parentName) => {
-    if (!data) {
-      return null;
-    }
-    return data.map(item => {
-      if (!item.name || !item.path) {
-        return null;
-      }
-
-      let locale = 'menu';
-      if (parentName) {
-        locale = `${parentName}.${item.name}`;
-      } else {
-        locale = `menu.${item.name}`;
-      }
-      // if enableMenuLocale use item.name,
-      // close menu international
-      const name = defaultSetting.disableLocal ? item.name
-        : tr('Menu', locale);
-      const result = {
-        ...item,
-        name,
-        locale,
-        authority: item.authority || parentAuthority,
-      };
-      if (item.routes) {
-        const children = this.formatter(item.routes, item.authority, locale);
-        // Reduce memory usage
-        result.children = children;
-      }
-      delete result.routes;
-      return result;
-    })
-    .filter(item => item);      
-  }
-
-  getSubMenu = item => {
-    // doc: add hideChildrenInMenu
-    if (item.children && !item.hideChildrenInMenu && item.children.some(child => child.name)) {
-      return {
-        ...item,
-        children: filterMenuData(item.children), // eslint-disable-line
-      };
-    }
-    return item;
-  };
-
-  filterMenuData = menuData => {
-    if (!menuData) { 
-      return [];
-    }
-    return menuData
-      .filter(item => item.name && !item.hideInMenu)
-      .map(item => check(item.authority, this.getSubMenu(item)))
-      .filter(item => item);
-  };
-
-  getBreadcrumbNameMap = menuData => {
-    if (!menuData) {
-      return {};
-    }
-    const routerMap = {};
-  
-    const flattenMenuData = data => {
-      data.forEach(menuItem => {
-        if (menuItem.children) {
-          flattenMenuData(menuItem.children);
-        }
-        // Reduce memory usage
-        routerMap[menuItem.path] = menuItem;
-      });
-    };
-    flattenMenuData(menuData);
-    return routerMap;
-  };
 
   getLayoutStyle = () => {
     const { isMobile, collapsed, layout } = this.state;

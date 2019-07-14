@@ -8,9 +8,6 @@ import './Login.less';
 const { TabPane } = Tabs;
 
 class Login extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   handleSubmit = e => {
     e.preventDefault();
@@ -27,7 +24,7 @@ class Login extends Component {
         },
         {}
       ).then(result => {
-        if (result.data.error == 0 && result.data.data.jwt_token) {
+        if (result.data.error === 0 && result.data.data.jwt_token) {
           window.localStorage.setItem('jwt_token', result.data.data.jwt_token);
           window.localStorage.setItem('loginInfo', JSON.stringify(result.data.data));
           window.location.hash = '/home';

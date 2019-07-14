@@ -119,7 +119,7 @@ class ArtcicleEdit extends Component {
       url: ROOT_PATH + '/api/backend/v1/article/categories',
       method: 'GET',
     }).then(result => {
-      if (result.data.error == 0) {
+      if (result.data.error === 0) {
         var categoryOptionLists = result.data.data.categories;
         categoryOptionLists.push({ category_id: 0, name: '请选择' });
         this.setState({
@@ -136,7 +136,7 @@ class ArtcicleEdit extends Component {
         method: 'GET',
         params: { article_id: article_id },
       }).then(result => {
-        if (result.data.error == 0) {
+        if (result.data.error === 0) {
           this.setState({
             category_id: result.data.data.category_id,
             content: result.data.data.content,
@@ -168,10 +168,11 @@ class ArtcicleEdit extends Component {
         d.status = 1;
         d.article_id = this.state.article_id;
         d.cover = this.state.cover;
+        var md = '';
         if (d.article_id) {
-          var md = 'put';
+          md = 'put';
         } else {
-          var md = 'post';
+          md = 'post';
         }
         if (d.title === '') {
         } else if (document.getElementsByTagName('p')[0].innerHTML === '<br>' && d.content === "<p><br></p>") {
@@ -188,7 +189,7 @@ class ArtcicleEdit extends Component {
             method: md,
             data: d,
           }).then(result => {
-            if (result.data.error == 0) {
+            if (result.data.error === 0) {
               window.location.hash = '/article';
             } else {
               alert(result.data.msg);
@@ -208,10 +209,11 @@ class ArtcicleEdit extends Component {
         d.content = editorObj.txt.html();
         d.article_id = this.state.article_id;
         d.cover = this.state.cover;
+        var md = '';
         if (d.article_id) {
-          var md = 'put';
+          md = 'put';
         } else {
-          var md = 'post';
+          md = 'post';
         }
 
         axios({
@@ -220,7 +222,7 @@ class ArtcicleEdit extends Component {
           params: {},
           data: d,
         }).then(result => {
-          if (result.data.error == 0) {
+          if (result.data.error === 0) {
             window.location.hash = '/article';
           } else {
             message.error(result.data.msg);
@@ -239,7 +241,7 @@ class ArtcicleEdit extends Component {
 
   beforeUpload(file) {
     const isPng = file.type;
-    if (isPng != 'image/png' && isPng != 'image/jpeg') {
+    if (isPng !== 'image/png' && isPng !== 'image/jpeg') {
       message.error('头像只支持png、jpg');
       return false;
     }
