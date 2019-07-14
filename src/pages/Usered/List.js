@@ -49,7 +49,21 @@ class User extends Component {
       title: '更新时间',
       dataIndex: 'update_time',
       align: 'center',
-      render: text => <span href="javascript:;">{text}</span>,
+      render: text => (
+        <span
+          style={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            display: 'inline-block',
+            whiteSpace:'pre-wrap',
+            width: '80px',
+          }}
+          href="javascript:;"
+        >
+          {text}
+        </span>
+      ),
     },
     {
       title: '用户ID',
@@ -58,13 +72,38 @@ class User extends Component {
     },
     {
       title: '用户名',
-      dataIndex: 'username',
       align: 'center',
+      render: text => (
+        <span
+          style={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            display: 'inline-block',
+            width: '80px',
+          }}
+        >
+          {text.username}
+        </span>
+      ),
     },
     {
       title: '昵称',
       dataIndex: 'realname',
       align: 'center',
+      render: text => (
+        <span
+          style={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            display: 'inline-block',
+            width: '80px',
+          }}
+        >
+          {text}
+        </span>
+      ),
     },
     {
       title: '头像',
@@ -85,8 +124,20 @@ class User extends Component {
     },
     {
       title: '默认邮箱',
-      dataIndex: 'email',
       align: 'center',
+      render: text => (
+        <span
+          style={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            display: 'inline-block',
+            width: '100px',
+          }}
+        >
+          {text.email}
+        </span>
+      ),
     },
     {
       title: '状态',
@@ -112,7 +163,6 @@ class User extends Component {
     window.location.hash = '/usered/edit/' + id.uid;
   };
 
-  // 需改动
   getUserList = value => {
     const params = {
       search: value,
@@ -131,10 +181,10 @@ class User extends Component {
       method: 'GET',
       params: params,
     }).then(result => {
-      this.setState({
-        loading: false
-      });
       if (result.data.error === 0) {
+        this.setState({
+          loading: false
+        });
         result.data.list.map((item, index) => {
           if (item.avatar_url === '') {
             item.avatar_url = HEADPICURL;
@@ -212,7 +262,6 @@ class User extends Component {
 
   // 分页
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
-    const { loading, data, adminList, selectedRows, datalisted, station, desabled } = this.state;
     const { formValues } = this.state;
 
     const filters = Object.keys(filtersArg).reduce((obj, key) => {

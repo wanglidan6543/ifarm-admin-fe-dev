@@ -10,11 +10,10 @@ import {
   Collapse,
 } from 'antd';
 
-// import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
 import { isNull } from 'util';
-import './List.css';
+import './List.less';
 
 var jwt_token = window.localStorage.getItem('jwt_token');
 axios.defaults.headers.common['Authorization'] = jwt_token;
@@ -263,7 +262,7 @@ class UserAdd extends PureComponent {
             role_id: item.role_id,
           };
           var allArr = []; //新数组
-          if (data.role_id.length > 0) {
+          if (data.role_ids.length > 0) {
             for (var i = 0; i < data.role_ids.length; i++) {
               var flag = true;
               if (data.role_ids[i].role_name === object.role_name) {
@@ -326,7 +325,7 @@ class UserAdd extends PureComponent {
             <FormItem
               name="number"
               label="ID"
-              className='form_input'
+              className="formInput"
               style={{ width: '40%', display: 'flex', alignItems: 'center' }}
             >
               {getFieldDecorator('ID', {
@@ -340,9 +339,30 @@ class UserAdd extends PureComponent {
           ) : (
             ''
           )}
+          {/* <FormItem
+            label="头像"
+            className="formInput"
+            style={{ width: '40%', display: 'flex', alignItems: 'center' }}
+          >
+            <Upload
+              name="file"
+              listType="picture-card"
+              className="avatar-uploader"
+              showUploadList={false}
+              action={ROOT_PATH + '/api/backend/v1/file_upload'}
+              beforeUpload={this.beforeUpload}
+              onChange={this.handleChange}
+            >
+              {imageUrl ? (
+                <img style={{ width: '80px', height: '80px' }} src={imageUrl} alt="avatar" />
+              ) : (
+                uploadButton
+              )}
+            </Upload>
+          </FormItem> */}
           <FormItem
-            label="用户名"
-            className='form_input'
+            label="&nbsp;&nbsp;用户名&nbsp;&nbsp;"
+            className="formInput"
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('username', {
@@ -351,7 +371,7 @@ class UserAdd extends PureComponent {
               //   {
               //     required: true,
               //     pattern: new RegExp(/^[\u4e00-\u9fa5A-Za-z0-9-_]{1,30}$/),
-              //     message: '用户名最多为30为、字母、数字、汉字',
+              //     message: '用户名最多为30位、字母、数字、汉字',
               //   },
               // ],
             })(
@@ -363,8 +383,8 @@ class UserAdd extends PureComponent {
             )}
           </FormItem>
           <FormItem
-            label="昵称"
-            className='form_input'
+            label="昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称&nbsp;"
+            className="formInput"
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('昵称', {
@@ -373,7 +393,7 @@ class UserAdd extends PureComponent {
               //   {
               //     required: true,
               //     pattern: new RegExp(/^[\u4e00-\u9fa5A-Za-z0-9-]{1,30}$/),
-              //     message: '用户名最多为30为、字母、数字、汉字',
+              //     message: '用户名最多为30位、字母、数字、汉字',
               //   },
               // ],
             })(
@@ -385,8 +405,8 @@ class UserAdd extends PureComponent {
             )}
           </FormItem>
           <FormItem
-            label="手机号"
-            className='form_input'
+            label="&nbsp;&nbsp;手机号&nbsp;&nbsp;"
+            className="formInput"
             autoComplete="off"
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
@@ -408,8 +428,8 @@ class UserAdd extends PureComponent {
             )}
           </FormItem>
           <FormItem
-            label="默认邮箱"
-            className='form_input'
+            label="默认邮箱 "
+            className="formInput"
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('邮箱号', {
@@ -433,8 +453,8 @@ class UserAdd extends PureComponent {
             )}
           </FormItem>
           <FormItem
-            label="用户身份"
-            className='form_col'
+            label="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户身份"
+            className="form_col"
             style={{ width: '40%', display: 'flex' }}
           >
             {getFieldDecorator('用户身份', {})(
@@ -479,6 +499,7 @@ class UserAdd extends PureComponent {
                         textAlign: 'center',
                         display: 'inline-block',
                         marginBottom: '10px',
+                        position: 'relative',
                       }}
                     >
                       {item.role_name}
@@ -486,6 +507,15 @@ class UserAdd extends PureComponent {
                         style={{
                           color: 'red',
                           cursor: 'pointer',
+                          position: 'absolute',
+                          right: '-8px',
+                          top: '-15px',
+                          fontSize: '16px',
+                          width: '26px',
+                          height: '26px',
+                          lineHeight: '21px',
+                          background: '#f9f9f9',
+                          borderRadius: '50%',
                         }}
                         onClick={() => {
                           this.deled(item, index);
@@ -501,8 +531,8 @@ class UserAdd extends PureComponent {
             </div>
           </div>
           <FormItem
-            label="状态"
-            className='form_input'
+            label="状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态&nbsp;"
+            className="formInput"
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('data.status', {
@@ -526,7 +556,7 @@ class UserAdd extends PureComponent {
           </FormItem>
           <div style={{ marginLeft: '15%' }}>
             <Button
-              style={{ width: '20%', height: '50px' }}
+              style={{ width: '20%', height: '40px' }}
               type="primary"
               onClick={() => {
                 this.onSave();
