@@ -6,6 +6,13 @@ import zh_CN from 'antd/lib/locale-provider/zh_CN';
 
 import './index.less';
 
+// TODO:
+/**
+ * 错误页面
+ * 登录页面样式
+ * 提示更新: global.js 如何引入
+ */
+
 ReactDOM.render(
   <LocaleProvider locale={zh_CN}>  
     <App />

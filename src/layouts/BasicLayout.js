@@ -88,6 +88,9 @@ class BasicLayout extends React.Component {
 
     // meun/getMenuData
     this.getMenuData();
+
+    // Home页面
+    window.location.hash = '/home';
   }
 
   getContext() {
@@ -212,6 +215,7 @@ class BasicLayout extends React.Component {
                 <Route path='/usered/add' component={UserEdit} />
                 <Route path='/usered/edit/:id' component={UserEdit} />
                 <Route path='/login/password' component={ChangePwd} />
+                {/* <Route component={Error} /> */}
             </PageHeaderWrapper>
             <Route component={Error} /> 
           </Switch>
