@@ -7,7 +7,7 @@ export default () => (
   <Exception
     type="404"
     linkElement={Link}
-    desc={tr('System', 'app.exception.description.404')}
-    backText={tr('System', 'app.exception.back')}
+    desc={tr('Error', 'exception.description.404')}
+    backText={tr('Error', 'exception.back')}
   />
 );

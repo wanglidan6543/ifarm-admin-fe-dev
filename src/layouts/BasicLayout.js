@@ -33,6 +33,7 @@ import AdminAuthority from '../pages/Administration/Authority';
 import User from '../pages/Usered/List';
 import UserEdit from '../pages/Usered/UseredAdd';
 import ChangePwd from '../pages/User/Changepassword';
+import Error from '../pages/404';
 
 import Authorized from '../utils/Authorized';
 import defaultSetting from '../defaultSettings';
@@ -265,10 +266,10 @@ class BasicLayout extends React.Component {
           />
           <Content className='content' style={contentStyle}>
           <Switch>
+            <Route path="/home" component={Home} />
             <PageHeaderWrapper 
               breadcrumbNameMap={this.state.breadcrumbNameMap}
               {...this.props}>
-                <Route path="/home" component={Home} />
                 <Route exact path='/article' component={ArticleList} />
                 <Route path='/article/add' component={ArticleEdit} />
                 <Route path='/article/edit/:id' component={ArticleEdit} />
@@ -287,9 +288,9 @@ class BasicLayout extends React.Component {
                 <Route path='/usered/add' component={UserEdit} />
                 <Route path='/usered/edit/:id' component={UserEdit} />
                 <Route path='/login/password' component={ChangePwd} />
-                {/* <Redirect from='/' to='/home' /> */}
             </PageHeaderWrapper>
-            </Switch>
+            <Route component={Error} /> 
+          </Switch>
           </Content>
           <Footer style={{ padding: 0 }}>
             <GlobalFooter

@@ -3,10 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.less';
 import './index.css';
 import App from './App';
-// import * as serviceWorker from './serviceWorker';
+import { LocaleProvider } from 'antd';
+import zh_CN from 'antd/lib/locale-provider/zh_CN';
+
 
 ReactDOM.render(
-  <App />,
+  <LocaleProvider locale={zh_CN}>  
+    <App />
+  </LocaleProvider>,
   document.getElementById('root')
 );
 

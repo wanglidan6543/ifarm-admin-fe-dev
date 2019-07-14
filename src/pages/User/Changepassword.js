@@ -10,16 +10,15 @@ import {
 } from 'antd';
 
 import { ROOT_PATH } from '../pathrouter';
-// import styles from './Changepassword.less';
-import './Changepassword.css';
+import './Changepassword.less';
 
 const FormItem = Form.Item;
 
 var jwt_token = window.localStorage.getItem('jwt_token');
-// axios.defaults.headers.common['Authorization'] = jwt_token;
-// if (!jwt_token || jwt_token.length < 32) {
-//   location.hash = '/user/login';
-// }
+axios.defaults.headers.common['Authorization'] = jwt_token;
+if (!jwt_token || jwt_token.length < 32) {
+  window.location.hash = '/user/login';
+}
 
 class Changepassword extends PureComponent {
   constructor(props) {
@@ -57,14 +56,11 @@ class Changepassword extends PureComponent {
         method: 'POST',
         data: this.state.changepassword,
       }).then(result => {
-        console.log(result);
         if (result.data.error !== 0) {
           message.error(result.data.msg);
         } else {
           message.success(result.data.msg);
-          // location.hash = '/administration';
-          // router.push('/user/login');
-          window.location.push('/user/login');
+          window.location.hash = '/user/login';
         }
       });
     }
@@ -131,10 +127,10 @@ class Changepassword extends PureComponent {
     return (
       <Fragment>
         <Card bordered={false}>
-          <Form hideRequiredMark style={{ marginTop: 8 }}>
+        <Form hideRequiredMark style={{ marginTop: 8 }}>
             <FormItem
               label="原密码"
-              className='form_input'
+              className="form_input"
               style={{ width: '40%', display: 'flex' }}
             >
               {getFieldDecorator('password', {
@@ -158,7 +154,7 @@ class Changepassword extends PureComponent {
             </FormItem>
             <FormItem
               label="新密码"
-              className='form_input'
+              className="form_input"
               style={{ width: '40%', display: 'flex' }}
             >
               {getFieldDecorator('new_password', {
@@ -183,7 +179,7 @@ class Changepassword extends PureComponent {
             </FormItem>
             <FormItem
               label="确认密码"
-              className='form_input'
+              className="form_input"
               style={{ width: '40%', display: 'flex' }}
             >
               {getFieldDecorator('confirm_password', {
@@ -224,7 +220,7 @@ class Changepassword extends PureComponent {
             <Button
               style={{ width: '20%', height: '50px' }}
               type="primary"
-              size="large"
+              size="large "
               onClick={() => {
                 this.onSave();
               }}

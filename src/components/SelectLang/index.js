@@ -3,8 +3,7 @@ import { Menu, Icon } from 'antd';
 import classNames from 'classnames';
 import HeaderDropdown from '../HeaderDropdown/index';
 import { tr } from '../../common/i18n';
-// import './index.css';
-import styles from './index.less';
+import './index.less';
 
 export default class SelectLang extends PureComponent {
   changeLang = ({ key }) => {
@@ -13,7 +12,7 @@ export default class SelectLang extends PureComponent {
 
   render() {
     const { className } = this.props;
-    console.log(className);
+    
     const selectedLang = 'zh-CN';
     const locales = ['zh-CN'];
     // const locales = ['zh-CN', 'zh-TW', 'en-US', 'pt-BR'];
@@ -30,7 +29,7 @@ export default class SelectLang extends PureComponent {
       // 'pt-BR': '🇧🇷',
     };
     const langMenu = (
-      <Menu className={styles.menu} selectedKeys={[selectedLang]} onClick={this.changeLang}>
+      <Menu className="lang_menu" selectedKeys={[selectedLang]} onClick={this.changeLang}>
         {locales.map(locale => (
           <Menu.Item key={locale}>
             <span role="img" aria-label={languageLabels[locale]}>
@@ -43,7 +42,7 @@ export default class SelectLang extends PureComponent {
     );
     return (
       <HeaderDropdown overlay={langMenu} placement="bottomRight">
-        <span className={classNames(styles.dropDown, className)}>
+        <span className={classNames("drop_down", className)}>
           <Icon type="global" title={tr('System','navBar.lang')} />
         </span>
       </HeaderDropdown>

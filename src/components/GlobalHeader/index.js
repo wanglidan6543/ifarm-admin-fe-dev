@@ -22,15 +22,14 @@ export default class GlobalHeader extends PureComponent {
   };
   render() {
     const { collapsed, isMobile, logo } = this.props;
-    console.log('header :' + collapsed);
     return (
-      <div className="header">
+      <div className="global_header">
         {isMobile && (
-          <Link to="/" className="logo" key="logo">
+          <Link to="/" className="global_logo" key="logo">
             <img src={logo} alt="logo" width="32" />
           </Link>
         )}
-        <span className="trigger" onClick={this.toggle}>
+        <span className="global_trigger" onClick={this.toggle}>
           <Icon type={collapsed ? 'menu-unfold' : 'menu-fold'} />
         </span>
         <RightContent {...this.props} />
