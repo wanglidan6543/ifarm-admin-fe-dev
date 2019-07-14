@@ -50,7 +50,20 @@ class Threshold extends Component {
       title: '更新时间',
       dataIndex: 'update_time',
       align: 'center',
-      render: text => <span href="javascript:;">{text}</span>,
+      render: text => (
+        <span
+          style={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            display: 'inline-block',
+            whiteSpace: 'pre-wrap',
+            width: '80px',
+          }}
+        >
+          {text}
+        </span>
+      ),
     },
     {
       title: '农场名称',
@@ -63,7 +76,8 @@ class Threshold extends Component {
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
             display: 'inline-block',
-            width: '200px',
+            whiteSpace: 'pre-wrap',
+            width: '100px',
           }}
         >
           {text}
@@ -81,7 +95,7 @@ class Threshold extends Component {
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
             display: 'inline-block',
-            width: '200px',
+            width: '100px',
           }}
         >
           {text}
@@ -99,7 +113,7 @@ class Threshold extends Component {
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
               display: 'inline-block',
-              width: '200px',
+              width: '100px',
             }}
           >
             {text.index_name}
@@ -170,6 +184,9 @@ class Threshold extends Component {
       params: params,
     }).then(result => {
       if (result.data.error === 0) {
+        this.setState({
+          loading: false,
+        });
         result.data.list.map((item, index) => {
           if (item.username === '') {
             item.username = '--';
@@ -202,7 +219,6 @@ class Threshold extends Component {
         adminList: result.data,
         datalisted: result.data.list,
         pagination: result.data.pagination,
-        loading: false
       });
     });
   }
@@ -274,22 +290,25 @@ class Threshold extends Component {
           <Col span={3} style={{ marginRight: '25px' }}>
             <Select
               defaultValue="请选择指标项目"
-              style={{ width: '100%' }}
+              style={{ width: '160px' }}
               onChange={value => {
                 this.seletval(value);
               }}
             >
-              {
-                indexList.map((value,index) => {
-                  return <Option key={index} value={value.index_id}>{value.index_name}</Option>
-                })
-              }
-               <Option value="">全部</Option>
+              <Option value="">全部</Option>
+              {indexList.map((value, index) => {
+                return (
+                  <Option key={index} value={value.index_id}>
+                    {value.index_name}
+                  </Option>
+                );
+              })}
             </Select>
           </Col>
           <Col span={8}>
             <Search
               placeholder="请输入搜索的农场名称、农场代码"
+              style={{ marginLeft: '30px' }}
               onSearch={value => {
                 let str = value.replace(/\s+/g, '');
                 this.onsearchVal(str);

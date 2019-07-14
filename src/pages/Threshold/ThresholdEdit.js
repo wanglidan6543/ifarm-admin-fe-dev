@@ -2,8 +2,6 @@ import React, { PureComponent, Fragment } from 'react';
 import { Table, Input, Button, Form, Row, Col, message, Radio } from 'antd';
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
-// import PageHeaderWrapper from '../components/PageHeaderWrapper';
-import './List.css';
 
 var jwt_token = window.localStorage.getItem('jwt_token');
 axios.defaults.headers.common['Authorization'] = jwt_token;
@@ -71,8 +69,7 @@ class EditableCell extends PureComponent {
               return editing ? (
                 <Form style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <FormItem
-                    className='inpcen'
-                    style={{ margin: 0, width: '40%', display: 'flex', alignItems: 'center' }}
+                    style={{ margin: 0, width: '40%', display: 'flex', alignItems: 'center', marginBottom: '0px' }}
                   >
                     {form.getFieldDecorator(dataIndex, {
                       rules: [
@@ -354,9 +351,9 @@ class EditableTable extends PureComponent {
               savedata={savedata}
             />
           </div>
-          <div style={{ marginLeft: '15%' }}>
+          <div style={{ marginLeft: '70%',width:'70%' }}>
             <Button
-              style={{ width: '20%', height: '50px' }}
+              style={{ width: '20%', height: '40px' }}
               type="primary"
               onClick={() => {
                 this.onSave();
