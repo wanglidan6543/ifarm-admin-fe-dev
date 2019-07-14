@@ -351,7 +351,7 @@ class ArtcicleEdit extends Component {
                 initialValue: this.state.read_count,
               })(<Input placeholder="请输入" onChange={this.handleChange} />)}
             </FormItem>
-            <FormItem className="butForm" style={{ marginTop: 32, marginLeft:'46%' }}>
+            <FormItem {...submitFormLayout} className="buttonForm" style={{ marginTop: 32, marginLeft:'46%' }}>
             <Button
                 type="primary"
                 htmlType="submit"

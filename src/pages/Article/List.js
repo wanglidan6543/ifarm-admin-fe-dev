@@ -145,17 +145,25 @@ class ArticleList extends Component {
     this.setState({
       loading: true
     });
-    axios.get(
-      ROOT_PATH + `/api/backend/v1/articles?${JSON.stringify(params)}`,
+    axios(
+      {
+        url: ROOT_PATH + '/api/backend/v1/articles',
+        method: 'get',
+        params: params
+      },
       {
         headers: { Authorization: window.localStorage.getItem('jwt_token')  }
       }
     )
-    .then(res => {
+    .then(result => {
       this.setState({
-        data: res.data,
-        loading: false
-      })
+        loading: false,
+      });
+      if (result.data.error == 0) {
+        this.setState({
+          data: result.data
+        })
+      }
     });
   }
 
