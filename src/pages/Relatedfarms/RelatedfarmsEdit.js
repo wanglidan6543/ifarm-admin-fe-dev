@@ -1,8 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import { Form, Button, Input, message, Select, AutoComplete } from 'antd';
-// import PageHeaderWrapper from '../components/PageHeaderWrapper';
 import axios from 'axios';
-import './List.css';
+import './List.less';
 import { ROOT_PATH } from '../pathrouter';
 
 var jwt_token = window.localStorage.getItem('jwt_token');
@@ -33,7 +32,6 @@ class RelatedFarmsEdit extends PureComponent {
             production_organization_id: '', // 农场代码
           },
         ], // 关联农场列表
-        role_id: 1, // 用户身份id
         avatar_url: '', // 头像地址
         status: '', // 状态 0启用 1禁用
       },
@@ -41,8 +39,9 @@ class RelatedFarmsEdit extends PureComponent {
         uid: '',
         farm_org: [], // 农场代码串
         status: '', // 状态 0启用 1禁用
-        role_id: 0, // 用户身份
       },
+      autoVal: '',
+      formVal: '',
     };
   }
 
@@ -64,9 +63,6 @@ class RelatedFarmsEdit extends PureComponent {
         uid: this.props.match.params.id,
       },
     }).then(result => {
-      console.log('详情');
-      console.log(result.data);
-
       if (result.data.data.role_id === null) {
         result.data.data.role_id = 1;
       }
@@ -90,7 +86,6 @@ class RelatedFarmsEdit extends PureComponent {
         uid: data.uid,
         farm_ids: arr, // 农场代码串
         status: data.status, // 状态 0启用 1禁用
-        role_id: data.role_id,
       },
     }).then(result => {
       if (result.data.error !== 0) {
@@ -147,28 +142,29 @@ class RelatedFarmsEdit extends PureComponent {
   };
 
   render() {
-    let { data, farmList, userList, identity } = this.state;
+    let { data, farmList } = this.state;
     const { form: { getFieldDecorator } } = this.props;
 
     const children = farmList.map((item, index) => (
-      <Option key={index} label={item.production_organization_id}>
-        {item.name}
+      <Option key={item.name} label={item.production_organization_id}>
+        {item.name + '  ' + item.farm_code}
       </Option>
     ));
+    
     return (
       <Fragment>
         <Form hideRequiredMark style={{ marginTop: 8, background: '#fff', padding: '30px 0' }}>
           <FormItem
             name="number"
-            label="用户ID"
-            className='form_input'
+            label="&nbsp;&nbsp;用户ID&nbsp;&nbsp;"
+            className="formInput"
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('用户ID', {})(<span>{data.uid}</span>)}
           </FormItem>
           <FormItem
             label="用户名称"
-            className='form_input'
+            className="formInput"
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('用户名称', {
@@ -191,16 +187,16 @@ class RelatedFarmsEdit extends PureComponent {
           </FormItem>
           <FormItem
             label="关联农场"
-            className='form_input'
+            className="formInput"
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             <AutoComplete
               type="text"
               style={{ width: '100%' }}
-              className='searchinp'
+              className="searchInput"
               onSelect={(value, option) => {
                 let abject = {
-                  name: option.props.children,
+                  name: option.key,
                   production_organization_id: option.props.label,
                 };
                 var allArr = []; //新数组
@@ -230,34 +226,10 @@ class RelatedFarmsEdit extends PureComponent {
               onSearch={this.handleSearch}
               onChange={this.formsearch}
               placeholder="搜索农场名称/ID号（可添加多个）"
-              onFocus={this.formsearch}
+              onFocus={this.autoVal}
             >
               {children}
             </AutoComplete>
-          </FormItem>
-          <FormItem
-            label="用户身份"
-            className='form_input'
-            style={{ width: '40%', display: 'flex', alignItems: 'center' }}
-          >
-            {getFieldDecorator('用户身份', {
-              initialValue: identity,
-            })(
-              <Select
-                style={{ width: '100%' }}
-                onChange={value => {
-                  data.role_id = Number(value);
-                }}
-              >
-                {userList.map((val, ind) => {
-                  return (
-                    <Option key={ind} value={val.role_id}>
-                      {val.name}
-                    </Option>
-                  );
-                })}
-              </Select>
-            )}
           </FormItem>
           <div
             style={{
@@ -267,7 +239,7 @@ class RelatedFarmsEdit extends PureComponent {
               marginBottom: '20px',
             }}
           >
-            <span style={{ width: '10%', textAlign: 'center' }}>已关联</span>
+            <span style={{ width: '10%', textAlign: 'center' }}>&nbsp;&nbsp;已关联</span>
             <div style={{ width: '50%' }}>
               {data.farms.map((item, index) => {
                 return (
@@ -280,6 +252,7 @@ class RelatedFarmsEdit extends PureComponent {
                       textAlign: 'center',
                       display: 'inline-block',
                       marginBottom: '10px',
+                      position: 'relative',
                     }}
                   >
                     {item.name}
@@ -287,6 +260,15 @@ class RelatedFarmsEdit extends PureComponent {
                       style={{
                         color: 'red',
                         cursor: 'pointer',
+                        position: 'absolute',
+                        right: '-8px',
+                        top: '-15px',
+                        fontSize: '16px',
+                        width: '26px',
+                        height: '26px',
+                        lineHeight: '21px',
+                        background: '#f9f9f9',
+                        borderRadius: '50%',
                       }}
                       onClick={() => {
                         this.deled(item, index);
@@ -300,8 +282,8 @@ class RelatedFarmsEdit extends PureComponent {
             </div>
           </div>
           <FormItem
-            label="状态"
-            className='form_input'
+            label="状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态"
+            className="formInput"
             style={{ width: '40%', display: 'flex', alignItems: 'center' }}
           >
             {getFieldDecorator('Gender', {
@@ -325,7 +307,7 @@ class RelatedFarmsEdit extends PureComponent {
           </FormItem>
           <div style={{ marginLeft: '15%' }}>
             <Button
-              style={{ width: '20%', height: '50px' }}
+              style={{ width: '20%', height: '40px' }}
               type="primary"
               onClick={() => {
                 this.onSave();

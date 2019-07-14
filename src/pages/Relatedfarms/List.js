@@ -50,7 +50,20 @@ class RelatedFarms extends Component {
       title: '更新时间',
       dataIndex: 'update_time',
       align: 'center',
-      render: text => <span href="javascript:;">{text}</span>,
+      render: text => (
+        <span
+          style={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            display: 'inline-block',
+            whiteSpace: 'pre-wrap',
+            width: '80px',
+          }}
+        >
+          {text}
+        </span>
+      ),
     },
     {
       title: '用户ID',
@@ -68,7 +81,7 @@ class RelatedFarms extends Component {
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
               display: 'inline-block',
-              width: '200px',
+              width: '100px',
             }}
           >
             {text.username}
@@ -92,7 +105,7 @@ class RelatedFarms extends Component {
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
             display: 'inline-block',
-            width: '200px',
+            width: '150px',
           }}
         >
           {text}
@@ -110,7 +123,7 @@ class RelatedFarms extends Component {
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
             display: 'inline-block',
-            width: '200px',
+            width: '100px',
           }}
         >
           {text}
@@ -120,7 +133,7 @@ class RelatedFarms extends Component {
     {
       title: '状态',
       align: 'center',
-      render: (text, record) => <span>{text.status === 0 ? '启用' : '禁用'}</span>,
+      render: text => <span>{text.status === 0 ? '启用' : '禁用'}</span>,
     },
     {
       title: '操作',
@@ -154,7 +167,10 @@ class RelatedFarms extends Component {
       method: 'GET',
       params: params,
     }).then(result => {
-      if (result.data.error === 0) {
+      if (result.data.error === 0 && result.data.list) {
+        this.setState({
+          loading: false,
+        });
         result.data.list.map((item, index) => {
           if (item.username === '') {
             item.username = '--';
@@ -186,7 +202,10 @@ class RelatedFarms extends Component {
           adminList: result.data,
           datalisted: result.data.list,
           pagination: result.data.pagination,
-          loading: false,
+        });
+      } else {
+        this.setState({
+          datalisted: [],
         });
       }
     });
@@ -258,7 +277,7 @@ class RelatedFarms extends Component {
         <Row style={{ paddingBottom: '10px' }}>
           <Col span={3} style={{ marginRight: '25px' }}>
             <Select
-              style={{ width: '100%' }}
+              style={{ width: '160px' }}
               defaultValue="请选择用户身份"
               onChange={value => {
                 this.setState({
@@ -267,6 +286,7 @@ class RelatedFarms extends Component {
                 this.seletval(value);
               }}
             >
+              <Option value='""'>全部</Option>
               {userList.map((val, ind) => {
                 return (
                   <Option key={ind} value={val.role_id}>
@@ -274,12 +294,12 @@ class RelatedFarms extends Component {
                   </Option>
                 );
               })}
-              <Option value='""'>全部</Option>
             </Select>
           </Col>
           <Col span={8}>
             <Search
               placeholder="请输入搜索的用户名、手机号、关联农场名称、农场代码"
+              style={{marginLeft:'30px'}}
               onSearch={value => {
                 let str = value.replace(/\s+/g, '');
                 this.onsearchVal(str);
