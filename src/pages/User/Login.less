@@ -1,13 +1,10 @@
 @import '~antd/lib/style/themes/default.less';
 
-.main {
+.login_root {
   width: 388px;
   margin: 0 auto;
-  @media screen and (max-width: @screen-sm) {
-    width: 95%;
-  }
 
-  .login {
+  .login_content {
     :global {
       .ant-tabs .ant-tabs-bar {
         margin-bottom: 24px;
@@ -19,10 +16,14 @@
         margin: 0 2px 24px;
       }
     }
-  }
-}
 
-.login > .submit {
-  width: 100%;
-  margin-top: 24px;
+    .submit {
+      width: 100%;
+      margin-top: 24px;
+    }
+  }
+
+  @media screen and (max-width: @screen-sm) {
+    width: 95%;
+  }
 }

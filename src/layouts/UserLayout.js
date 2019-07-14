@@ -35,8 +35,6 @@ class UserLayout extends Component {
               </div>
               <div className='desc'>管理系统</div>
             </div>
-            {/* {children} */}
-            {/* 正大集团用户登录页面 */}
             <Login />
           </div>
           <GlobalFooter links={links} copyright={copyright} />

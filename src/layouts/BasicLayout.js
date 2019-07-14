@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
 import { Layout, Icon } from 'antd';
 import DocumentTitle from 'react-document-title';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 import { ContainerQuery } from 'react-container-query';
-import Media from 'react-media';
+// import Media from 'react-media';
 import logo from '../assets/logo.png';
 import HeaderView from './Header';
 import SiderMenu from '../components/SiderMenu';
@@ -328,8 +328,10 @@ class BasicLayout extends React.Component {
   }
 }
 
-export default connect()(props => (
-  <Media query="(max-width: 599px)">
-    {isMobile => <BasicLayout {...props} isMobile={isMobile} />}
-  </Media>
-));
+export default BasicLayout;
+
+// export default connect()(props => (
+//   <Media query="(max-width: 599px)">
+//     {isMobile => <BasicLayout {...props} isMobile={isMobile} />}
+//   </Media>
+// ));

@@ -3,8 +3,7 @@ import { Icon, message, Tabs, Form, Input, Button } from 'antd';
 import axios from 'axios';
 import { ROOT_PATH } from '../pathrouter';
 import { tr } from '../../common/i18n';
-import './Login.css';
-// import './Login.less';
+import './Login.less';
 
 const { TabPane } = Tabs;
 
@@ -17,7 +16,6 @@ class Login extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (err) { return; }
-      console.log('Received values of form: ', values);
 
       window.localStorage.setItem('username', values.username);
       axios(
@@ -29,7 +27,6 @@ class Login extends Component {
         },
         {}
       ).then(result => {
-        console.log(result);
         if (result.data.error == 0 && result.data.data.jwt_token) {
           window.localStorage.setItem('jwt_token', result.data.data.jwt_token);
           window.localStorage.setItem('loginInfo', JSON.stringify(result.data.data));
@@ -44,13 +41,12 @@ class Login extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-    <div className="main">
-      <div className="login">
+    <div className="login_root">
+      <div className="login_content">
         <Form onSubmit={this.handleSubmit} >
           <Tabs
             animated={false}
             defaultActiveKey="1"
-            className="tabs"
           >
             <TabPane tab="账号密码登录" key="1">
                 <Form.Item>
