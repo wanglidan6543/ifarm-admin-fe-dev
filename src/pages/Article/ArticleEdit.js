@@ -351,25 +351,24 @@ class ArtcicleEdit extends Component {
                 initialValue: this.state.read_count,
               })(<Input placeholder="请输入" onChange={this.handleChange} />)}
             </FormItem>
-            <FormItem className="butForm" style={{ marginTop: 32,marginLeft:'46%' }}>
-              <Button
-                type="danger"
+            <FormItem className="butForm" style={{ marginTop: 32, marginLeft:'46%' }}>
+            <Button
+                type="primary"
                 htmlType="submit"
                 loading={submitting}
                 onClick={this.handlePublish}
               >
                 发布
               </Button>
-              <Button
-                type="primary"
-                htmlType="submit"
-                style={{ marginLeft: 20 }}
-                loading={submitting}
-                onClick={this.handleSave}
-              >
+              <Button style={{ marginLeft: 20 }} loading={submitting} onClick={this.handleSave}>
                 存草稿
               </Button>
-              <Button style={{ marginLeft: 20 }} onClick={this.handleBack}>
+              <Button
+                type="danger"
+                htmlType="submit"
+                style={{ marginLeft: 20 }}
+                onClick={this.handleBack}
+              >
                 取消
               </Button>
             </FormItem>
