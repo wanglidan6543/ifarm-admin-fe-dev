@@ -1,6 +1,6 @@
 import React, { PureComponent, Fragment } from 'react';
 import { Table, Alert, Pagination, Button } from 'antd';
-import styles from './index.less';
+import'./index.less';
 
 function initTotalList(columns) {
   const totalList = [];
@@ -77,7 +77,6 @@ class StandardTable extends PureComponent {
       showQuickJumper: { goButton: <Button className="ant-pagination-go-button">跳转</Button> },
       ...pagination,
     };
-    console.log(paginationProps)
     const rowSelection = {
       selectedRowKeys,
       onChange: this.handleRowSelectChange,
@@ -86,8 +85,8 @@ class StandardTable extends PureComponent {
       }),
     };
     return (
-      <div className={styles.standardTable}>
-        <div className={styles.tableAlert}>
+      <div className="standardTable">
+        <div className="tableAlert">
           <Alert
             message={
               <Fragment>

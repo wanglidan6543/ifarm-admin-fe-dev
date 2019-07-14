@@ -302,8 +302,8 @@ class ArticleList extends Component {
     return (
       <Fragment>
         <Card bordered={false}>
-          <div className="table-list">
-            <div className="table-list-operator">
+          <div className="tableList">
+            <div className="tableListOperator">
               <Button icon="plus" type="primary" onClick={() => this.handleEdit()}>
                 文章发布
               </Button>

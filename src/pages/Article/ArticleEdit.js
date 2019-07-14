@@ -13,6 +13,8 @@ import {
 } from 'antd';
 
 import { ROOT_PATH } from '../pathrouter';
+import './List.less';
+
 const FormItem = Form.Item;
 
 const getBase64 = (img, callback) => {
@@ -27,10 +29,6 @@ axios.defaults.headers.common['Authorization'] = jwt_token;
 if (!jwt_token || jwt_token.length < 32) {
   window.location.hash = '/user/login';
 }
-
-// @connect(({ loading }) => ({
-//   submitting: loading.effects['form/submitRegularForm'],
-// }))
 
 class ArtcicleEdit extends Component {
   constructor(props) {
@@ -353,7 +351,7 @@ class ArtcicleEdit extends Component {
                 initialValue: this.state.read_count,
               })(<Input placeholder="请输入" onChange={this.handleChange} />)}
             </FormItem>
-            <FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
+            <FormItem className="butForm" style={{ marginTop: 32,marginLeft:'46%' }}>
               <Button
                 type="danger"
                 htmlType="submit"
