@@ -78,7 +78,7 @@ export default class SiderMenu extends PureComponent {
         className={siderClassName}
       >
         <div className="toplogo">
-          <Link to="/">
+          <Link to="/home">
             <img src={logo} alt="logo" />
             <h1>{title}</h1>
           </Link>
