@@ -59,7 +59,7 @@
     "react-app-polyfill": "^1.0.1",
     "react-container-query": "^0.11.0",
     "react-copy-to-clipboard": "^5.0.1",
-    "react-dev-utils": "^9.0.1",
+    "react-dev-utils": "^12.0.1",
     "react-document-title": "^2.0.3",
     "react-dom": "^16.8.6",
     "react-media": "^1.9.2",
